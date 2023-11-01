@@ -49,7 +49,7 @@ include('includes/navbar.php');
 
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                <label for="">Email Address</label>
+                                <label for="">Email Address 2</label>
                                 <div class="form-control">
                                <?=$user->email;?>
                                 </div>
