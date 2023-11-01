@@ -28,7 +28,7 @@ include('includes/header.php');
   <!-- /.login-logo -->
   <div class="card mb-5">
     <div class="card-body login-card-body  mb-5">
-      <p class="login-box-msg">Sign in to start your session 123</p>
+      <p class="login-box-msg">Sign in to start your session</p>
 
       <form action="logincode.php" method="POST">
         <div class="input-group mb-3">
