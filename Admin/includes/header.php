@@ -27,6 +27,16 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
+
+
+  <!--LEFT GALLERY-->
+
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link id="theme-link" rel="stylesheet" href="css/style.css">
+
 </head>
 <body class="control-sidebar-slide-open sidebar-collapse" style="height: auto;">
   <div class="wrapper">

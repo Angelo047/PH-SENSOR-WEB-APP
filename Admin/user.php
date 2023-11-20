@@ -12,24 +12,21 @@ include('includes/navbar.php');
             }
             ?>
 
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
-                <!-- Content Header (Page header) -->
-                <div class="container-fluid">
-            </div>
-                    <div class="col-sm-12">
-
-
-
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->
+	<div class="content-header">
+		<div class="container-fluid">
+			<div class="row mb-2">
+				<div class="col-sm-12">
                     <!-- DataTales Example -->
-                    <div class="card shadow mb-4 mt-5">
-                        <div class="card-header py-3">
-                        <h4 class="m-2 font-weight-bold text-primary">Users&nbsp;<a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i> New</a></h4>
-
+                    <div class="card shadow">
+                        <div class="card-header">
+                        <h4 class="font-weight-bold text-success">Users&nbsp;<a href="#addnew" data-toggle="modal" class="btn btn-success btn-sm btn-flat"><i class="fa fa-plus"></i> New</a></h4>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr class="text-center">
                                         <th>User ID</th>
@@ -117,7 +114,9 @@ include('includes/navbar.php');
                                 </div>
                                 </div>
                                 </div>
-
+                                </div>
+                                      </div>
+                                </div>
 
 
 
@@ -125,3 +124,10 @@ include('includes/navbar.php');
 include('Modal/user_modal.php');
 include('includes/footer.php');
 ?>
+
+<script>
+$(document).ready( function () {
+    $('#myTable').DataTable();
+} );
+
+</script>

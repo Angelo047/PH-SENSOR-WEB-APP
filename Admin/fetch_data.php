@@ -11,4 +11,12 @@ $factory = (new Factory)
     $database = $factory->createDatabase();
     $auth = $factory->createAuth();
 
+    $reference = $database->getReference('/phSensorData');
+    $snapshot = $reference->getSnapshot();
+    $phSensorData = $snapshot->getValue();
+
+// Return the data as JSON
+header('Content-Type: application/json');
+echo json_encode($phSensorData);
+
 ?>

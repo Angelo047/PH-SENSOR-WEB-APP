@@ -10,7 +10,7 @@ if(isset($_SESSION['verified_user_id']))
 include('includes/header.php');
 ?>
 
-
+<!--
         <?php
             if(isset($_SESSION['status']))
             {
@@ -18,7 +18,7 @@ include('includes/header.php');
                 unset($_SESSION['status']);
             }
 
-            ?>
+            ?> -->
 
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -90,5 +90,6 @@ include('includes/header.php');
 
 
 <?php
+include('includes/scripts.php');
 include('includes/footer.php');
 ?>

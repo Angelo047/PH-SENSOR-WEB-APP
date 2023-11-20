@@ -7,44 +7,66 @@
         </li>
       </ul>
 
+
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
         <!-- Notif Dropdown Menu -->
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
-           <i class="far fa-bell"></i>
-           <span class="badge badge-danger navbar-badge">2</span>
-         </a>
-         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          <span class="dropdown-item dropdown-header">2 Notifications</span>
-          <a href="plantinfo.html" class="dropdown-item">
-            <!-- Notif Start -->
-            <div class="media">
-              <img src="pics/arce.jpeg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Leaf Lettuce
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-              </div>
-            </div>
-            <!-- Notif End -->
+            <i class="far fa-bell"></i>
+            <span class="badge badge-danger navbar-badge">2</span>
           </a>
-          <div class="dropdown-divider"></div>
-          <a href="plantinfo2.html" class="dropdown-item">
-            <!-- Notif Start -->
-            <div class="media">
-              <img src="pics/logo.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
-              <div class="media-body">
-                <h3 class="dropdown-item-title">
-                  Water Spinatch
-                  <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                </h3>
-                <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">Notifications</span>
+            <a href="#" class="dropdown-item">
+              <!-- Notif Start -->
+              <div class="callout callout-info">
+                <div class="media">
+                  <img src="pics/lettuce.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                  <div class="media-body">
+                    <h3 class="dropdown-item-title">
+                      Lettuce
+                    </h3>
+                    <p class="text-sm text-muted">High pH Level</p>
+                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <!-- Notif End -->
+              <!-- Notif End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Notif Start -->
+              <div class="callout callout-warning">
+                <div class="media">
+                  <img src="pics/spinach.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                  <div class="media-body">
+                    <h3 class="dropdown-item-title">
+                      Water Spinach
+                    </h3>
+                    <p class="text-sm text-muted">Low pH Level</p>
+                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Notif End -->
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">
+              <!-- Notif Start -->
+              <div class="callout">
+                <div class="media">
+                  <img src="pics/swiss_chard.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                  <div class="media-body">
+                    <h3 class="dropdown-item-title">
+                      Swiss Chard
+                    </h3>
+                    <p class="text-sm text-muted">Ready to Harvest</p>
+                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
+                  </div>
+                </div>
+              </div>
+              <!-- Notif End -->
           </a>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
@@ -117,87 +139,91 @@
   <!-- /.navbar -->
 
 
+ <!-- Main Sidebar Container -->
+ <aside class="main-sidebar">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-link">
+        <br>
+        <center><img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
+          <h3 style="color: #2C3090; padding-top: 20px;">RLS-NES</h3>
+        </center>
+      </a>
+      <br>
 
-  <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
-    <a href="#" class="brand-link">
-      <img src="pics/logo.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: 8">
-      <span class="brand-text font-weight-light">Rosa L. Susano</span>
-    </a>
+      <!-- Sidebar -->
+      <div class="sidebar">
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
+
+        <!-- SidebarSearch Form -->
+        <!--   <div class="form-inline">
+        <div class="input-group" data-widget="sidebar-search">
+          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-sidebar">
+              <i class="fas fa-search fa-fw"></i>
+            </button>
+          </div>
         </div>
-        <div class="info text-white">
-          PH-WATER-WEB-APP
-        </div>
-      </div>
+      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-           with font-awesome or any other icon font library -->
-           <li class="nav-item">
-            <a href="index.php" class="nav-link">
-              <i class="fa-solid fa-gauge"></i>
-              <p>Dashboard</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="plants.php" class="nav-link">
-              <i class="fa-solid fa-seedling"></i>
-              <p>Plants</p>
-            </a>
-          </li>
+            <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+             <li class="nav-item">
+              <a href="index.php" class="nav-link">
+                <i class="fa-solid fa-gauge"></i>
+                <p>Dashboard</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="plants.php" class="nav-link">
+                <i class="fa-solid fa-seedling"></i>
+                <p>Plants</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="history.php" class="nav-link">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <p>History</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="report.php" class="nav-link">
+                <i class="fa-solid fa-file-pen"></i>
+                <p>Report</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="guidelines.html" class="nav-link">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <p>Guidelines</p>
+              </a>
+            </li>
+            <br>
+            <li class="nav-header">USER</li>
+            <li class="nav-item">
+              <a href="user.php" class="nav-link">
+                <i class="fa-solid fa-user-plus"></i>
+                <p>
+                  Manage Users
+                </p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="my-profile.php" class="nav-link">
+                <i class="fa-solid fa-user-gear"></i>
+                <p>
+                  Account Settings
+                </p>
+              </a>
+            </li>
 
-          <li class="nav-item">
-            <a href="history.php" class="nav-link">
-              <i class="fa-solid fa-clock-rotate-left"></i>
-              <p>History</p>
-            </a>
-          </li>
+          </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+      </div>
+      <!-- /.sidebar -->
+    </aside>
 
-          <li class="nav-item">
-            <a href="report.php" class="nav-link">
-              <i class="fa-solid fa-file-pen"></i>
-              <p>Report</p>
-            </a>
-          </li>
-
-
-        <li class="nav-item">
-          <a href="recommendation.php" class="nav-link">
-            <i class="fa-solid fa-thumbs-up"></i>
-            <p>Recommendation</p>
-          </a>
-        </li>
-
-          <li class="nav-header">USER</li>
-          <li class="nav-item">
-            <a href="user.php" class="nav-link">
-              <i class="fa-solid fa-user-plus"></i>
-              <p>
-                Manage Users
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fa-solid fa-user-gear"></i>
-              <p>
-                Account Settings
-              </p>
-            </a>
-          </li>
-
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
-    </div>
-    <!-- /.sidebar -->
-  </aside>

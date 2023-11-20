@@ -104,7 +104,7 @@ include('includes/navbar.php');
                             <div class="col-md-6">
                             </div>
                             <div class="col-md-4 mx-auto">
-                                <a href="change-password.php?id=<?=$user -> uid;?>" class="form-control btn btn-success">Change Password</a>
+                                <a href="change-password.php?id=<?=$user -> uid;?>" class="form-control btn btn-primary">Change Password</a>
                             </div>
                             </div>
                             </div>
@@ -133,8 +133,8 @@ include('includes/navbar.php');
                         </div>
                         <div class="col-md-12">
                             <hr>
-                            <div class="form-group mb-3 float-right">
-                                <button type="submit" name="update_user_profile" class="btn btn-primary">Update Profile</button>
+                            <div class="form-group float-right">
+                                <button type="submit" name="update_user_profile" class="btn btn-success">Update Profile</button>
                             </div>
                         </div>
                     </div>

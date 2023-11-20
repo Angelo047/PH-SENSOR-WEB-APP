@@ -2,6 +2,48 @@
 session_start();
 include('dbcon.php');
 
+
+// CREATE FUNCTION FOR PLANTS
+if (isset($_POST['add-plant-btn'])) {
+    $file_tmp = $_FILES['plant_photo']['tmp_name'];
+    $file_name = $_FILES['plant_photo']['name'];
+    $file_destination = "pics/" . $file_name;
+
+    if (move_uploaded_file($file_tmp, $file_destination)) {
+            // File uploaded successfully, update $postData
+        $postData = [
+            'plant_photo' => $file_destination,
+            'plant_name' => $_POST['plant_name'],
+            'ph_lvl' => $_POST['ph_lvl'],
+            'bay' => $_POST['bay'],
+            'nft' => $_POST['nft'],
+            'date_planted' => $_POST['date_planted'],
+            'date_harvest' => $_POST['date_harvest'],
+            'plant_status' => 'planted', // New plant status
+        ];
+
+        $ref_table = "plants";
+        $postRef_result = $database->getReference($ref_table)->push($postData);
+
+        if ($postRef_result->getKey() !== null) {
+            $_SESSION['status'] = "Plant added successfully";
+            header('Location: plants.php');
+            exit(); // Make sure to exit after redirect
+        } else {
+            $_SESSION['status'] = "Failed to add plant";
+        }
+    } else {
+        // Failed to upload file
+        $_SESSION['status'] = "Failed to upload plant photo";
+    }
+
+    header('Location: plants.php');
+    exit(); // Make sure to exit after redirect
+}
+
+
+
+
 //REGISTER FUNCTION FOR USER
 
 if (isset($_POST['register-btn'])) {
