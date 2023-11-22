@@ -3,6 +3,18 @@ session_start();
 include('includes/header.php');
 include('includes/navbar.php');
 ?>
+<?php
+						if(isset($_SESSION['error'])){
+						echo "
+							<div class='alert alert-danger alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+
+							</div>
+						";
+						unset($_SESSION['error']);
+						}
+					?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -33,7 +45,14 @@ include('includes/navbar.php');
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>2</h3>
+                <h3>
+
+                <?php
+                        $ref_table = 'plants';
+                        $total_count = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                        echo $total_count;
+                        ?>
+                </h3>
 
                 <p>Registered Plants</p>
               </div>
@@ -58,12 +77,19 @@ include('includes/navbar.php');
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+
+          <?php
+          $users = iterator_to_array($auth->listUsers());
+          // Get the total number of registered users
+          $numberOfUsers = count($users);
+          ?>
+
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-warning">
               <div class="inner">
-                <h3>5</h3>
+              <h3><?= $numberOfUsers ?></h3>
 
                 <p>Registered Users</p>
               </div>
@@ -78,7 +104,7 @@ include('includes/navbar.php');
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>65</h3>
+                <h3>5</h3>
 
                 <p>Total Alerts</p>
               </div>
@@ -97,16 +123,15 @@ include('includes/navbar.php');
 <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <!-- interactive chart -->
                 <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="far fa-chart-bar"></i>
-                            Interactive Area Chart
+                          Realtime PH Level Result
                         </h3>
                         <div class="card-tools">
-                            Real time
                             <div class="btn-group" id="realtime" data-toggle="btn-toggle">
                                 <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
                                 <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
@@ -121,13 +146,46 @@ include('includes/navbar.php');
                 <!-- /.card -->
             </div>
             <!-- /.col -->
+
+            <div class="col-6">
+                <!-- Weekly Update chart -->
+                <div class="card"> <!-- Remove 'float-right' class here -->
+                    <div class="card-header">
+                        <h3 class="card-title">Weekly Update</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart">
+                            <canvas id="barChart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            <div class="col-12">
+            <div class="card">
+                <!-- Clock chart -->
+                <!-- <div class="charts"> -->
+                <div class="card-body">
+
+                    <div class="item3">
+                        <div id="clock"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.row -->
     </div>
+    </div>
+
+    </div>
+    <!-- /.container-fluid -->
 </section>
+<!-- /.content -->
+
 
 </div>
 </div>
+
+
+
 <?php
 include('includes/footer.php');
 ?>
@@ -144,8 +202,12 @@ include('includes/footer.php');
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<script>
 
+
+
+<!-- RealTime Ph lvl Chart -->
+
+<script>
 $(function () {
     var maxDataPoints = 10;
     var chart;
@@ -203,7 +265,92 @@ $(function () {
         }
     });
 });
+</script>
+
+<!-- areaChartData -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+      // Updated areaChartData with reversed dataset order
+    var areaChartData = {
+      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      datasets: [
+      {
+        label: 'High pH Level',
+        backgroundColor: '#0057b2',
+        borderColor: 'rgba(210, 214, 222, 1)',
+        pointRadius: false,
+        pointColor: '#c1c7d1',
+        pointStrokeColor: 'rgba(210, 214, 222, 1)',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(220,220,220,1)',
+        data: [65, 59, 80, 81, 56, 100, 68],
+      },
+      {
+        label: 'Low pH Level',
+        backgroundColor: '#FF7B5F',
+        borderColor: 'rgba(60,141,188,0.8)',
+        pointRadius: false,
+        pointColor: '#3b8bba',
+        pointStrokeColor: 'rgba(60,141,188,1)',
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: 'rgba(60,141,188,1)',
+        data: [28, 48, 40, 19, 30, 45, 30]
+      },
+      ]
+    };
+
+      // BAR CHART
+    var barChartCanvas = $('#barChart').get(0).getContext('2d')
+    var barChartData = $.extend(true, {}, areaChartData)
+
+    var barChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      datasetFill: false
+    }
+
+    new Chart(barChartCanvas, {
+      type: 'bar',
+      data: barChartData,
+      options: barChartOptions
+    });
+  });
 
 
 </script>
+
+
+ <!-- Clock -->
+<script>
+      function updateClock() {
+  var now = new Date();
+            var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var monthsOfYear = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            var dayOfWeek = daysOfWeek[now.getDay()];
+            var month = monthsOfYear[now.getMonth()];
+            var dayOfMonth = now.getDate();
+            var year = now.getFullYear();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            var ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12; // The hour '0' should be '12'
+
+            var formattedTime = dayOfWeek + ', ' + month + ' ' + dayOfMonth + ', ' + year + ', ' +
+                                hours + ':' + (minutes < 10 ? '0' : '') + minutes + ':' +
+                                (seconds < 10 ? '0' : '') + seconds + ' ' + ampm;
+
+            document.getElementById('clock').innerHTML = formattedTime;
+        }
+
+        // Update the clock every second
+        setInterval(updateClock, 1000);
+
+        // Initial call to display the clock immediately
+        updateClock();
+    </script>
+
 

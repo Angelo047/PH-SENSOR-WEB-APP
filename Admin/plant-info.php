@@ -5,34 +5,46 @@ include('includes/navbar.php');
 ?>
 
 <?php
-            if(isset($_SESSION['status']))
-            {
-                echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                unset($_SESSION['status']);
-            }
-            ?>
+						if(isset($_SESSION['error'])){
+						echo "
+							<div class='alert alert-danger alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
 
+							</div>
+						";
+						unset($_SESSION['error']);
+						}
+						if(isset($_SESSION['success'])){
+						echo "
+							<div class='alert alert-success alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
 
+							</div>
+						";
+						unset($_SESSION['success']);
+						}
+					?>
 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <!-- <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Plant Info</h1>
-          </div>
-        </div> -->
-        <div class="row mb-3">
-          <div class="col-md-3">
-           <ol class="breadcrumb float-sm-left">
-          </ol>
-        </div>
-      </div>
-    </div>
-
-    <?php
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <div class="content-header">
+                  <div class="container-fluid">
+                    <!-- <div class="row mb-2">
+                      <div class="col-sm-6">
+                        <h1 class="m-0">Plant Info</h1>
+                      </div>
+                    </div> -->
+                    <div class="row mb-3">
+                      <div class="col-md-3">
+                      <ol class="breadcrumb float-sm-left">
+                      </ol>
+                    </div>
+                  </div>
+                </div>
+                <?php
                     if(isset($_GET['id']))
                     {
                         $key_child = $_GET['id'];
@@ -194,7 +206,10 @@ exit();
 
 ?>
 
-        <!-- Main content -->
+
+
+
+  <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -204,10 +219,9 @@ exit();
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="far fa-chart-bar"></i>
-                            Interactive Area Chart
+                            Realtime PH Level Result
                         </h3>
                         <div class="card-tools">
-                            Real time
                             <div class="btn-group" id="realtime" data-toggle="btn-toggle">
                                 <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
                                 <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
@@ -233,7 +247,6 @@ exit();
   </div>
 
 
-
 <?php
 include('includes/footer.php');
 ?>
@@ -250,15 +263,16 @@ include('includes/footer.php');
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
-<script>
+<!-- RealTime Ph lvl Chart -->
 
+<script>
 $(function () {
     var maxDataPoints = 10;
     var chart;
 
     function updateChart() {
         $.ajax({
-            url: 'ph-sensor-result.php',
+            url: 'ph-sensor-result.php', // Update with the correct endpoint
             type: 'GET',
             dataType: 'json',
             success: function (data) {
@@ -275,7 +289,7 @@ $(function () {
                         type: 'scatter',
                         mode: 'lines+markers+text', // Add text to the lines and markers
                         line: { width: 2, shape: 'spline' },
-                        text: slicedPhValues, // Dislay pH result as text
+                        text: slicedPhValues, // Display pH result as text
                         textposition: 'top center', // Position of the text
                         fill: 'tozeroy',
                         fillcolor: 'rgba(60, 141, 188, 0.2)',
@@ -299,16 +313,20 @@ $(function () {
         });
     }
 
+    // Start updating chart
     updateChart();
 
+    // Toggle chart updating
     $('#realtime .btn').click(function () {
         if ($(this).data('toggle') === 'on') {
             updateChart();
         } else {
+            // Clear the update interval
             clearTimeout(updateChart);
         }
     });
 });
+</script>
 
 
 </script>
@@ -319,72 +337,77 @@ $(function () {
     <script src="plugins/sparklines/sparkline.js"></script>
 
     <script>
-      $(function () {
+
+  $(function () {
     /* jQueryKnob */
+    $('.knob').knob({
+        draw: function () {
+          // "tron" case
+          if (this.$.data('skin') == 'tron') {
 
-        $('.knob').knob({
-          draw: function () {
+        var a   = this.angle(this.cv)  // Angle
+        ,
+            sa  = this.startAngle          // Previous start angle
+            ,
+            sat = this.startAngle         // Start angle
+            ,
+            ea                            // Previous end angle
+            ,
+            eat = sat + a                 // End angle
+            ,
+            r   = true
 
-        // "tron" case
-            if (this.$.data('skin') == 'tron') {
+            this.g.lineWidth = this.lineWidth
 
-          var a   = this.angle(this.cv)  // Angle
-          ,
-              sa  = this.startAngle          // Previous start angle
-              ,
-              sat = this.startAngle         // Start angle
-              ,
-              ea                            // Previous end angle
-              ,
-              eat = sat + a                 // End angle
-              ,
-              r   = true
+            this.o.cursor
+            && (sat = eat - 0.3)
+            && (eat = eat + 0.3)
 
-              this.g.lineWidth = this.lineWidth
-
+            if (this.o.displayPrevious) {
+              ea = this.startAngle + this.angle(this.value)
               this.o.cursor
-              && (sat = eat - 0.3)
-              && (eat = eat + 0.3)
-
-              if (this.o.displayPrevious) {
-                ea = this.startAngle + this.angle(this.value)
-                this.o.cursor
-                && (sa = ea - 0.3)
-                && (ea = ea + 0.3)
-                this.g.beginPath()
-                this.g.strokeStyle = this.previousColor
-                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
-                this.g.stroke()
-              }
-
+              && (sa = ea - 0.3)
+              && (ea = ea + 0.3)
               this.g.beginPath()
-              this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
-              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
+              this.g.strokeStyle = this.previousColor
+              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
               this.g.stroke()
-
-              this.g.lineWidth = 2
-              this.g.beginPath()
-              this.g.strokeStyle = this.o.fgColor
-              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
-              this.g.stroke()
-
-              return false
             }
+
+            this.g.beginPath()
+            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
+            this.g.stroke()
+
+            this.g.lineWidth = 2
+            this.g.beginPath()
+            this.g.strokeStyle = this.o.fgColor
+            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
+            this.g.stroke()
+
+            return false
           }
-        })
-    /* END JQUERY KNOB */
+        }
+    });
 
-    //INITIALIZE SPARKLINE CHARTS
-        var sparkline1 = new Sparkline($('#sparkline-1')[0], { width: 240, height: 70, lineColor: '#92c1dc', endColor: '#92c1dc' })
-        var sparkline2 = new Sparkline($('#sparkline-2')[0], { width: 240, height: 70, lineColor: '#f56954', endColor: '#f56954' })
-        var sparkline3 = new Sparkline($('#sparkline-3')[0], { width: 240, height: 70, lineColor: '#3af221', endColor: '#3af221' })
+    function updateDaysBeforeHarvest() {
+        // Get the date_harvest value from the HTML element or use the one retrieved from your PHP code
+        var dateHarvest = new Date($('#dateHarvested').val());
 
-        sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
-        sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
-        sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
+        // Calculate the difference in days between the current date and date_harvest
+        var currentDate = new Date();
+        var daysBeforeHarvest = Math.ceil((dateHarvest - currentDate) / (1000 * 60 * 60 * 24));
 
-      })
+        // Update the Knob chart with the calculated value
+        $('.knob').val(daysBeforeHarvest).trigger('change');
+        $('.knob-label').html('<b>Days before Harvest</b>');
+    }
 
+    updateDaysBeforeHarvest(); // Initial update
+
+    // Set up a timer to update the Knob chart every 24 hours (adjust as needed)
+    setInterval(updateDaysBeforeHarvest, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+});
     </script>
 
 

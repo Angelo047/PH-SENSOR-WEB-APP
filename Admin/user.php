@@ -5,12 +5,27 @@ include('includes/navbar.php');
 ?>
 
 <?php
-            if(isset($_SESSION['status']))
-            {
-                echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                unset($_SESSION['status']);
-            }
-            ?>
+        if(isset($_SESSION['error'])){
+          echo "
+            <div class='alert alert-danger alert-dismissible text-center'>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+
+            </div>
+          ";
+          unset($_SESSION['error']);
+        }
+        if(isset($_SESSION['success'])){
+          echo "
+            <div class='alert alert-success alert-dismissible text-center'>
+              <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+              <h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+
+            </div>
+          ";
+          unset($_SESSION['success']);
+        }
+      ?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -28,15 +43,15 @@ include('includes/navbar.php');
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
                                     <thead>
-                                        <tr class="text-center">
-                                        <th>User ID</th>
-                                        <th>Full Name</th>
-                                        <th>Phone</th>
-                                        <th>Email</th>
-                                        <th>Roles</th>
-                                        <th>Disable / Enable</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
+                                        <tr>
+                                        <th class="text-center">User ID</th>
+                                        <th class="text-center">Full Name</th>
+                                        <th class="text-center">Phone</th>
+                                        <th class="text-center">Email</th>
+                                        <th class="text-center">Roles</th>
+                                        <th class="text-center">Disable / Enable</th>
+                                        <th class="text-center">Edit</th>
+                                        <th class="text-center">Delete</th>
 
 
                                         </tr>
@@ -130,4 +145,22 @@ $(document).ready( function () {
     $('#myTable').DataTable();
 } );
 
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var password = document.getElementById("password");
+    var confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword() {
+        if (password.value !== confirm_password.value) {
+            confirm_password.setCustomValidity("Passwords do not match");
+        } else {
+            confirm_password.setCustomValidity("");
+        }
+    }
+
+    password.addEventListener("change", validatePassword);
+    confirm_password.addEventListener("keyup", validatePassword);
+});
 </script>

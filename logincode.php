@@ -38,8 +38,8 @@ if(isset($_POST['login-btn']))
                 $_SESSION['verified_user_id'] = $uid;
                 $_SESSION['idTokenString'] = $idTokenString;
             }
-            $_SESSION['status'] = "Welcome To Homepage";
-            header('Location: Admin/index.php');
+            // $_SESSION['success'] = "Welcome To Homepage";
+            header('Location: Admin\index.php');
             exit();
 
         } catch (FailedToVerifyToken $e) {
@@ -48,18 +48,18 @@ if(isset($_POST['login-btn']))
 
 
         }catch(Exception $e){
-            $_SESSION['status'] = "Wrong Password";
+            $_SESSION['error'] = "Wrong Password";
             header('Location: login.php');
             exit();;
         }
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
-        $_SESSION['status'] = "Wrong Email";
+        $_SESSION['error'] = "Wrong Email";
         header('Location: login.php');
         exit();;
     }
 }else{
-    $_SESSION['status'] = "Not Allowed";
+    $_SESSION['error'] = "Not Allowed";
     header('Location: login.php');
     exit();
 }

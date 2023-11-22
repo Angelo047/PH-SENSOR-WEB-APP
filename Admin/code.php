@@ -26,15 +26,15 @@ if (isset($_POST['add-plant-btn'])) {
         $postRef_result = $database->getReference($ref_table)->push($postData);
 
         if ($postRef_result->getKey() !== null) {
-            $_SESSION['status'] = "Plant added successfully";
+            $_SESSION['success'] = "Plant added successfully";
             header('Location: plants.php');
             exit(); // Make sure to exit after redirect
         } else {
-            $_SESSION['status'] = "Failed to add plant";
+            $_SESSION['error'] = "Failed to add plant";
         }
     } else {
         // Failed to upload file
-        $_SESSION['status'] = "Failed to upload plant photo";
+        $_SESSION['error'] = "Failed to upload plant photo";
     }
 
     header('Location: plants.php');
@@ -51,7 +51,15 @@ if (isset($_POST['register-btn'])) {
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
     $selectedRole = $_POST['role_as']; // Get the selected role from the form
+
+    // Check if the password and confirm password match
+    if ($password !== $confirm_password) {
+        $_SESSION['error'] = "Password and Confirm Password do not match";
+        header('Location: user.php');
+        exit;
+    }
 
     $userProperties = [
         'email' => $email,
@@ -76,13 +84,14 @@ if (isset($_POST['register-btn'])) {
         // Set the custom claims
         $auth->setCustomUserClaims($createdUser->uid, $claims);
 
-        $_SESSION['status'] = "User Created Successfully";
+        $_SESSION['success'] = "User Created Successfully";
         header('Location: user.php');
     } else {
-        $_SESSION['status'] = "User Failed to Create";
+        $_SESSION['error'] = "User Failed to Create";
         header('Location: user.php');
     }
 }
+
 
 //UPDATE FUNCTION FOR USER
 
@@ -116,11 +125,11 @@ if (isset($_POST['update-user-btn'])) {
         // Set the custom claims
         $auth->setCustomUserClaims($uid, $claims);
 
-        $_SESSION['status'] = "User Updated Successfully";
+        $_SESSION['success'] = "User Updated Successfully";
         header("Location: user.php");
         exit();
     } else {
-        $_SESSION['status'] = "User Failed to Update";
+        $_SESSION['error'] = "User Failed to Update";
         header("Location: user.php");
         exit();
     }
@@ -135,13 +144,13 @@ if(isset($_POST['reg-user-delete-btn']))
 
     try{
     $auth->deleteUser($uid);
-    $_SESSION['status'] = "User Deleted Successfully";
+    $_SESSION['success'] = "User Deleted Successfully";
     header('Location: user.php');
     exit();
     }
     catch(Exception $e)
     {
-        $_SESSION['status'] = "User Failed to Delete";
+        $_SESSION['error'] = "User Failed to Delete";
         header('Location: user.php');
         exit();
     }
@@ -166,11 +175,11 @@ if(isset($_POST['enable_disable_acc_btn']))
 
     if($updatedUser)
     {
-        $_SESSION['status'] = $msg;
+        $_SESSION['success'] = $msg;
         header('Location: user-list.php');
         exit();
     }else{
-        $_SESSION['status'] = "Something Went Wrong.";
+        $_SESSION['error'] = "Something Went Wrong.";
         header('Location: user-list.php');
         exit();
     }
@@ -222,14 +231,14 @@ if(isset($_POST['update_user_profile']))
                 unlink($old_image);
             }
         }
-        $_SESSION['status'] = "User Profile Updated Successfully";
+        $_SESSION['success'] = "User Profile Updated Successfully";
         header('Location: my-profile.php');
         exit(0);
 
     }
     else
     {
-        $_SESSION['status'] = "User Profile Failed to Updated";
+        $_SESSION['error'] = "User Profile Failed to Updated";
         header('Location: my-profile.php');
         exit(0);
 
@@ -251,25 +260,22 @@ if(isset($_POST['change_password_btn']))
 
     if($updatedUser)
     {
-        $_SESSION['status'] = "Password Updated Successfully";
+        $_SESSION['success'] = "Password Updated Successfully";
         header('Location: change-password.php');
         exit();
     }else{
-        $_SESSION['status'] = "Password Failed to Update";
+        $_SESSION['error'] = "Password Failed to Update";
         header('Location: change-password.php');
         exit();
     }
 
     }
     else{
-        $_SESSION['status'] = "New Password and Re-Type Password does not match";
-        header("Location: user-edit.php?id=$uid");
+        $_SESSION['error'] = "New Password and Re-Type Password does not match";
+        header("Location: change-password.php?id=$uid");
         exit();
     }
 }
-
-
-
 
 
 

@@ -110,7 +110,7 @@
       <?php endif; ?>
       <p>
         <?=$user->displayName;?>
-        <small>Member since Nov. 2012</small>
+        <small>Member since Nov. 2023</small>
       </p>
     </li>
     <!-- Menu Footer -->
@@ -196,7 +196,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="guidelines.html" class="nav-link">
+              <a href="recommendation.php" class="nav-link">
                 <i class="fa-solid fa-thumbs-up"></i>
                 <p>Guidelines</p>
               </a>

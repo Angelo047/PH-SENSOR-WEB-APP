@@ -14,12 +14,27 @@ include('includes/navbar.php');
                 <div class="card mt-4">
                     <div class="card-header">
                     <?php
-                        if(isset($_SESSION['status']))
-                        {
-                            echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                            unset($_SESSION['status']);
-                        }
-                            ?>
+						if(isset($_SESSION['error'])){
+						echo "
+							<div class='alert alert-danger alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+
+							</div>
+						";
+						unset($_SESSION['error']);
+						}
+						if(isset($_SESSION['success'])){
+						echo "
+							<div class='alert alert-success alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+
+							</div>
+						";
+						unset($_SESSION['success']);
+						}
+					?>
                         <h4>
                             Edit & Update User
                             <a href="user.php" class="btn btn-danger float-right">Back</a>

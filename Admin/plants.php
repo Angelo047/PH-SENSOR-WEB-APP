@@ -5,12 +5,27 @@ include('includes/navbar.php');
 ?>
 
 <?php
-            if(isset($_SESSION['status']))
-            {
-                echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                unset($_SESSION['status']);
-            }
-            ?>
+						if(isset($_SESSION['error'])){
+						echo "
+							<div class='alert alert-danger alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+
+							</div>
+						";
+						unset($_SESSION['error']);
+						}
+						if(isset($_SESSION['success'])){
+						echo "
+							<div class='alert alert-success alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+
+							</div>
+						";
+						unset($_SESSION['success']);
+						}
+					?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -33,7 +48,7 @@ include('includes/navbar.php');
                                         <th class="text-center">No#</th>
                                         <th class="text-center">Plants Name</th>
                                         <th class="text-center">Date Planted</th>
-                                        <th class="text-center">Date Harvested</th>
+                                        <th class="text-center">Estimated Date Harvested</th>
                                         <th class="text-center">Required pH Level</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Bay</th>
@@ -132,7 +147,7 @@ $(document).ready( function () {
       'Mint': '5.5-6.0',
       'Spinach': '5.5-6.6',
       'Swiss Chard': '6.0-6.5',
-      'Basil': '5.5-6.5',
+      'Basil': '7',
     };
 
     // Function to update pH level based on selected plant name

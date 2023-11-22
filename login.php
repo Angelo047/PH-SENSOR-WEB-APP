@@ -1,95 +1,78 @@
 <?php
 session_start();
-//if user that login trying to access the login page
-if(isset($_SESSION['verified_user_id']))
-{
-    $_SESSION['status'] = "You are Already Login!";
+
+// If the user is already logged in, redirect to the home page
+if (isset($_SESSION['verified_user_id'])) {
+    $_SESSION['status'] = "You are already logged in!";
     header('Location: index.php');
     exit();
 }
+
 include('includes/header.php');
 ?>
 
-<!--
-        <?php
-            if(isset($_SESSION['status']))
-            {
-                echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                unset($_SESSION['status']);
-            }
+<?php
+						if(isset($_SESSION['error'])){
+						echo "
+							<div class='alert alert-danger alert-dismissible text-center'>
+							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
 
-            ?> -->
+							</div>
+						";
+						unset($_SESSION['error']);
+						}
+					?>
 
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="#"><b>Admin</b>LTE</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card mb-5">
-    <div class="card-body login-card-body  mb-5">
-      <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="logincode.php" method="POST">
-        <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
+<div class="container">
+    <div class="left">
+        <div class="overlay">
+            <!-- <img src="bg/Ellipse 1.jpg" class="elipse"> -->
+            <h1>ROSA L. SUSANO - NOVALICHES ELEMENTARY SCHOOL</h1>
+            <span>Water pH Monitoring System</span>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8 mb-3">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-12">
-            <button type="submit" name="login-btn" class="btn btn-block btn-success">Sign In</button>
-          </div>
-          <!-- /.col -->
-        </div>
-      </form>
-
-      <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a href="#" class="btn btn-block btn-primary">
-          <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-        </a>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
-      </div>
-      <!-- /.social-auth-links -->
-
-      <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p>
     </div>
-    <!-- /.login-card-body -->
-  </div>
+
+    <div class="right">
+        <img src="bg/v5_1541.png" class="logo" width="20%" height="20%" style="margin-top:40px;">
+        <form name="myForm" action="logincode.php" onsubmit="return validateForm()" method="post" class="form">
+            <h2 class="mt-3">USER LOGIN</h2>
+            <label for="email">Username</label>
+            <div class="input-container">
+                <i class="fas fa-user icon"></i>
+                <input type="text" name="email" id="email" class="box" placeholder="Email" required>
+            </div>
+
+            <label for="password">Password</label>
+            <div class="input-container">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" name="password" id="password" class="box" placeholder="Password" required>
+                <i class="fas icon fa-eye-slash password-toggle" onclick="togglePassword(this)"></i>
+            </div>
+
+            <a href="#"><span>Forgot Password?</span></a>
+            <button type="submit" name="login-btn" id="submit" class="btn btn-block btn-success">Login</button>
+        </form>
+    </div>
 </div>
-<!-- /.login-box -->
-
-
 
 <?php
 include('includes/scripts.php');
 include('includes/footer.php');
 ?>
+
+<script>
+    function togglePassword(icon) {
+        const passwordField = icon.previousElementSibling;
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            passwordField.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        }
+    }
+</script>

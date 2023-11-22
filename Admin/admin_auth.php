@@ -1,6 +1,4 @@
 <?php
-session_start();
-include('dbcon.php');
 
 if(isset($_SESSION['verified_user_id']))
 {
@@ -15,7 +13,7 @@ if(isset($_SESSION['verified_user_id']))
 
             if(isset($claims['admin']) == true)
             {
-                //Working
+
             }
             else{
                 header('Location: logout.php');

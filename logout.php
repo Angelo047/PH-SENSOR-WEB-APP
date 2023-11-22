@@ -7,21 +7,21 @@ unset($_SESSION['idTokenString']);
 if(isset($_SESSION['verified_admin']))
 {
     unset($_SESSION['verified_admin']);
-    $_SESSION['status'] = "Logout Successfully";
+    // $_SESSION['success'] = "Logout Successfully";
 }
 elseif(isset($_SESSION['verified_gardener']))
 {
     unset($_SESSION['verified_gardener']);
-    $_SESSION['status'] = "Logout Successfully";
+    // $_SESSION['success'] = "Logout Successfully";
 }
 
 
 if(isset($_SESSION['expiry_status']))
 {
-    $_SESSION['status'] = "Session Expired";
+    $_SESSION['error'] = "Session Expired";
 }
 else{
-    $_SESSION['status'] = "Logout Successfully";
+    // $_SESSION['error'] = "Logout Successfully";
 }
 header('Location: login.php');
 exit();

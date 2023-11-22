@@ -1,7 +1,4 @@
 <?php
-session_start();
-include('dbcon.php');
-
 if(isset($_SESSION['verified_user_id']))
 {
     $uid = $_SESSION['verified_user_id'];
