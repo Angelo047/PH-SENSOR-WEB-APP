@@ -71,8 +71,7 @@ include('includes/navbar.php');
               </div>
                   </div>
                 </div>
-                <center>
-                  <div class="col-sm-12">
+                  <div class="col-sm-12 text-center">
                     <div class="card-body">
                     <?php
                 // Check if the 'plant_photo' key exists in the data
@@ -89,7 +88,6 @@ include('includes/navbar.php');
                 ?>
                     </div>
                   </div>
-                </center>
               </div>
             </div>
 
@@ -110,7 +108,7 @@ include('includes/navbar.php');
                 <!-- Required pH Level -->
                 <div class="col-md-6">
                   <label for="requiredPh" class="form-label">Required pH Level:</label>
-                  <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl']; ?>">
+                  <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
                 </div>
 
                 <!-- Date Planted-->
@@ -207,7 +205,67 @@ exit();
 ?>
 
 
+<?php
 
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
+    require 'PHPMailer-master/src/Exception.php';
+    require 'PHPMailer-master/src/PHPMailer.php';
+    require 'PHPMailer-master/src/SMTP.php';
+
+
+    $database = $factory->createDatabase();
+
+    $plantId = isset($_GET['id']) ? $_GET['id'] : null;
+
+    if ($plantId) {
+        $plantInfoRef = $database->getReference('/plants')->getChild($plantId);
+        $plantInfo = $plantInfoRef->getValue();
+
+        if ($plantInfo) {
+            $requiredLowPhLevel = $plantInfo['ph_lvl_low'];
+            $requiredHighPhLevel = $plantInfo['ph_lvl_high'];
+
+            // Perform the pH level check and notification creation
+            function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $database, $plantInfo) {
+                $phSensorDataRef = $database->getReference('/phSensorData');
+                $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
+                $latestPhValue = reset($latestPhSensorData);
+
+                if ($latestPhValue > $requiredHighPhLevel) {
+                    $notificationsRef = $database->getReference('/notifications')->push();
+                    $notificationsRef->set([
+                        'plant_name' => $plantInfo['plant_name'],
+                        'plant_photo' => $plantInfo['plant_photo'],
+                        'message' => "High pH Level: $latestPhValue",
+                        'current_date' => date('H:i A, M j, Y'),
+                        'isRead' => 0,
+                      ]);
+                    echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
+                } elseif ($latestPhValue < $requiredLowPhLevel) {
+                    $notificationsRef = $database->getReference('/notifications')->push();
+                    $notificationsRef->set([
+                        'plant_name' => $plantInfo['plant_name'],
+                        'plant_photo' => $plantInfo['plant_photo'],
+                        'message' => "Low pH Level: $latestPhValue",
+                        'current_date' => date('H:i A, M j, Y'),
+                        'isRead' => 0,
+                      ]);
+                    // echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
+                } else {
+                    // echo 'pH value is within the acceptable range for ' . $plantInfo['plant_name'] . '.' . PHP_EOL;
+                }
+            }
+
+            // Call the pH level check function
+            checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $database, $plantInfo);
+        } else {
+            echo 'Plant information not found.' . PHP_EOL;
+        }
+    } else {
+        echo 'Invalid plant ID.' . PHP_EOL;
+    }
+?>
 
   <!-- Main content -->
 <section class="content">
@@ -241,15 +299,40 @@ exit();
     </div>
 </section>
 
-
-    </div>
-  </div>
-  </div>
+</div>
+</div>
+</div>
+</div>
 
 
 <?php
 include('includes/footer.php');
+
 ?>
+<script>
+// Use JavaScript to periodically check the server for notifications
+function checkNotifications() {
+    // Make an AJAX request to your PHP script with a plant ID
+    var plantId = <?php echo json_encode($plantId); ?>;
+
+    $.ajax({
+        url: 'fetch_data.php',
+        method: 'GET',
+        data: { id: plantId },
+        success: function(response) {
+            // Display the result in the console (you can modify this part)
+            console.log(response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+}
+
+// Set an interval to periodically check for notifications
+setInterval(checkNotifications, 3000); // 3000 milliseconds = 3 seconds, adjust as needed
+</script>
+
 
 <!-- FLOT CHARTS -->
 <script src="plugins/flot/jquery.flot.js"></script>
@@ -328,6 +411,7 @@ $(function () {
 });
 </script>
 
+<!-- Harvest Chart -->
 
 </script>
 
@@ -408,7 +492,7 @@ $(function () {
     // Set up a timer to update the Knob chart every 24 hours (adjust as needed)
     setInterval(updateDaysBeforeHarvest, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
 });
-    </script>
+</script>
 
 
 

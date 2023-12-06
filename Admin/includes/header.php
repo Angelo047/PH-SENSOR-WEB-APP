@@ -30,7 +30,8 @@
 
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
 
-
+  <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-database.js"></script>
   <!--LEFT GALLERY-->
 
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">

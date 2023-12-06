@@ -4,145 +4,214 @@ include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-   <!-- Content Header (Page header) -->
-   <div class="content-header">
-    <div class="container-fluid">
-     <div class="row mb-2">
-      <div class="col-sm-6">
-       <h1 class="m-0">Report</h1>
-     </div><!-- /.col -->
-     <div class="col-sm-6">
-<!--             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
-            </ol> -->
+
+    <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Narative Report</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-
+    <?php
+        $uid = $_SESSION['verified_user_id'];
+        $user = $auth->getUser($uid);
+        ?>
 
     <!-- Main content -->
     <section class="content">
-    	<div class="container-fluid">
+      <div class="container-fluid">
 
-    		<!-- Main content -->
-    		<section class="content">
-    			<div class="container-fluid">
-    				<div class="row">
-              <div class="col-12">
-                <div class="card card-outline">
-                 <div class="card-body">
-                  <table id="example1" class="table table-bordered table-striped">
-                   <thead>
-                    <tr>
-                     <th>No</th>
-                     <th>Plant Name</th>
-                     <th>Harvested Plants</th>
-                     <th>Withered Plants</th>
-                   </tr>
-                 </thead>
-                 <tbody>
-                  <tr>
-                   <td>1</td>
-                   <td>Lettuce</td>
-                   <td>5</td>
-                   <td>1</td>
-                 </tr>
-                 <tr>
-                   <td>2</td>
-                   <td>Spinach</td>
-                   <td>3</td>
-                   <td>1</td>
-                 </tr>
-               </tbody>
-             </table>
-             <br>
-             <a href="narativereport.php">
-               <button type="button" class="btn" style="float: right; width: 220px; background-color: #2C3090; color: #FFFFFF;">Create Narative Report</button>
-             </a>
-           </div>
-         </div>
+        <div class="col-md-12">
+          <div class="card card-outline">
+            <div class="card-header">
+              <h3 class="card-title">
+                Compose Narrative Report
+              </h3>
+            </div>
+
+            <?php
+                    if(isset($_GET['id']))
+                    {
+                        $key_child = $_GET['id'];
+
+                        $ref_table = 'plants';
+                        $getData = $database->getReference($ref_table)->getChild($key_child)->getValue();
+
+                        $currentDateTime = date('F j, Y'); // You can customize the format
+
+                        if($getData > 0)
+                        {
+                            ?>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <div class="form-group">
+                <textarea id="compose-textarea" class="form-control" rows="27 " cols="40">
+
+              **Project Title:** [Enter Project Title]
+
+              **Project Overview:** [Brief description of the overall goal and purpose of the plant cultivation project.]
+
+              ---
+
+              ### 1. Plant Information
+
+              #### 1.1 Plant Name: <?= $getData['plant_name']; ?>
+
+              #### 1.2 Required pH Level: <?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
+
+              ---
+
+              ### 2. Cultivation Timeline
+
+              #### 2.1 Date Planted: <?= $getData['date_planted']; ?>
+
+              #### 2.2 Estimated Date Harvested: <?= $getData['date_harvest']; ?>
+
+              ---
+
+              ### 3. Plant Status
+
+              #### 3.1 Current Health Status: <?= $getData['plant_status']; ?>
+
+              #### 3.2 Recent Changes: [Describe any recent changes in the plant's growth, appearance, or health.]
+
+              ---
+
+              ### 4. Growing Systems
+
+              #### 4.1 <?= $getData['bay']; ?> System
+
+              ##### 4.1.1 System Overview: [Briefly describe the BAY system in use.]
+
+              ##### 4.1.2 Performance: [Report on the effectiveness and efficiency of the BAY system.]
+
+              #### 4.2 <?= $getData['nft']; ?> System
+
+              ##### 4.2.1 System Overview: [Briefly describe the NFT system in use.]
+
+              ##### 4.2.2 Performance: [Report on the effectiveness and efficiency of the NFT system.]
+
+              ---
+
+              ### 5. Challenges and Solutions
+
+              #### 5.1 Challenges Encountered: [List any challenges faced during the cultivation process.]
+
+              #### 5.2 Solutions Implemented: [Describe the solutions applied to overcome the challenges.]
+
+              ---
+
+              ### 6. Recommendations
+
+              #### 6.1 Improvements: [Suggest any improvements or modifications to enhance the cultivation process.]
+
+              #### 6.2 Best Practices: [Recommend best practices based on the experience gained.]
+
+              ---
+
+              ### 7. Conclusion
+
+              #### 7.1 Summary: [Summarize the overall progress and outcomes of the plant cultivation project.]
 
 
+              **Prepared by:** <?=$user->displayName;?>
 
 
+              **Date of Report:** <?php echo $currentDateTime; ?>
+                </textarea>
+              </div>
+            </div>
 
+            <!-- /.card-body -->
+            <div class="card-footer">
+              <div class="float-right">
+              <button type="button" class="btn" style="background-color: #2C3090; color: #FFFFFF;" id="pdf-button" onclick="downloadAsPDF()">
+              <i class="fas fa-save"></i> PDF
+              </button>
 
+              <button type="button" class="btn" style="background-color: #2C3090; color: #FFFFFF;" id="print-button" onclick="printSummernoteContent()">
+                <i class="fa-solid fa-print"></i> PRINT
+              </button>
 
-
-
-       </div>
-       <!-- /.col -->
-     </div>
-     <!-- /.row -->
-   </div>
-   <!-- /.container-fluid -->
- </section>
- <!-- /.content -->
+            </div>
+            <!-- /.card-footer -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
-<!-- /.content-wrapper -->
-
-	</div>
 </div>
+<!-- ./wrapper -->
 
+
+<?php
+
+}else{
+    $_SESSION['status'] = "Invalid ID!";
+    header('Location: index.php');
+    exit();
+}
+
+}else{
+$_SESSION['status'] = "No Record Found!";
+header('Location: index.php');
+exit();
+}
+
+?>
 
 <?php
 include('includes/footer.php');
 ?>
 
-<!-- Page specific script -->
-<script>
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true,
-      "lengthChange": false,
-      "autoWidth": false,
-      "ordering": false,
-      "paging": false,
-      "buttons": [
-        {
-          extend: 'excel',
-          className: 'btn-custom-color', // Apply custom class
-        },
-        {
-          extend: 'pdf',
-          className: 'btn-custom-color', // Apply custom class
-        },
-        {
-          extend: 'print',
-          className: 'btn-custom-color', // Apply custom class
-        },
-        {
-          extend: 'colvis',
-          className: 'btn-custom-color', // Apply custom class
-        }
-      ],
-      "searching": true,
-      "language": {
-        "search": "", // Remove the "Search:" label
-        "searchPlaceholder": "Search...", // Set the placeholder text
-      },
-      "info": false,
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+<!-- Include the corrected jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://rawgit.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-      "language": {
-        "search": "", // Remove the "Search:" label
-        "searchPlaceholder": "Search...", // Set the placeholder text
-      },
-    });
+
+<script>
+
+function downloadAsPDF() {
+  var content = document.getElementById('compose-textarea').value;
+
+  // Create an element to hold the content
+  var container = document.createElement('div');
+  container.innerHTML = content;
+
+  // Add some CSS styles to preserve spacing
+  container.style.whiteSpace = 'pre-wrap';
+  container.style.fontFamily = 'Arial, sans-serif';
+
+  // Convert the content to PDF
+  html2pdf(container, {
+    margin: 10,
+    filename: 'Narative Report.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, preserveAspectRatio: true },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
   });
+}
+
+
+  function printSummernoteContent() {
+    var content = document.getElementById('compose-textarea').value;
+    var newWindow = window.open('', '_blank');
+    newWindow.document.open();
+    newWindow.document.write('<html><head><title>Print</title></head><body style="white-space: pre-line;">' + content + '</body></html>');
+    newWindow.document.close();
+    newWindow.print();
+  }
+
 </script>
+
 
 

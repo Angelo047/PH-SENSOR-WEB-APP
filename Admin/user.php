@@ -64,9 +64,6 @@ include('includes/navbar.php');
                                 foreach ($users as $user)
                                 {
                                     ?>
-                                    <a href="#id">
-                                    <img src="" alt="">
-                                    </a>
                                     <tr class="text-center">
                                         <td><?=$user->uid;?></td>
                                         <td><?=$user->displayName;?></td>

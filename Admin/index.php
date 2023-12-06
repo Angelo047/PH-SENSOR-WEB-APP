@@ -104,7 +104,12 @@ include('includes/navbar.php');
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>5</h3>
+                <h3>  <?php
+                        $ref_table = 'notifications';
+                        $total_count = $database->getReference($ref_table)->getSnapshot()->numChildren();
+                        echo $total_count;
+                        ?>
+                </h3></h3>
 
                 <p>Total Alerts</p>
               </div>
@@ -161,10 +166,10 @@ include('includes/navbar.php');
                 </div>
 
             <div class="col-12">
-            <div class="card">
+
                 <!-- Clock chart -->
                 <!-- <div class="charts"> -->
-                <div class="card-body">
+
 
                     <div class="item3">
                         <div id="clock"></div>

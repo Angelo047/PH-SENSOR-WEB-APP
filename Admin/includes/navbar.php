@@ -8,70 +8,24 @@
       </ul>
 
 
-      <!-- Right navbar links -->
-      <ul class="navbar-nav ml-auto">
-        <!-- Notif Dropdown Menu -->
-        <li class="nav-item dropdown">
-          <a class="nav-link" data-toggle="dropdown" href="#">
-            <i class="far fa-bell"></i>
-            <span class="badge badge-danger navbar-badge">2</span>
-          </a>
-          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <span class="dropdown-item dropdown-header">Notifications</span>
-            <a href="#" class="dropdown-item">
-              <!-- Notif Start -->
-              <div class="callout callout-info">
-                <div class="media">
-                  <img src="pics/lettuce.png" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      Lettuce
-                    </h3>
-                    <p class="text-sm text-muted">High pH Level</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Notif End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Notif Start -->
-              <div class="callout callout-warning">
-                <div class="media">
-                  <img src="pics/spinach.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      Water Spinach
-                    </h3>
-                    <p class="text-sm text-muted">Low pH Level</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Notif End -->
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-              <!-- Notif Start -->
-              <div class="callout">
-                <div class="media">
-                  <img src="pics/swiss_chard.png" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                  <div class="media-body">
-                    <h3 class="dropdown-item-title">
-                      Swiss Chard
-                    </h3>
-                    <p class="text-sm text-muted">Ready to Harvest</p>
-                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 1 min ago</p>
-                  </div>
-                </div>
-              </div>
-              <!-- Notif End -->
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-        </div>
-      </li>
+<!-- Right navbar links -->
+<ul class="navbar-nav ml-auto">
+  <!-- Notif Dropdown Menu -->
+  <li class="nav-item dropdown">
+    <a id="notification-bell" class="nav-link" data-toggle="dropdown" href="#">
+      <i class="far fa-bell"></i>
+      <span id="notification-count" class="badge badge-danger navbar-badge">0</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notifications-container">
+      <div class="dropdown-header bg bg-primary">
+        Notifications
+        <span class="float-right text-muted text-sm"></span>
+      </div>
+      <div id="notifications-list"></div>
+      <a href="all_notification.php" class="dropdown-footer" style="text-align: center;">See All Messages</a>
+    </div>
+  </li>
+
       <!-- Dark Mode -->
       <li class="nav-item dropdown">
         <a class="nav-link" href="#">
@@ -122,49 +76,22 @@
     </li>
   </ul>
 </li>
-
-
-
-
   </ul>
   </nav>
-      <!-- LOGOUT
-      <li class="nav-item dropdown">
-        <a class="nav-link" href="../logout.php">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </a>
-      </li>
-    </ul>
-  </nav> -->
-  <!-- /.navbar -->
 
 
  <!-- Main Sidebar Container -->
  <aside class="main-sidebar">
       <!-- Brand Logo -->
-      <a href="#" class="brand-link">
+      <a href="#" class="brand-link text-center">
         <br>
-        <center><img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
+        <img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
           <h3 style="color: #2C3090; padding-top: 20px;">RLS-NES</h3>
-        </center>
       </a>
       <br>
 
       <!-- Sidebar -->
       <div class="sidebar">
-
-
-        <!-- SidebarSearch Form -->
-        <!--   <div class="form-inline">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
-      </div> -->
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">

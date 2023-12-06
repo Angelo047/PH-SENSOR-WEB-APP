@@ -14,12 +14,13 @@ if (isset($_POST['add-plant-btn'])) {
         $postData = [
             'plant_photo' => $file_destination,
             'plant_name' => $_POST['plant_name'],
-            'ph_lvl' => $_POST['ph_lvl'],
+            'ph_lvl_low' => $_POST['ph_lvl_low'],
+            'ph_lvl_high' => $_POST['ph_lvl_high'],
             'bay' => $_POST['bay'],
             'nft' => $_POST['nft'],
             'date_planted' => $_POST['date_planted'],
             'date_harvest' => $_POST['date_harvest'],
-            'plant_status' => 'planted', // New plant status
+            'plant_status' => 'Planted', // New plant status
         ];
 
         $ref_table = "plants";

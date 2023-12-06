@@ -71,12 +71,16 @@ include('includes/navbar.php');
                                                         <td><?= $row['plant_name']; ?></td>
                                                         <td><?= $row['date_planted']; ?></td>
                                                         <td><?= $row['date_harvest']; ?></td>
-                                                        <td><?= $row['ph_lvl']; ?></td>
+                                                        <td>
+                                                          <?= $row['ph_lvl_low']; ?>
+                                                          <?= $row['ph_lvl_high']; ?>
+                                                        </td>
                                                         <td><span class="badge bg-success"><?= $row['plant_status']; ?></span></td>
                                                         <td><?= $row['bay']; ?></td>
                                                         <td><?= $row['nft']; ?></td>
                                                         <td>
-                                                            <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-success">View</a>
+                                                            <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-success"><i class="fas fa-eye"></i> View</a>
+                                                            <a href="report.php?id=<?= $key; ?>" class="btn btn-primary"><i class="fa-solid fa-file-pen"></i> Report</a>
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -141,28 +145,31 @@ $(document).ready( function () {
   document.addEventListener('DOMContentLoaded', function () {
     // pH level data for each plant
     const pHLevels = {
-      'Lettuce': '5.5-6.5',
-      'Cucumber': '5.8-6.0',
-      'Peppers': '6.0-6.5',
-      'Mint': '5.5-6.0',
-      'Spinach': '5.5-6.6',
-      'Swiss Chard': '6.0-6.5',
-      'Basil': '7',
+      'Lettuce': { low: 5.5, high: 6.5 },
+      'Spinach': { low: 5.5, high: 6.6 },
+      'Swiss Chard': { low: 6.0, high: 6.5 },
+      'Basil': { low: 5.5, high: 6.5 },
+      'Mint': { low: 5.5, high: 6.0 },
+      'Peppers': { low: 6.0, high: 6.7 },
     };
 
     // Function to update pH level based on selected plant name
     function updatePHLevel() {
       var selectPlant = document.getElementById('plant_name');
-      var pHLevelInput = document.getElementById('ph_lvl');
+      var pHLevelLowInput = document.getElementById('ph_lvl_low');
+      var pHLevelHighInput = document.getElementById('ph_lvl_high');
 
       var selectedPlant = selectPlant.value;
 
       // Check if the selected plant has a corresponding pH level
       if (pHLevels.hasOwnProperty(selectedPlant)) {
-        pHLevelInput.value = pHLevels[selectedPlant];
+        // Set the low and high pH levels in the input fields
+        pHLevelLowInput.value = pHLevels[selectedPlant].low;
+        pHLevelHighInput.value = pHLevels[selectedPlant].high;
       } else {
         // If the selected plant doesn't have a corresponding pH level, set a default value or leave it empty
-        pHLevelInput.value = ''; // You can set a default value here if needed
+        pHLevelLowInput.value = ''; // You can set a default value here if needed
+        pHLevelHighInput.value = ''; // You can set a default value here if needed
       }
     }
 

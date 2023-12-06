@@ -12,13 +12,6 @@ include('includes/navbar.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-          <?php
-            if(isset($_SESSION['status']))
-            {
-                echo "<h5 class='alert alert-success'>".$_SESSION['status']."</h5>";
-                unset($_SESSION['status']);
-            }
-?>
             <h1 class="m-0">Recommendation</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
