@@ -144,6 +144,7 @@ if (isset($_POST['add-plant-details-btn'])) {
         'plant_name' => $_POST['plant_name'],
         'ph_lvl_low' => $_POST['ph_lvl_low'],
         'ph_lvl_high' => $_POST['ph_lvl_high'],
+        'days_harvest' => $_POST['days_harvest'],
     ];
 
     $ref_table = "plants_details";

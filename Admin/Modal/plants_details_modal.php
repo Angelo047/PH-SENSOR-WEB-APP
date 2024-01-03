@@ -19,7 +19,7 @@
 
            <div class="col-md-6 mt-3">
             <label for="pHLevel" class="form-label">Required pH Level<span style="color: red;"> *</span></label>
-            <input type="number" step="0.1" name="ph_lvl_low" class="form-control" id="ph_lvl_low" placeholder="low pH lvl" required >
+            <input type="double" step="0.1" name="ph_lvl_low" class="form-control" id="ph_lvl_low" placeholder="low pH lvl" required >
           </div>
           <div class="col-md-6  mt-4">
           <label for="pHLevel" class="form-label"></label>

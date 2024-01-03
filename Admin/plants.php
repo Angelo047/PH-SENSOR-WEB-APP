@@ -159,15 +159,16 @@ $(document).ready( function () {
 <script>
     // Initialize Firebase with your own configuration
     var firebaseConfig = {
-        apiKey: "AIzaSyBCe1DGEf01SvWTwuBGCuhFKiHVuwMmf5I",
-        authDomain: "php-firebase-9b785.firebaseapp.com",
-        databaseURL: "https://php-firebase-9b785-default-rtdb.firebaseio.com",
-        projectId: "php-firebase-9b785",
-        storageBucket: "php-firebase-9b785.appspot.com",
-        messagingSenderId: "954656030016",
-        appId: "1:954656030016:web:69edbdbcab24f8508ccea5",
-        measurementId: "G-TVV3ZFYSCR"
-    };
+        apiKey: "AIzaSyAIjMwy9jr4Cr_cudDpn5A3RpxUpgL6jDw",
+        authDomain: "ph-sensor-web-app.firebaseapp.com",
+        databaseURL: "https://ph-sensor-web-app-default-rtdb.firebaseio.com",
+        projectId: "ph-sensor-web-app",
+        storageBucket: "ph-sensor-web-app.appspot.com",
+        messagingSenderId: "385380264610",
+        appId: "1:385380264610:web:fbac7afd889b8e8feb85fb",
+        measurementId: "G-5JN9Y96ZM9"
+        };
+
 
     firebase.initializeApp(firebaseConfig);
 

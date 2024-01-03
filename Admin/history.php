@@ -102,10 +102,8 @@ include('includes/navbar.php');
                           <th>Date</th>
                           <th>Alert Time</th>
                           <th>Alert Water pH Level</th>
-                          <th>Time Resolved</th>
                           <th>PH Level</th>
                           <th>Facilitator</th>
-                          <th>Total Time Resolved</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -114,30 +112,24 @@ include('includes/navbar.php');
                           <td>9/15/23</td>
                           <td>4:28 AM</td>
                           <td style="color: #0057B2;"><b>7</b></td>
-                          <td>5:00 AM</td>
                           <td style="color: green;"><b>6</b></td>
                           <td>Marie</td>
-                          <td>32 Minutes</td>
                         </tr>
                         <tr>
                           <td>Spinach</td>
                           <td>10/15/23</td>
                           <td>4:28 AM</td>
                           <td style="color: #FF7B5F;"><b>5</b></td>
-                          <td>5:00 AM</td>
                           <td style="color: green;"><b>6</b></td>
                           <td>Pino</td>
-                          <td>12 Minutes</td>
                         </tr>
                         <tr>
                           <td>Lettuce</td>
                           <td>9/15/23</td>
                           <td>4:28 AM</td>
                           <td style="color: #0057B2;"><b>7</b></td>
-                          <td>5:00 AM</td>
                           <td style="color: green;"><b>6</b></td>
                           <td>Marichelle</td>
-                          <td>22 Minutes</td>
                         </tr>
                       </tbody>
                     </table>
