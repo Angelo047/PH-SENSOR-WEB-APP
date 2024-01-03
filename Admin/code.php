@@ -3,6 +3,162 @@ session_start();
 include('dbcon.php');
 
 
+
+if (isset($_POST['delete-plant-btn'])) {
+    $plantId = $_POST['id'];
+
+    $plantRef = $database->getReference('plants_details/' . $plantId);
+
+    $plantRef->remove();
+
+    $_SESSION['success'] = "Plant Details Deleted successfully";
+    header('Location: plants_details.php');
+      exit;
+}
+
+
+
+
+if (isset($_POST['edit-plant-details-btn'])) {
+    $plantId = $_POST['id'];
+    $plant_name = $_POST['plant_name'];
+    $ph_lvl_high = $_POST['ph_lvl_high'];
+    $ph_lvl_low = $_POST['ph_lvl_low'];
+    $days_harvest = $_POST['days_harvest'];
+
+    $plantRef = $database->getReference('plants_details/' . $plantId);
+
+    $plantRef->update([
+        'plant_name' => $plant_name,
+        'ph_lvl_high' => $ph_lvl_high,
+        'ph_lvl_low' => $ph_lvl_low,
+        'days_harvest' => $days_harvest,
+    ]);
+
+    $_SESSION['success'] = "Plant Details Updated successfully";
+    header('Location: plants_details.php');
+    exit;
+}
+
+
+
+if (isset($_POST['delete-bay-btn'])) {
+    $bayId = $_POST['id'];
+
+    $bayRef = $database->getReference('BAY/' . $bayId);
+
+    $bayRef->remove();
+
+    $_SESSION['success'] = "BAY Deleted successfully";
+    header('Location: bay_nft.php');
+      exit;
+}
+
+
+
+if (isset($_POST['edit-bay-btn'])) {
+    $bayId = $_POST['id'];
+    $newBAYValue = $_POST['bay'];
+
+    $bayRef = $database->getReference('BAY/' . $bayId);
+
+    $bayRef->update([
+        'bay' => $newBAYValue,
+    ]);
+
+    $_SESSION['success'] = "BAY Updated successfully";
+        header('Location: bay_nft.php');
+    exit;
+}
+
+
+    if (isset($_POST['delete-nft-btn'])) {
+        $nftId = $_POST['id'];
+
+        $nftRef = $database->getReference('NFT/' . $nftId);
+
+        $nftRef->remove();
+
+        $_SESSION['success'] = "NFT Deleted successfully";
+        header('Location: bay_nft.php');
+          exit;
+    }
+
+
+if (isset($_POST['edit-nft-btn'])) {
+    // Get the NFT ID and new value from the form
+    $nftId = $_POST['id'];
+    $newNFTValue = $_POST['nft'];
+
+    // Reference to the NFT in the Realtime Database
+    $nftRef = $database->getReference('NFT/' . $nftId);
+
+    // Update the NFT value
+    $nftRef->update([
+        'nft' => $newNFTValue,
+    ]);
+
+    // Redirect or perform any other actions after the update
+    $_SESSION['success'] = "NFT Updated successfully";
+        header('Location: bay_nft.php');
+    exit;
+}
+
+
+if (isset($_POST['add-nft-btn'])) {
+    $postData = [
+        'nft' => $_POST['nft'],
+    ];
+
+    $ref_table = "NFT";
+    $postRef_result = $database->getReference($ref_table)->push($postData);
+
+    if ($postRef_result->getKey()) {
+        $_SESSION['success'] = "NFT added successfully";
+        header('Location: bay_nft.php');
+    } else {
+        $_SESSION['error'] = "Failed to add plant";
+    }
+}
+
+if (isset($_POST['add-bay-btn'])) {
+    $postData = [
+        'bay' => $_POST['bay'],
+    ];
+
+    $ref_table = "BAY";
+    $postRef_result = $database->getReference($ref_table)->push($postData);
+
+    if ($postRef_result->getKey()) {
+        $_SESSION['success'] = "BAY added successfully";
+        header('Location: bay_nft.php');
+    } else {
+        $_SESSION['error'] = "Failed to add plant";
+    }
+}
+
+
+
+if (isset($_POST['add-plant-details-btn'])) {
+    $postData = [
+        'plant_name' => $_POST['plant_name'],
+        'ph_lvl_low' => $_POST['ph_lvl_low'],
+        'ph_lvl_high' => $_POST['ph_lvl_high'],
+    ];
+
+    $ref_table = "plants_details";
+    $postRef_result = $database->getReference($ref_table)->push($postData);
+
+    if ($postRef_result->getKey()) {
+        $_SESSION['success'] = "Plant Details added successfully";
+        header('Location: plants_details.php');
+    } else {
+        $_SESSION['error'] = "Failed to add plant";
+    }
+}
+
+
+
 // CREATE FUNCTION FOR PLANTS
 if (isset($_POST['add-plant-btn'])) {
     $file_tmp = $_FILES['plant_photo']['tmp_name'];

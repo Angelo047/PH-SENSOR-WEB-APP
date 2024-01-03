@@ -43,10 +43,12 @@ if ($plantId) {
     if ($plantInfo) {
         $requiredLowPhLevel = $plantInfo['ph_lvl_low'];
         $requiredHighPhLevel = $plantInfo['ph_lvl_high'];
+        $plantName = $plantInfo['plant_name'];
+
         date_default_timezone_set('Asia/Manila'); // Set the timezone to Philippines
 
         // Perform the pH level check and notification creation
-        function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $database, $plantInfo, $toEmail) {
+        function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $toEmail) {
             $phSensorDataRef = $database->getReference('/phSensorData');
             $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
             $latestPhValue = reset($latestPhSensorData);
@@ -62,7 +64,7 @@ if ($plantId) {
                 ]);
 
                 // Send email notification using PHPMailer
-                sendEmailNotification($toEmail, $latestPhValue);
+                sendEmailNotification($toEmail, $latestPhValue, $plantName, $requiredLowPhLevel, $requiredHighPhLevel);
 
                 echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
             } else {
@@ -71,7 +73,7 @@ if ($plantId) {
         }
 
         // Function to send email notification using PHPMailer
-        function sendEmailNotification($toEmail, $latestPhValue) {
+        function sendEmailNotification($toEmail, $latestPhValue, $plantName, $requiredLowPhLevel, $requiredHighPhLevel) {
             $mail = new PHPMailer();
 
             $mail->isSMTP();
@@ -86,7 +88,8 @@ if ($plantId) {
             $mail->addAddress($toEmail);
             $mail->isHTML(true);
             $mail->Subject = 'pH Level Notification';
-            $mail->Body = "The pH level of your plant is outside the acceptable range: $latestPhValue";
+            $mail->Body = "The pH level of your $plantName is outside the acceptable range of $requiredLowPhLevel to $requiredHighPhLevel" . "<br>" .
+            "The current pH level is: $latestPhValue";
 
             if (!$mail->send()) {
                 echo 'Email could not be sent. Mailer Error: ' . $mail->ErrorInfo;
@@ -96,7 +99,7 @@ if ($plantId) {
         }
 
         // Call the pH level check function
-        checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $database, $plantInfo, $toEmail);
+        checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $toEmail);
     } else {
         echo 'Plant information not found.' . PHP_EOL;
     }

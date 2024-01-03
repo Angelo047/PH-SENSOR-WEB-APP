@@ -27,6 +27,16 @@ include('includes/navbar.php');
 						}
 					?>
 
+<?php
+// Fetch data for BAY
+$bayRef = $database->getReference('BAY');
+$bayData = $bayRef->getValue();
+
+// Fetch data for NFT
+$nftRef = $database->getReference('NFT');
+$nftData = $nftRef->getValue();
+?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -141,81 +151,99 @@ $(document).ready( function () {
 </script>
 
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // pH level data for each plant
-    const pHLevels = {
-      'Lettuce': { low: 5.5, high: 6.5 },
-      'Spinach': { low: 5.5, high: 6.6 },
-      'Swiss Chard': { low: 6.0, high: 6.5 },
-      'Basil': { low: 5.5, high: 6.5 },
-      'Mint': { low: 5.5, high: 6.0 },
-      'Peppers': { low: 6.0, high: 6.7 },
-    };
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    // Function to update pH level based on selected plant name
-    function updatePHLevel() {
-      var selectPlant = document.getElementById('plant_name');
-      var pHLevelLowInput = document.getElementById('ph_lvl_low');
-      var pHLevelHighInput = document.getElementById('ph_lvl_high');
-
-      var selectedPlant = selectPlant.value;
-
-      // Check if the selected plant has a corresponding pH level
-      if (pHLevels.hasOwnProperty(selectedPlant)) {
-        // Set the low and high pH levels in the input fields
-        pHLevelLowInput.value = pHLevels[selectedPlant].low;
-        pHLevelHighInput.value = pHLevels[selectedPlant].high;
-      } else {
-        // If the selected plant doesn't have a corresponding pH level, set a default value or leave it empty
-        pHLevelLowInput.value = ''; // You can set a default value here if needed
-        pHLevelHighInput.value = ''; // You can set a default value here if needed
-      }
-    }
-
-    // Attach the updatePHLevel function to the change event of the plant_name element
-    document.getElementById('plant_name').addEventListener('change', updatePHLevel);
-  });
-</script>
 
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    // Estimated harvest days for each plant
-    const harvestDays = {
-      'Basil': 28,
-      'Lettuce': 28,
-      'Spinach': 28,
-      'Swiss Chard': 35,
-      'Mint': 42,
-      'Peppers': 91
+    // Initialize Firebase with your own configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBCe1DGEf01SvWTwuBGCuhFKiHVuwMmf5I",
+        authDomain: "php-firebase-9b785.firebaseapp.com",
+        databaseURL: "https://php-firebase-9b785-default-rtdb.firebaseio.com",
+        projectId: "php-firebase-9b785",
+        storageBucket: "php-firebase-9b785.appspot.com",
+        messagingSenderId: "954656030016",
+        appId: "1:954656030016:web:69edbdbcab24f8508ccea5",
+        measurementId: "G-TVV3ZFYSCR"
     };
 
-    // Function to update estimated harvest date based on selected plant and date planted
-    function updateEstimatedHarvestDate() {
-      var selectPlant = document.getElementById('plant_name');
-      var datePlantedInput = document.getElementById('date_planted');
-      var estimatedHarvestDateInput = document.getElementById('date_harvest');
+    firebase.initializeApp(firebaseConfig);
 
-      var selectedPlant = selectPlant.value;
-      var datePlanted = new Date(datePlantedInput.value);
+     // Function to fetch plant details based on the selected plant name
+     function fetchPlantDetails(plantName) {
+        var database = firebase.database();
+        var ref = database.ref("plants_details");
 
-      // Check if the selected plant has a corresponding estimated harvest days
-      if (harvestDays.hasOwnProperty(selectedPlant) && !isNaN(datePlanted.getTime())) {
-        var estimatedHarvestDate = new Date(datePlanted);
-        estimatedHarvestDate.setDate(datePlanted.getDate() + harvestDays[selectedPlant]);
+        // Query to get details based on plant name
+        ref.orderByChild("plant_name").equalTo(plantName).once("value", function (snapshot) {
+            if (snapshot.exists()) {
+                var plantDetails = snapshot.val();
+                var phLevelLow = plantDetails[Object.keys(plantDetails)[0]].ph_lvl_low;
+                var phLevelHigh = plantDetails[Object.keys(plantDetails)[0]].ph_lvl_high;
+                var daysToHarvest = plantDetails[Object.keys(plantDetails)[0]].days_harvest;
 
-        // Format the date in 'YYYY-MM-DD' for the input
-        var formattedEstimatedHarvestDate = estimatedHarvestDate.toISOString().split('T')[0];
-        estimatedHarvestDateInput.value = formattedEstimatedHarvestDate;
-      } else {
-        // If the selected plant doesn't have a corresponding estimated harvest days or date planted is not valid, leave it empty
-        estimatedHarvestDateInput.value = '';
-      }
+                // Update the pH level input fields
+                document.getElementById("ph_lvl_low").value = phLevelLow;
+                document.getElementById("ph_lvl_high").value = phLevelHigh;
+
+                // Calculate estimated harvest date
+                updateEstimatedHarvestDate(daysToHarvest);
+            }
+        });
     }
 
-    // Attach the updateEstimatedHarvestDate function to the change event of the plant_name and date_planted elements
-    document.getElementById('plant_name').addEventListener('change', updateEstimatedHarvestDate);
-    document.getElementById('date_planted').addEventListener('change', updateEstimatedHarvestDate);
-  });
+    // Function to calculate estimated harvest date
+    function updateEstimatedHarvestDate(daysToHarvest) {
+        var datePlanted = document.getElementById("date_planted").value;
+
+        if (datePlanted && daysToHarvest) {
+            var datePlantedObj = new Date(datePlanted);
+            var estimatedHarvestDate = new Date(datePlantedObj.setDate(datePlantedObj.getDate() + parseInt(daysToHarvest)));
+            var formattedDate = estimatedHarvestDate.toISOString().split('T')[0];
+
+            // Update the date_harvest input field
+            document.getElementById("date_harvest").value = formattedDate;
+        }
+    }
+
+    // Function to populate the plant names dropdown
+    function populatePlantNames() {
+        var database = firebase.database();
+        var ref = database.ref("plants_details");
+
+        ref.orderByChild("plant_name").once("value", function (snapshot) {
+            if (snapshot.exists()) {
+                var plantNamesDropdown = document.getElementById("plant_name");
+
+                // Clear existing options
+                plantNamesDropdown.innerHTML = "";
+
+                // Populate dropdown with plant names
+                snapshot.forEach(function (childSnapshot) {
+                    var plantName = childSnapshot.val().plant_name;
+                    var option = document.createElement("option");
+                    option.value = plantName;
+                    option.text = plantName;
+                    plantNamesDropdown.appendChild(option);
+                });
+            }
+        });
+    }
+
+    // Call the function to populate plant names on page load
+    populatePlantNames();
+
+    // Event listener for the plant name dropdown change
+    document.getElementById("plant_name").addEventListener("change", function () {
+        var selectedPlantName = this.value;
+        fetchPlantDetails(selectedPlantName);
+    });
+
+    // Event listener for the date_planted input change
+    document.getElementById("date_planted").addEventListener("change", function () {
+        var selectedPlantName = document.getElementById("plant_name").value;
+        fetchPlantDetails(selectedPlantName);
+    });
 </script>

@@ -28,8 +28,6 @@
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
 
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
-
   <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.5/firebase-database.js"></script>
   <!--LEFT GALLERY-->
@@ -37,6 +35,14 @@
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link id="theme-link" rel="stylesheet" href="css/style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
 
 </head>
 <body class="control-sidebar-slide-open sidebar-collapse" style="height: auto;">

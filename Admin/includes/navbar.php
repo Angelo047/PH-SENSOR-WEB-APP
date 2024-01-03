@@ -117,12 +117,6 @@
               </a>
             </li>
             <li class="nav-item">
-              <a href="report.php" class="nav-link">
-                <i class="fa-solid fa-file-pen"></i>
-                <p>Report</p>
-              </a>
-            </li>
-            <li class="nav-item">
               <a href="recommendation.php" class="nav-link">
                 <i class="fa-solid fa-thumbs-up"></i>
                 <p>Guidelines</p>
@@ -146,7 +140,31 @@
                 </p>
               </a>
             </li>
+            <br>
 
+            <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-warning"></i>
+              <p>
+                MAINTENANCE
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="plants_details.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>PLANTS DETAILS</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="bay_nft.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>BAY AND NFT</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

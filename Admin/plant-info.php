@@ -346,6 +346,9 @@ setInterval(checkNotifications, 3000); // 3000 milliseconds = 3 seconds, adjust 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
+
+
+
 <!-- RealTime Ph lvl Chart -->
 
 <script>

@@ -48,8 +48,7 @@ include('includes/navbar.php');
 
                         if($getData > 0)
                         {
-                            ?>
-            <!-- /.card-header -->
+                            ?>            <!-- /.card-header -->
             <div class="card-body">
               <div class="form-group">
                 <textarea id="compose-textarea" class="form-control" rows="27 " cols="40">
@@ -151,8 +150,6 @@ include('includes/navbar.php');
 </div>
 </div>
 <!-- ./wrapper -->
-
-
 <?php
 
 }else{
