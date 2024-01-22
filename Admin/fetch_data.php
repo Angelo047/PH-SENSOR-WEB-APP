@@ -23,7 +23,6 @@ $factory = (new Factory)
 $database = $factory->createDatabase();
 $auth = $factory->createAuth();
 
-
 // Check if the user is authenticated and has a valid session
 if (isset($_SESSION['verified_user_id'])) {
     $uid = $_SESSION['verified_user_id'];
@@ -31,70 +30,88 @@ if (isset($_SESSION['verified_user_id'])) {
     // Get the user using Firebase Auth
     $user = $auth->getUser($uid);
 
-
     // Get the user's email and full name
     $toEmail = $user->email;
     $fullName = $user->displayName;
 
-
     // Rest of your code remains unchanged...
     $plantId = isset($_GET['id']) ? $_GET['id'] : null;
 
-if ($plantId) {
-    $plantInfoRef = $database->getReference('/plants')->getChild($plantId);
-    $plantInfo = $plantInfoRef->getValue();
+    if ($plantId) {
+        $plantInfoRef = $database->getReference('/plants')->getChild($plantId);
+        $plantInfo = $plantInfoRef->getValue();
 
-    if ($plantInfo) {
-        $requiredLowPhLevel = $plantInfo['ph_lvl_low'];
-        $requiredHighPhLevel = $plantInfo['ph_lvl_high'];
-        $plantName = $plantInfo['plant_name'];
+        if ($plantInfo) {
+            $requiredLowPhLevel = $plantInfo['ph_lvl_low'];
+            $requiredHighPhLevel = $plantInfo['ph_lvl_high'];
+            $plantName = $plantInfo['plant_name'];
 
-        date_default_timezone_set('Asia/Manila'); // Set the timezone to Philippines
+            date_default_timezone_set('Asia/Manila'); // Set the timezone to Philippines
 
-        function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $toEmail, $fullName) {
-            $phSensorDataRef = $database->getReference('/phSensorData');
-            $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
-            $latestPhValue = reset($latestPhSensorData);
+            // Function to check pH level
+            function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $toEmail, $fullName) {
+                $phSensorDataRef = $database->getReference('/phSensorData');
+                $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
 
-            $status = ''; // Variable to hold the status
+                if (empty($latestPhSensorData)) {
+                    // Handle the case where no pH data is available
+                    echo 'No pH data available.' . PHP_EOL;
+                    return;
+                }
 
-            if ($latestPhValue > $requiredHighPhLevel) {
-                $status = 'high';
-            } elseif ($latestPhValue < $requiredLowPhLevel) {
-                $status = 'low';
+                $latestPhValue = reset($latestPhSensorData);
+
+                $status = ''; // Variable to hold the status
+
+                if ($latestPhValue > $requiredHighPhLevel) {
+                    $status = 'High';
+                } elseif ($latestPhValue < $requiredLowPhLevel) {
+                    $status = 'Low';
+                }
+
+                if ($status !== '') {
+                    // pH level is either high or low, create a notification
+                    $notificationsRef = $database->getReference('/notifications')->push();
+                    $notificationsRef->set([
+                        'plant_name' => $plantInfo['plant_name'],
+                        'plant_photo' => $plantInfo['plant_photo'],
+                        'message' => "pH status Level: $latestPhValue ",
+                        'current_date' => date('H:i A, M j, Y'),
+                        'isRead' => 0,
+                        'status' => $status, // Add the status field
+                    ]);
+
+                    // pH level is either high or low, create a notification
+                    $historyRef = $database->getReference('/ph_history')->push();
+                    $historyRef->set([
+                        'plant_name' => $plantInfo['plant_name'],
+                        'ph_lvl' => "$latestPhValue",
+                        'current_date' => date('H:i A, M j, Y'),
+                        'Facilitator' => $fullName,
+                        'status' => $status, // Add the status field
+                    ]);
+
+                    // Send email notification using PHPMailer
+                    sendEmailNotification($toEmail, $latestPhValue, $plantName, $status,  $requiredLowPhLevel, $requiredHighPhLevel);
+
+                    echo 'Notification created (Notifications): ' . $notificationsRef->getKey() . PHP_EOL;
+                    echo 'Notification created (History): ' . $historyRef->getKey() . PHP_EOL;
+
+                } else {
+                    echo 'pH value is within the acceptable range for ' . $plantInfo['plant_name'] . '.' . PHP_EOL;
+                }
             }
 
-            if ($status !== '') {
-                // pH level is either high or low, create a notification
-                $notificationsRef = $database->getReference('/notifications')->push();
-                $notificationsRef->set([
-                    'plant_name' => $plantInfo['plant_name'],
-                    'plant_photo' => $plantInfo['plant_photo'],
-                    'message' => "pH Level: $latestPhValue is outside the acceptable range",
-                    'current_date' => date('H:i A, M j, Y'),
-                    'isRead' => 0,
-                    'FullName' => $fullName,
-                    'status' => $status, // Add the status field
-                ]);
-
-                // Send email notification using PHPMailer
-                sendEmailNotification($toEmail, $latestPhValue, $plantName, $requiredLowPhLevel, $requiredHighPhLevel);
-
-                echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
-            } else {
-                echo 'pH value is within the acceptable range for ' . $plantInfo['plant_name'] . '.' . PHP_EOL;
-            }
-        }
 
         // Function to send email notification using PHPMailer
-        function sendEmailNotification($toEmail, $latestPhValue, $plantName, $requiredLowPhLevel, $requiredHighPhLevel) {
+        function sendEmailNotification($toEmail, $latestPhValue, $plantName, $status, $requiredLowPhLevel, $requiredHighPhLevel) {
             $mail = new PHPMailer();
 
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'guiltiasin941@gmail.com'; // Replace with your Gmail email
-            $mail->Password = 'uuwooyibwcicnpqx'; // Replace with your Gmail password
+            $mail->Password = 'jbxv rlzo zrif hajw';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
@@ -102,7 +119,7 @@ if ($plantId) {
             $mail->addAddress($toEmail);
             $mail->isHTML(true);
             $mail->Subject = 'pH Level Notification';
-            $mail->Body = "The pH level of your $plantName is outside the acceptable range of $requiredLowPhLevel to $requiredHighPhLevel" . "<br>" .
+            $mail->Body = "The pH level of your $plantName is $status outside the acceptable range of $requiredLowPhLevel to $requiredHighPhLevel" . "<br>" .
             "The current pH level is: $latestPhValue";
 
             if (!$mail->send()) {

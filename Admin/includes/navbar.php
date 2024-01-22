@@ -111,17 +111,23 @@
               </a>
             </li>
             <li class="nav-item">
+              <a href="controller.php" class="nav-link">
+                <i class="fa-solid fa-toggle-on"></i>
+                <p>Controller</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a href="history.php" class="nav-link">
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <p>History</p>
               </a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="recommendation.php" class="nav-link">
                 <i class="fa-solid fa-thumbs-up"></i>
                 <p>Guidelines</p>
               </a>
-            </li>
+            </li> -->
             <br>
             <li class="nav-header">USER</li>
             <li class="nav-item">
