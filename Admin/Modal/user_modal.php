@@ -16,8 +16,11 @@
                         <input type="text" name="full-name" placeholder="Jhon Doe" class="form-control" required>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Phone Number</label>
-                        <input type="number" name="phone" placeholder="+91XXXXXXXX" class="form-control" required>
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" pattern="^\+?[0-9]{10}$" title="Phone number must be exactly 10 digits and may start with a '+'" class="form-control" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid 10-digit phone number. It may start with a '+'.
+                        </div>
                     </div>
                     <div class="form-group mb-3">
                         <label for="">Email Address</label>
@@ -32,20 +35,26 @@
                     </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Password</label>
-                        <input type="password" name="password" placeholder="********" class="form-control" id="password" required>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="********" class="form-control" id="password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="********" class="form-control" id="confirm_password" required>
+                    <div id="password_match" class="text-muted">
+                        <span id="retypePasswordError" class="text-danger" style="display: none;">Passwords do not match.</span>
+                        <span id="retypePasswordSuccess" class="text-success" style="display: none;">Passwords match.</span>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="">Confirm Password</label>
-                        <input type="password" name="confirm_password" placeholder="********" class="form-control" id="confirm_password" required>
-                    </div>
+                </div>
+                <div id="password_error" class="text-danger"></div>
+
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal">
+            <div class="modal-footer  justify-content-between mt-3">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
                     <i class="fa fa-close"></i> Close
                 </button>
-                <button type="submit" class="btn btn-success btn-flat" name="register-btn">
+                <button type="submit" class="btn btn-primary" name="register-btn">
                     <i class="fa fa-save"></i> Save
                 </button>
                 </form>
@@ -53,3 +62,4 @@
         </div>
     </div>
 </div>
+

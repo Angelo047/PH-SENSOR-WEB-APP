@@ -1,31 +1,26 @@
 <?php
 session_start();
-
-// If the user is already logged in, redirect to the home page
-if (isset($_SESSION['verified_user_id'])) {
-    $_SESSION['status'] = "You are already logged in!";
-    header('Location: index.php');
-    exit();
-}
-
 include('includes/header.php');
-?>
-
-<?php
-    if(isset($_SESSION['error'])){
-        echo "
-        <div class='alert alert-danger alert-dismissible text-center'>
-        <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-        <h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
-
-        </div>
-        ";
-    unset($_SESSION['error']);
-}
 ?>
 
 
 <div class="container">
+
+<?php
+if(isset($_SESSION['error'])){
+    echo "
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '" . $_SESSION['error'] . "',
+                confirmButtonText: 'Okay'
+            });
+        </script>
+    ";
+    unset($_SESSION['error']);
+}
+?>
     <div class="left">
         <div class="overlay">
             <!-- <img src="bg/Ellipse 1.jpg" class="elipse"> -->
@@ -52,7 +47,7 @@ include('includes/header.php');
             </div>
 
             <a href="#"><span>Forgot Password?</span></a>
-            <button type="submit" name="login-btn" id="submit" class="btn btn-block btn-success">Login</button>
+            <button type="submit" name="login-btn" id="submit" class="btn btn-primary text-bold">LOG IN</button>
         </form>
     </div>
 </div>

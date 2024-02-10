@@ -3,6 +3,32 @@ session_start();
 include('dbcon.php');
 
 
+if(isset($_POST['id']) && isset($_POST['plant_status'])) {
+    $id = $_POST['id'];
+    $plant_status = $_POST['plant_status'];
+
+    // Get the current date
+    $claim_date = date('Y-m-d');
+
+    // Assuming $database is your Firebase instance
+    $plantRef = $database->getReference('plants/' . $id);
+
+    // Update the plant status and claim_date
+    $plantRef->update([
+        'plant_status' => $plant_status,
+        'claim_date' => $claim_date,
+    ]);
+
+    // Redirect with success message
+    $_SESSION['success'] = "Plant status updated successfully!";
+    header('Location: plants.php'); // Replace with the correct page URL
+    exit();
+}
+
+
+
+
+
 
 if (isset($_POST['delete-plant-btn'])) {
     $plantId = $_POST['id'];
@@ -138,7 +164,7 @@ if (isset($_POST['add-bay-btn'])) {
 }
 
 
-
+// CREATE DETAILS FOR PLANTS
 if (isset($_POST['add-plant-details-btn'])) {
     $postData = [
         'plant_name' => $_POST['plant_name'],
@@ -407,30 +433,40 @@ if(isset($_POST['update_user_profile']))
 //CHANGE PASSWORD OF USER
 if(isset($_POST['change_password_btn']))
 {
+    $old_password = $_POST['old_password'];
     $new_password = $_POST['new_password'];
     $retype_password = $_POST['retype_password'];
     $uid = $_POST['change_pwd_user_id'];
 
-    if($new_password == $retype_password)
-    {
+    // Authenticate the user with the old password
+    try {
+        $user = $auth->getUser($uid); // Get the user information
 
-    $updatedUser = $auth->changeUserPassword($uid, $new_password);
+        $signInResult = $auth->signInWithEmailAndPassword($user->email, $old_password);
 
-    if($updatedUser)
-    {
-        $_SESSION['success'] = "Password Updated Successfully";
-        header('Location: change-password.php');
-        exit();
-    }else{
-        $_SESSION['error'] = "Password Failed to Update";
-        header('Location: change-password.php');
-        exit();
-    }
-
-    }
-    else{
-        $_SESSION['error'] = "New Password and Re-Type Password does not match";
-        header("Location: change-password.php?id=$uid");
+        // Old password is correct, proceed with changing the password
+        if($new_password == $retype_password)
+        {
+            $updatedUser = $auth->changeUserPassword($uid, $new_password);
+            if($updatedUser)
+            {
+                $_SESSION['success'] = "Password Updated Successfully";
+                header('Location: change-password.php');
+                exit();
+            } else {
+                $_SESSION['error'] = "Password Failed to Update";
+                header('Location: change-password.php');
+                exit();
+            }
+        } else {
+            $_SESSION['error'] = "New Password and Re-Type Password do not match";
+            header("Location: change-password.php");
+            exit();
+        }
+    } catch (Exception $e) {
+        // Old password is incorrect
+        $_SESSION['error'] = "Old Password is incorrect";
+        header("Location: change-password.php");
         exit();
     }
 }

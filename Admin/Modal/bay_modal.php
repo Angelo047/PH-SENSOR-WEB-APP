@@ -2,7 +2,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Add BAY</h4>
+              <h4 class="modal-title">ADD BAY</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -16,9 +16,9 @@
             </div>
 
             </div>
-            <div class="modal-footer justify-content-between">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-success" name="add-bay-btn">
+            <div class="modal-footer justify-content-between mt-3">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" name="add-bay-btn">
                     <i class="fa fa-save"></i> Save
                 </button>
             </form>
@@ -51,9 +51,9 @@
             </div>
           </div>
         </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success btn-flat" name="edit-bay-btn"><i class="fa fa-check-square-o"></i> Update</button>
+        <div class="modal-footer justify-content-between mt-3">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+          <button type="submit" class="btn btn-primary" name="edit-bay-btn"><i class="fa fa-save"></i> Update</button>
         </form>
       </div>
     </div>
@@ -79,9 +79,9 @@
             <h2 class="bold delete_bay" id="delete_bay_name" name="bay"></h2>
           </div>
       </div>
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default btn-flat pull-left" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-        <button type="submit" class="btn btn-danger btn-flat" name="delete-bay-btn"><i class="fa fa-trash"></i> Delete</button>
+      <div class="modal-footer justify-content-between mt-3">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+        <button type="submit" class="btn btn-danger" name="delete-bay-btn"><i class="fa fa-trash"></i> Delete</button>
         </form>
       </div>
     </div>

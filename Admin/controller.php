@@ -6,16 +6,6 @@ include('includes/navbar.php');
 ?>
 
 <style>
-    html {
-      box-sizing: border-box;
-      font-family: 'Arial', sans-serif;
-      font-size: 100%;
-    }
-    *, *:before, *:after {
-      box-sizing: inherit;
-      margin:0;
-      padding:0;
-    }
     .mid {
       display: flex;
       align-items: center;
@@ -24,29 +14,19 @@ include('includes/navbar.php');
     }
 
 
-    /* Switch starts here */
     .rocker {
-      display: inline-block;
-      position: relative;
-      /*
-      SIZE OF SWITCH
-      ==============
-      All sizes are in em - therefore
-      changing the font-size here
-      will change the size of the switch.
-      See .rocker-small below as example.
-      */
-      font-size: 2em;
-      font-weight: bold;
-      text-align: center;
-      text-transform: uppercase;
-      color: #888;
-      width: 7em;
-      height: 4em;
-      overflow: hidden;
-      border-bottom: 0.5em solid #eee;
+    display: inline-block;
+    position: relative;
+    font-size: 1.5em; /* Adjusted font-size for better responsiveness */
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    color: #888;
+    width: 7em;
+    height: 4em;
+    overflow: hidden;
+    border-bottom: 0.5em solid #eee;
     }
-
     .rocker-small {
       font-size: 0.75em; /* Sizes the switch */
       margin: 1em;
@@ -167,179 +147,178 @@ include('includes/navbar.php');
 
 </style>
 
- <!-- Content Wrapper. Contains page content -->
- <div class="content-wrapper">
+   <!-- Content Wrapper. Contains page content -->
+   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1 class="m-0">Controller</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-<!--             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
-            </ol> -->
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <ol class="breadcrumb float-sm-left">
+                    </ol>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- /.content-header -->
-<?php
-    // Fetch plant names from Firebase
-$plantNames = [];
-$plantsRef = $database->getReference('/plants');
-$plantData = $plantsRef->getSnapshot()->getValue();
 
-if ($plantData) {
-    foreach ($plantData as $plantId => $plantInfo) {
-        $plantNames[$plantId] = $plantInfo['plant_name'];
-    }
-}
-?>
+    <?php
+    if (isset($_GET['id'])) {
+        $key_child = $_GET['id'];
 
+        $ref_table = 'plants';
+        $getData = $database->getReference($ref_table)->getChild($key_child)->getValue();
+
+        if ($getData > 0) {
+            ?>
 <!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Dropdown to select plant -->
-            <div class="col-xl-6">
-              <div class="card mb-4">
-               <div class="card-header">
-                    <label for="plantSelect">Select Plant:</label>
-                    <select class="form-control" id="plantSelect" onchange="updatePlantInfo()">
-                        <option value="" disabled selected>Select a plant</option>
-                        <?php
-                        foreach ($plantNames as $plantId => $plantName) {
-                            echo "<option value='$plantId'>$plantName</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-md-5">
+            <div class="row">
+                <!-- INFO -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            PLANT INFORMATION
+                        </div>
+                        <div class="card-body">
+                                        <form class="row g-3" method="post" action="code.php">
+                                            <!-- Plant Name -->
+                                            <div class="col-md-6">
+                                                <label for="plantName" class="form-label">Plant Name:</label>
+                                                <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled selected value="<?= $getData['plant_name']; ?>">
+                                            </div>
+                                            <!-- Required pH Level -->
+                                            <div class="col-md-6">
+                                                <label for="requiredPh" class="form-label">Required pH Level:</label>
+                                                <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
+                                            </div>
 
+                                            <!-- Date Planted -->
+                                            <div class="col-md-6">
+                                                <label>Date Planted</label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled selected value="<?= $getData['date_planted']; ?>" />
+                                                    <div class="input-group-append" data-target="#reservationdate">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
+                                            <!-- Date Harvested -->
+                                            <div class="col-md-6">
+                                                <label>Estimated Date Harvested</label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= $getData['date_harvest']; ?>" />
+                                                    <div class="input-group-append" data-target="#reservationdate">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
 
-              <div class="card mb-4">
-               <div class="card-header">
-                PLANT INFORMATION
-              </div>
-              <div class="modal-body">
-                <form class="row g-3">
-                 <!-- Plant Name -->
-                 <div class="col-md-6">
-                  <label for="plantName" class="form-label">Plant Name:</label>
-                  <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled>
-                </div>
-                <!-- Required pH Level -->
-                <div class="col-md-6">
-                  <label for="requiredPh" class="form-label">Required pH Level:</label>
-                  <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled>
-                </div>
+                                            <div class="col-md-3">
+                                                <label>BAY</label>
+                                                <div class="input-group date" id="reservationdate">
+                                                    <input type="text" class="form-control" id="dateHarvested" placeholder="November 17, 2023" disabled selected value="<?= $getData['bay']; ?>" />
+                                                </div>
+                                            </div>
 
-                <!-- Date Planted-->
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Date Planted</label>
-                  <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled>
-                    <div class="input-group-append" data-target="#reservationdate">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
+                                            <div class="col-md-3">
+                                                <label>NFT</label>
+                                                <div class="input-group date" id="reservationdate">
+                                                    <input type="text" class="form-control" disabled selected value="<?= $getData['nft']; ?>" />
+                                                </div>
+                                            </div>
 
-                <!-- Date Harvested-->
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Estimated Date Harvested</label>
-                  <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled>
-                    <div class="input-group-append" data-target="#reservationdate">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
+                                            <div class="col-md-6">
+                                                <label>Plant Status</label>
+                                                <select class="form-control" name="plant_status" disabled>
+                                                    <option value="Planted" <?= ($getData['plant_status'] == 'Planted') ? 'selected' : '' ?>>Planted</option>
+                                                    <option value="Harvested" <?= ($getData['plant_status'] == 'Harvested') ? 'selected' : '' ?>>Harvested</option>
+                                                    <option value="Withered" <?= ($getData['plant_status'] == 'Withered') ? 'selected' : '' ?>>Withered</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                        <br>
+                                        <br><br>
+                                    </div>
+                                </div>
+                            </div>
 
-
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Plant Status</label>
-                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control" id="plantStatus" placeholder="planted" disabled>
-                  </div>
-                </div>
-
-
-                <form class="row g-3">
-                 <div class="col-md-3">
-                  <br>
-                  <label>BAY</label>
-                  <div class="input-group date" id="reservationdate">
-                    <input type="text" class="form-control" id="bay" placeholder="BAY" disabled >
-                  </div>
-                </div>
-
-                  <form class="row g-3">
-                 <div class="col-md-3">
-                  <br>
-                  <label>NFT</label>
-                  <div class="input-group date" id="reservationdate">
-                    <input type="text" class="form-control" id="nft" placeholder="NFT"  disabled>
-                  </div>
-                </div>
-
-                </div>
-              </div>
-            </div>
-            </div>
-
-            <div class="col-6">
-
-      <div class="mid">
-        <img src="pics/low.png" width="300px" heigh="300px">
-      <label class="rocker">
-    <input type="checkbox" id="relay1Button" checked>
-    <span class="switch-left" onclick="toggleRelay(1)">On</span>
-    <span class="switch-right" onclick="toggleRelay(1)">Off</span>
-  </label>
-
-  <img src="pics/high.png" width="300px" heigh="300px">
-      <label class="rocker">
-    <input type="checkbox" id="relay2Button" checked>
-    <span class="switch-left" onclick="toggleRelay(2)">On</span>
-    <span class="switch-right" onclick="toggleRelay(2)">Off</span>
-  </label>
-  </div>
-  </div>
-
-            <div class="col-12">
-                <!-- interactive chart -->
-                <div class="card card-primary card-outline">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="far fa-chart-bar"></i>
-                          Realtime PH Level Result
-                        </h3>
-                        <div class="card-tools">
-                            <div class="btn-group" id="realtime" data-toggle="btn-toggle">
-                                <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
+                        <!-- HTML Structure -->
+                        <div class="col-lg-8 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    CONTROLLER
+                                </div>
+                                <!-- <div class="card-body"> -->
+                                    <!-- Plant details -->
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <!-- switch for low -->
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <img src="pics/low.png" width="300px" height="300px" class="mr-3">
+                                                <!-- Switch for low -->
+                                                <label class="rocker">
+                                                    <input type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)">
+                                                    <span class="switch-left">On</span>
+                                                    <span class="switch-right">Off</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <!-- switch for high -->
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <img src="pics/high.png" width="300px" height="300px" class="mr-3">
+                                                <!-- Switch for high -->
+                                                <label class="rocker">
+                                                    <input type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)">
+                                                    <span class="switch-left">On</span>
+                                                    <span class="switch-right">Off</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+                            <!-- Interactive chart -->
+                <div class="col-lg-12">
+                <div class="row">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="far fa-chart-bar"></i>
+                                Realtime PH Level Result
+                            </h3>
+                        </div>
+                        <div class="card-body">
+                            <div id="interactive" style="height: 320px;"></div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div id="interactive" style="height: 450px;"></div>
-                    </div>
-                    <!-- /.card-body-->
                 </div>
-                <!-- /.card -->
             </div>
-            <!-- /.col -->
-            </div>
+        </div>
+    </main>
+</div>
+
+        <?php
+
+}else{
+    $_SESSION['status'] = "Invalid ID!";
+    header('Location: index.php');
+    exit();
+}
+
+}else{
+$_SESSION['status'] = "No Record Found!";
+header('Location: index.php');
+exit();
+}
+
+?>
 
 
     <!-- <button id="relay1Button" onclick="toggleRelay(1)">Toggle Relay 1</button>
@@ -374,30 +353,67 @@ var firebaseConfig = {
 
   firebase.initializeApp(firebaseConfig);
 
-  // Get a reference to the Firebase database
-  var database = firebase.database();
+// Get a reference to the Firebase database
+var database = firebase.database();
 
-  // Function to toggle Relay
-  function toggleRelay(relayNumber) {
-      // Get the current state of the relay from Firebase
-      database.ref(`/relay/${relayNumber}`).once('value').then(snapshot => {
-          const relayStatus = snapshot.val();
+// Function to update UI based on relay status
+function updateUI(relayNumber, relayStatus) {
+    const checkboxId = `relay${relayNumber}Checkbox`;
+    const checkbox = document.getElementById(checkboxId);
 
-          // Determine the new command based on the current state
-          const newCommand = relayStatus === 'on' ? 'off' : 'on';
+    // Update checkbox state based on relay status
+    checkbox.checked = relayStatus === 'on';
 
-          // Update the relay status in the Firebase database
-          database.ref(`/relay/${relayNumber}`).set(newCommand);
-      });
-  }
+    // Update other UI elements as needed
+}
 
-    </script>
+// Function to toggle Relay
+function toggleRelay(relayNumber) {
+    // Get the current state of both relays from Firebase
+    Promise.all([
+        database.ref(`/relay/1`).once('value'),
+        database.ref(`/relay/2`).once('value')
+    ]).then(snapshots => {
+        const relay1Status = snapshots[0].val();
+        const relay2Status = snapshots[1].val();
+
+        // Determine the new command based on the current state
+        const newCommand = relay1Status === 'on' || relay2Status === 'on' ? 'off' : 'on';
+
+        // Update the relay status in the Firebase database
+        database.ref(`/relay/${relayNumber}`).set(newCommand);
+    });
+}
+
+// Monitor changes in the relay status and update the UI
+function monitorRelayStatus(relayNumber) {
+    const relayRef = database.ref(`/relay/${relayNumber}`);
+
+    relayRef.on('value', snapshot => {
+        const relayStatus = snapshot.val();
+        updateUI(relayNumber, relayStatus);
+    });
+}
+
+// Call monitorRelayStatus for each relay you want to monitor
+monitorRelayStatus(1);
+monitorRelayStatus(2);
+
+// Disable the other checkbox if one is checked
+document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const otherCheckbox = this.id === 'relay1Checkbox' ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
+        otherCheckbox.disabled = this.checked;
+    });
+});
+</script>
+
+
+
 
 <?php
 include('includes/footer.php');
 ?>
-
-
 
 <!-- FLOT CHARTS -->
 <script src="plugins/flot/jquery.flot.js"></script>
@@ -408,35 +424,6 @@ include('includes/footer.php');
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-    function updatePlantInfo() {
-        var selectedPlantId = $('#plantSelect').val();
-
-        // Make an AJAX request to fetch plant data based on the selected plant ID
-        $.ajax({
-            url: 'get_plant_data.php', // Create a PHP script to handle this request
-            type: 'POST',
-            data: { plantId: selectedPlantId },
-            success: function (data) {
-                // Parse the returned JSON data and update the input fields
-                var plantData = JSON.parse(data);
-                $('#plantName').val(plantData.plant_name);
-                $('#requiredPh').val(plantData.ph_lvl_low + ' - ' + plantData.ph_lvl_high);
-                $('#datePlanted').val(plantData.date_planted);
-                $('#dateHarvested').val(plantData.date_harvest);
-                $('#plantStatus').val(plantData.date_status);
-                $('#bay').val(plantData.bay);
-                $('#nft').val(plantData.nft);
-
-            }
-        });
-    }
-</script>
-
 
 
 <!-- RealTime Ph lvl Chart -->

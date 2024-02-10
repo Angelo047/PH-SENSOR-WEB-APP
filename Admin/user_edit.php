@@ -1,6 +1,6 @@
 
 <?php
-session_start();
+include('admin_auth.php');
 include('includes/header.php');
 include('includes/navbar.php');
  ?>

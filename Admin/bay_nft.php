@@ -1,31 +1,50 @@
+<?php
+include('admin_auth.php');
+
+// Redirect unauthorized users to another page
+$uid = $verifiedIdToken->claims()->get('sub');
+$claims = $auth->getUser($uid)->customClaims;
+if(isset($claims['admin']) == false)  {
+    header('Location: index.php');
+    exit();
+}
+
+
+include('includes/header.php');
+include('includes/navbar.php');
+?>
+
+
     <?php
-    session_start();
-    include('includes/header.php');
-    include('includes/navbar.php');
+      if(isset($_SESSION['error'])){
+          echo "
+              <script>
+                  Swal.fire({
+                      icon: 'error',
+                      title: 'Error!',
+                      text: '" . $_SESSION['error'] . "',
+                      confirmButtonText: 'Okay'
+                  });
+              </script>
+          ";
+          unset($_SESSION['error']);
+      }
+
+      if(isset($_SESSION['success'])){
+          echo "
+              <script>
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'Success!',
+                      text: '" . $_SESSION['success'] . "',
+                      confirmButtonText: 'Okay'
+                  });
+              </script>
+          ";
+          unset($_SESSION['success']);
+      }
     ?>
 
-    <?php
-                            if(isset($_SESSION['error'])){
-                            echo "
-                                <div class='alert alert-danger alert-dismissible text-center'>
-                                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-                                <h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
-
-                                </div>
-                            ";
-                            unset($_SESSION['error']);
-                            }
-                            if(isset($_SESSION['success'])){
-                            echo "
-                                <div class='alert alert-success alert-dismissible text-center'>
-                                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-                                <h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
-
-                                </div>
-                            ";
-                            unset($_SESSION['success']);
-                            }
-                        ?>
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -37,12 +56,12 @@
                         <!-- DataTales Example for BAY Details -->
                         <div class="card shadow">
                             <div class="card-header">
-                                <h4 class="font-weight-bold text-success">BAY Details&nbsp;<a href="#addbay" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-success btn-sm btn-flat"><i class="fa fa-plus"></i> New</a></h4>
+                                <h4 class="font-weight-bold text-primary"> &nbsp;<a href="#addbay" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-primary"> <i class="fas fa-circle-plus fa-lg"></i>&nbsp; Bay Details</a></h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <!-- BAY Details Table -->
-                                    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                                    <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
                                         <!-- Table Header -->
                                         <thead>
                                             <tr>
@@ -90,12 +109,12 @@
                         <!-- DataTales Example for NFT Details -->
                         <div class="card shadow">
                             <div class="card-header">
-                                <h4 class="font-weight-bold text-success">NFT Details&nbsp;<a href="#addnft" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-success btn-sm btn-flat"><i class="fa fa-plus"></i> New</a></h4>
+                                <h4 class="font-weight-bold text-primary"> &nbsp;<a href="#addnft" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-primary"> <i class="fas fa-circle-plus fa-lg"></i>&nbsp; Nft Details</a></h4>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <!-- NFT Details Table -->
-                                    <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                                    <table class="table table-bordered table-striped" id="myTable2" width="100%" cellspacing="0">
                                         <!-- Table Header -->
                                         <thead>
                                             <tr>
@@ -151,10 +170,6 @@
     include('Modal/bay_modal.php');
     include('includes/footer.php');
     ?>
-
-
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
   $(document).ready(function() {
@@ -302,4 +317,15 @@ $(document).ready(function() {
 </script>
 
 
+<script>
+    $(document).ready(function() {
+        $('#myTable2').DataTable();
+    });
+</script>
 
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
+</script>
