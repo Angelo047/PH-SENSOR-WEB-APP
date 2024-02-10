@@ -4,188 +4,330 @@ include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
+
+<style>
+    .switch {
+        position: relative;
+        display: block;
+        vertical-align: top;
+        width: 120px;
+        height: 50px;
+        padding: 3px;
+        margin: 0 10px 10px 0;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
+        border-radius: 18px;
+        box-shadow: inset 0 -1px white, inset 0 1px 1px rgba(0, 0, 0, 0.05);
+        cursor: pointer;
+        box-sizing:content-box;
+    }
+    .switch-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        box-sizing:content-box;
+    }
+    .switch-label {
+        position: relative;
+        display: block;
+        height: inherit;
+        font-size: 10px;
+        text-transform: uppercase;
+        background: #eceeef;
+        border-radius: inherit;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
+        box-sizing:content-box;
+    }
+    .switch-label:before, .switch-label:after {
+        position: absolute;
+        top: 50%;
+        margin-top: -.5em;
+        line-height: 1;
+        -webkit-transition: inherit;
+        -moz-transition: inherit;
+        -o-transition: inherit;
+        transition: inherit;
+        box-sizing:content-box;
+    }
+    .switch-label:before {
+        content: attr(data-off);
+        right: 11px;
+        color: #aaaaaa;
+        text-shadow: 0 1px rgba(255, 255, 255, 0.5);
+    }
+    .switch-label:after {
+        content: attr(data-on);
+        left: 11px;
+        color: #FFFFFF;
+        text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+    }
+    .switch-input:checked ~ .switch-label {
+        background: #2ecc71;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.15), inset 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+    .switch-input:checked ~ .switch-label:before {
+        opacity: 0;
+    }
+    .switch-input:checked ~ .switch-label:after {
+        opacity: 1;
+    }
+    .switch-handle {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 38px;
+        height: 48px;
+        background: linear-gradient(to bottom, #FFFFFF 40%, #f0f0f0);
+        background-image: -webkit-linear-gradient(top, #FFFFFF 40%, #f0f0f0);
+        border-radius: 100%;
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+    .switch-handle:before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin: -6px 0 0 -6px;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(to bottom, #eeeeee, #FFFFFF);
+        background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF);
+        border-radius: 6px;
+        box-shadow: inset 0 1px rgba(0, 0, 0, 0.02);
+    }
+    .switch-input:checked ~ .switch-handle {
+        left: 94px;
+        box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Transition
+    ========================== */
+    .switch-label, .switch-handle {
+        transition: All 0.3s ease;
+        -webkit-transition: All 0.3s ease;
+        -moz-transition: All 0.3s ease;
+        -o-transition: All 0.3s ease;
+    }
+</style>
+
+
 <?php
-						if(isset($_SESSION['error'])){
-						echo "
-							<div class='alert alert-danger alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+    if(isset($_SESSION['error'])){
+        echo "
+            <script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '" . $_SESSION['error'] . "',
+                    showConfirmButton: false,
+                    timer: 3000 // Close the alert after 3 seconds
+                });
+            </script>
+        ";
+        unset($_SESSION['error']);
+    }
 
-							</div>
-						";
-						unset($_SESSION['error']);
-						}
-						if(isset($_SESSION['success'])){
-						echo "
-							<div class='alert alert-success alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+    if(isset($_SESSION['success'])){
+        echo "
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '" . $_SESSION['success'] . "',
+                    showConfirmButton: false,
+                    timer: 3000 // Close the alert after 3 seconds
+                });
+            </script>
+        ";
+        unset($_SESSION['success']);
+    }
+?>
 
-							</div>
-						";
-						unset($_SESSION['success']);
-						}
-					?>
-
-            <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
-                <!-- Content Header (Page header) -->
-                <div class="content-header">
-                  <div class="container-fluid">
-                    <!-- <div class="row mb-2">
-                      <div class="col-sm-6">
-                        <h1 class="m-0">Plant Info</h1>
-                      </div>
-                    </div> -->
-                    <div class="row mb-3">
-                      <div class="col-md-3">
-                      <ol class="breadcrumb float-sm-left">
-                      </ol>
-                    </div>
-                  </div>
+   <!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <ol class="breadcrumb float-sm-left">
+                    </ol>
                 </div>
-                <?php
-                    if(isset($_GET['id']))
-                    {
-                        $key_child = $_GET['id'];
-
-                        $ref_table = 'plants';
-                        $getData = $database->getReference($ref_table)->getChild($key_child)->getValue();
-
-                        if($getData > 0)
-                        {
-                            ?>
-
-    <!-- Main content -->
-    <div id="layoutSidenav_content">
-      <main>
-        <div class="container-fluid px-4">
-          <!-- Main content -->
-          <div class="row">
-            <div class="col-xl-3">
-              <div class="card mb-4">
-                <div class="row">
-                  <div class="col-md-12">
-                  <div class="card-header">
-                  <?= $getData['plant_name']; ?>
-              </div>
-                  </div>
-                </div>
-                  <div class="col-sm-12 text-center">
-                    <div class="card-body">
-                    <?php
-                // Check if the 'plant_photo' key exists in the data
-                if (isset($getData['plant_photo'])) {
-                    $plantPhotoURL = $getData['plant_photo'];
-                    ?>
-                    <img src="<?= $plantPhotoURL ?>" alt="Plant Photo" style="max-width: 300px;">
-                    <?php
-                } else {
-                    ?>
-                    <p>No plant photo available</p>
-                    <?php
-                }
-                ?>
-                    </div>
-                  </div>
-              </div>
             </div>
-
-
-            <!-- INFO -->
-            <div class="col-xl-6">
-              <div class="card mb-4">
-               <div class="card-header">
-                PLANT INFORMATION
-              </div>
-              <div class="modal-body">
-                <form class="row g-3">
-                 <!-- Plant Name -->
-                 <div class="col-md-6">
-                  <label for="plantName" class="form-label">Plant Name:</label>
-                  <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled selected value="<?= $getData['plant_name']; ?>">
-                </div>
-                <!-- Required pH Level -->
-                <div class="col-md-6">
-                  <label for="requiredPh" class="form-label">Required pH Level:</label>
-                  <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
-                </div>
-
-                <!-- Date Planted-->
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Date Planted</label>
-                  <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled selected value="<?= $getData['date_planted']; ?>"/>
-                    <div class="input-group-append" data-target="#reservationdate">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Date Harvested-->
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Estimated Date Harvested</label>
-                  <div class="input-group date">
-                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= $getData['date_harvest']; ?>"/>
-                    <div class="input-group-append" data-target="#reservationdate">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <form class="row g-3">
-                 <div class="col-md-6">
-                  <br>
-                  <label>Plant Status</label>
-                  <div class="input-group date" id="reservationdate" data-target-input="nearest">
-                    <input type="text" class="form-control" id="dateHarvested" placeholder="November 17, 2023" disabled selected value="<?= $getData['plant_status']; ?>" data-target="#reservationdate"/>
-                  </div>
-                </div>
-
-
-                <form class="row g-3">
-                 <div class="col-md-3">
-                  <br>
-                  <label>BAY</label>
-                  <div class="input-group date" id="reservationdate">
-                    <input type="text" class="form-control" id="dateHarvested" placeholder="November 17, 2023" disabled selected value="<?= $getData['bay']; ?>"/>
-                  </div>
-                </div>
-
-                  <form class="row g-3">
-                 <div class="col-md-3">
-                  <br>
-                  <label>NFT</label>
-                  <div class="input-group date" id="reservationdate">
-                    <input type="text" class="form-control"  disabled selected value="<?= $getData['nft']; ?>"/>
-                  </div>
-                </div>
-
-
-
-                </div>
-              </div>
-            </div>
-
-          <div class="row">
-            <div class="col-12">
-              <div class="card-body">
-                <div class="text-center">
-                  <input type="text"
-                  class="knob" value="39" data-skin="tron"
-                  data-thickness="0.2" data-width="250" data-height="250"
-                  data-fgColor="#2C3090">
-                  <div class="knob-label"><b>Days before Harvest</b></div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+    </div>
+
+    <?php
+    if (isset($_GET['id'])) {
+        $key_child = $_GET['id'];
+
+        $ref_table = 'plants';
+        $getData = $database->getReference($ref_table)->getChild($key_child)->getValue();
+
+        if ($getData > 0) {
+            ?>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-3">
+                <!-- Main content -->
+                <div class="row">
+                    <div class="col-xl-3">
+                        <div class="card">
+                            <div class="card-header">
+                                        <?= $getData['plant_name']; ?>
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <?php
+                                        // Check if the 'plant_photo' key exists in the data
+                                        if (isset($getData['plant_photo'])) {
+                                            $plantPhotoURL = $getData['plant_photo'];
+                                            ?>
+                                            <img src="<?= $plantPhotoURL ?>" alt="Plant Photo" style="max-width: 300px; height:300px;">
+                                            <?php
+                                        } else {
+                                            ?>
+                                            <p>No plant photo available</p>
+                                            <?php
+                                        }
+                                        ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- INFO -->
+                            <div class="col-xl-4">
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        PLANT INFORMATION
+                                    </div>
+                                    <div class="card-body">
+                                        <form class="row g-3" method="post" action="code.php">
+                                            <!-- Plant Name -->
+                                            <div class="col-md-6">
+                                                <label for="plantName">Plant Name:</label>
+                                                <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled selected value="<?= $getData['plant_name']; ?>">
+                                            </div>
+                                            <!-- Required pH Level -->
+                                            <div class="col-md-6">
+                                                <label for="requiredPh">Required pH Level:</label>
+                                                <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
+                                            </div>
+
+                                            <!-- Date Planted -->
+                                            <div class="col-md-6">
+                                                <label>Date Planted</label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled selected value="<?= $getData['date_planted']; ?>" />
+                                                    <div class="input-group-append" data-target="#reservationdate">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Date Harvested -->
+                                            <div class="col-md-6">
+                                                <label>Estimated Date Harvested</label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= $getData['date_harvest']; ?>" />
+                                                    <div class="input-group-append" data-target="#reservationdate">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label>BAY</label>
+                                                <div class="input-group date" id="reservationdate">
+                                                    <input type="text" class="form-control" id="dateHarvested" placeholder="November 17, 2023" disabled selected value="<?= $getData['bay']; ?>" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label>NFT</label>
+                                                <div class="input-group date" id="reservationdate">
+                                                    <input type="text" class="form-control" disabled selected value="<?= $getData['nft']; ?>" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label>Plant Status</label>
+                                                <select class="form-control" name="plant_status" id="plantStatusSelect">
+                                                    <option value="" disabled selected>Select Plant Status</option>
+                                                    <option value="Planted" <?= ($getData['plant_status'] == 'Planted') ? 'selected' : '' ?>>Planted</option>
+                                                    <option value="Harvested" <?= ($getData['plant_status'] == 'Harvested') ? 'selected' : '' ?>>Harvested</option>
+                                                    <option value="Withered" <?= ($getData['plant_status'] == 'Withered') ? 'selected' : '' ?>>Withered</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="id" value="<?= $key_child ?>">
+                                            <div class="col-md-6 mt-6">
+                                                <button type="submit" class="btn btn-primary" id="updateStatusButton" disabled>Update Status</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-lg-3 mt-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            PUMP CONTROL
+                                        </div>
+                                        <div class="card-body" style="min-height: 330px;">
+                                            <!-- Switch for low -->
+                                            <div class="row mb-3 justify-content-center mt-3">
+                                                <div class="col-md-6 text-center">
+                                                    <label for="relay1Checkbox">Higher pH Level</label>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <label class="switch">
+                                                            <input class="switch-input" type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)" />
+                                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                            <span class="switch-handle"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Switch for high -->
+                                            <div class="row justify-content-center">
+                                                <div class="col-md-6 text-center">
+                                                    <label for="relay2Checkbox">Lower pH Level</label>
+                                                    <div class="d-flex justify-content-center align-items-center">
+                                                        <label class="switch">
+                                                            <input class="switch-input" type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)" />
+                                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                            <span class="switch-handle"></span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                            <div class="col-xl-2">
+                                <div class="card mb-4">
+                                <div class="card-header">
+                                                ESTIMATED HARVEST DATE
+                                            </div>
+                                    <div class="card-body">
+                                        <div class="text-center">
+                                            <input type="text" class="knob" value="39" data-skin="tron" data-thickness="0.2" data-width="250" data-height="250" data-fgColor="#2C3090">
+                                            <div class="knob-label"><b>Days before Harvest</b></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
         <br>
 
         <?php
@@ -231,34 +373,9 @@ exit();
                 $phSensorDataRef = $database->getReference('/phSensorData');
                 $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
                 $latestPhValue = reset($latestPhSensorData);
-
-                if ($latestPhValue > $requiredHighPhLevel) {
-                    $notificationsRef = $database->getReference('/notifications')->push();
-                    $notificationsRef->set([
-                        'plant_name' => $plantInfo['plant_name'],
-                        'plant_photo' => $plantInfo['plant_photo'],
-                        'message' => "High pH Level: $latestPhValue",
-                        'current_date' => date('H:i A, M j, Y'),
-                        'isRead' => 0,
-                      ]);
-                    echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
-                } elseif ($latestPhValue < $requiredLowPhLevel) {
-                    $notificationsRef = $database->getReference('/notifications')->push();
-                    $notificationsRef->set([
-                        'plant_name' => $plantInfo['plant_name'],
-                        'plant_photo' => $plantInfo['plant_photo'],
-                        'message' => "Low pH Level: $latestPhValue",
-                        'current_date' => date('H:i A, M j, Y'),
-                        'isRead' => 0,
-                      ]);
-                    // echo 'Notification created: ' . $notificationsRef->getKey() . PHP_EOL;
-                } else {
-                    // echo 'pH value is within the acceptable range for ' . $plantInfo['plant_name'] . '.' . PHP_EOL;
-                }
             }
 
             // Call the pH level check function
-            checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $database, $plantInfo);
         } else {
             echo 'Plant information not found.' . PHP_EOL;
         }
@@ -305,6 +422,83 @@ exit();
 </div>
 
 
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+
+<script>
+      // Initialize Firebase
+        var firebaseConfig = {
+        apiKey: "AIzaSyAIjMwy9jr4Cr_cudDpn5A3RpxUpgL6jDw",
+        authDomain: "ph-sensor-web-app.firebaseapp.com",
+        databaseURL: "https://ph-sensor-web-app-default-rtdb.firebaseio.com",
+        projectId: "ph-sensor-web-app",
+        storageBucket: "ph-sensor-web-app.appspot.com",
+        messagingSenderId: "385380264610",
+        appId: "1:385380264610:web:fbac7afd889b8e8feb85fb",
+        measurementId: "G-5JN9Y96ZM9"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the Firebase database
+    var database = firebase.database();
+
+    // Function to update UI based on relay status
+    function updateUI(relayNumber, relayStatus) {
+        const checkboxId = `relay${relayNumber}Checkbox`;
+        const checkbox = document.getElementById(checkboxId);
+
+        // Update checkbox state based on relay status
+        checkbox.checked = relayStatus === 'on';
+
+        // Update other UI elements as needed
+    }
+
+    // Function to toggle Relay
+    function toggleRelay(relayNumber) {
+        // Get the current state of both relays from Firebase
+        Promise.all([
+            database.ref(`/relay/1`).once('value'),
+            database.ref(`/relay/2`).once('value')
+        ]).then(snapshots => {
+            const relay1Status = snapshots[0].val();
+            const relay2Status = snapshots[1].val();
+
+            // Determine the new command based on the current state
+            const newCommand = relay1Status === 'on' || relay2Status === 'on' ? 'off' : 'on';
+
+            // Update the relay status in the Firebase database
+            database.ref(`/relay/${relayNumber}`).set(newCommand);
+        });
+    }
+
+    // Monitor changes in the relay status and update the UI
+    function monitorRelayStatus(relayNumber) {
+        const relayRef = database.ref(`/relay/${relayNumber}`);
+
+        relayRef.on('value', snapshot => {
+            const relayStatus = snapshot.val();
+            updateUI(relayNumber, relayStatus);
+        });
+    }
+
+    // Call monitorRelayStatus for each relay you want to monitor
+    monitorRelayStatus(1);
+    monitorRelayStatus(2);
+
+    // Disable the other checkbox if one is checked
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const otherCheckbox = this.id === 'relay1Checkbox' ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
+            otherCheckbox.disabled = this.checked;
+        });
+    });
+</script>
+
+
+
 <?php
 include('includes/footer.php');
 
@@ -330,7 +524,7 @@ function checkNotifications() {
 }
 
 // Set an interval to periodically check for notifications
-setInterval(checkNotifications, 3000); // 3000 milliseconds = 3 seconds, adjust as needed
+setInterval(checkNotifications, 10000); // 3000 milliseconds = 3 seconds, adjust as needed
 </script>
 
 
@@ -341,12 +535,9 @@ setInterval(checkNotifications, 3000); // 3000 milliseconds = 3 seconds, adjust 
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="plugins/flot/plugins/jquery.flot.pie.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-
-
 
 
 <!-- RealTime Ph lvl Chart -->
@@ -497,6 +688,20 @@ $(function () {
 });
 </script>
 
+
+
+<script>
+    // Get the select element
+    var plantStatusSelect = document.getElementById('plantStatusSelect');
+    // Get the update status button
+    var updateStatusButton = document.getElementById('updateStatusButton');
+
+    // Add change event listener to select element
+    plantStatusSelect.addEventListener('change', function() {
+        // Enable/disable the update status button based on the selected value
+        updateStatusButton.disabled = this.value === '';
+    });
+</script>
 
 
 

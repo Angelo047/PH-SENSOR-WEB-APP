@@ -75,72 +75,111 @@
 
   firebase.initializeApp(firebaseConfig);
 
-  var notificationsRef = firebase.database().ref('notifications');
+var notificationsRef = firebase.database().ref('notifications');
 
-  var latestNotifications = [];
+var latestNotifications = [];
 
-  notificationsRef.on('child_added', function(snapshot) {
-    var notification = snapshot.val();
+notificationsRef.on('child_added', function(snapshot) {
+  var notification = snapshot.val();
 
-    if (!notification.isRead) {
-      // Update the notification count only for unread notifications
-      var notificationCount = parseInt($('#notification-count').text());
-      $('#notification-count').text(notificationCount + 1);
-    }
+  if (!notification.isRead) {
+    // Update the notification count only for unread notifications
+    var notificationCount = parseInt($('#notification-count').text());
+    $('#notification-count').text(notificationCount + 1);
+  }
 
-    // Only add unread notifications to the latestNotifications array
-    if (!notification.isRead) {
-      latestNotifications.unshift({ id: snapshot.key, ...notification });
-      latestNotifications = latestNotifications.slice(0, 5);
-    }
+  // Only add unread notifications to the latestNotifications array
+  if (!notification.isRead) {
+    latestNotifications.unshift({ id: snapshot.key, ...notification });
+    latestNotifications = latestNotifications.slice(0, 5);
+  }
 
-    $('#notifications-list').empty();
+  $('#notifications-list').empty();
 
-    for (var i = 0; i < latestNotifications.length; i++) {
-      var notificationItem = latestNotifications[i];
-      $('#notifications-list').append(
-        '<a href="#" class="dropdown-item" data-notification-id="' + notificationItem.id + '">' +
-        '<div class="callout callout-success">' +
-        '<div class="media">' +
-        '<img src="' + notificationItem.plant_photo + '" alt="User Avatar" class="img-size-50 mr-3 img-circle">' +
-        '<div class="media-body">' +
-        '<h3 class="dropdown-item-title">' +
-        '<strong>' + notificationItem.plant_name + '</strong><br>' +
-        '<p class="text-sm text-muted">' + notificationItem.message + '</p>' +
-        '<p class="text-sm text-muted">' + notificationItem.current_date + '</p>' +
-        '</div>' +
-        '</div>' +
-        '</div>' +
-        '</a>' +
-        '<div class="dropdown-divider"></div>'
-      );
-    }
+  for (var i = 0; i < latestNotifications.length; i++) {
+    var notificationItem = latestNotifications[i];
+    $('#notifications-list').append(
+      '<a href="#" class="dropdown-item" data-notification-id="' + notificationItem.id + '">' +
+      '<div class="callout callout-success">' +
+      '<div class="media">' +
+      '<img src="' + notificationItem.plant_photo + '" alt="User Avatar" class="img-size-50 mr-3 img-circle">' +
+      '<div class="media-body">' +
+      '<h3 class="dropdown-item-title">' +
+      '<strong>' + notificationItem.plant_name + '</strong><br>' +
+      '<p class="text-sm text-muted">' + notificationItem.message + '</p>' +
+      '<p class="text-sm text-muted">' + notificationItem.current_date + '</p>' +
+      '</div>' +
+      '</div>' +
+      '</div>' +
+      '</a>' +
+      '<div class="dropdown-divider"></div>'
+    );
+  }
 
-    $('#notifications-count').text('(' + latestNotifications.length + ')');
-  });
+  $('#notification-count').text('(' + latestNotifications.length + ')');
+});
 
-  // Add click event to mark all notifications as read
-  $('#notification-bell').on('click', function() {
-    // Mark all unread notifications as read in the Firebase Realtime Database
-    notificationsRef.once('value', function(snapshot) {
-      snapshot.forEach(function(childSnapshot) {
-        var notificationId = childSnapshot.key;
-        var notification = childSnapshot.val();
+// Add click event to mark all notifications as read
+$('#notification-bell').on('click', function() {
+  // Mark all unread notifications as read in the Firebase Realtime Database
+  notificationsRef.once('value', function(snapshot) {
+    snapshot.forEach(function(childSnapshot) {
+      var notificationId = childSnapshot.key;
+      var notification = childSnapshot.val();
 
-        if (!notification.isRead) {
-          notificationsRef.child(notificationId).update({
-            isRead: 1
-          });
-        }
-      });
+      if (!notification.isRead) {
+        notificationsRef.child(notificationId).update({
+          isRead: 1
+        });
+      }
     });
-
-    // Reset the notification count
-    $('#notification-count').text('0');
   });
+
+  // Reset the notification count
+  $('#notification-count').text('0');
+});
 </script>
 
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#myTable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    $('#myTable2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 
 </body>
 </html>

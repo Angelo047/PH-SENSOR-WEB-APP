@@ -48,13 +48,13 @@ if(isset($_POST['login-btn']))
 
 
         }catch(Exception $e){
-            $_SESSION['error'] = "Wrong Password";
+            $_SESSION['error'] = "Wrong Password or Email";
             header('Location: login.php');
             exit();;
         }
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
-        $_SESSION['error'] = "Wrong Email";
+        $_SESSION['error'] = "Wrong Password or Email";
         header('Location: login.php');
         exit();;
     }

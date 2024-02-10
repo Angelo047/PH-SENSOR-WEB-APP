@@ -62,12 +62,34 @@ include('includes/navbar.php');
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+
+
+
           <!-- ./col -->
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
-                <h3>3<sup style="font-size: 20px"></sup></h3>
+
+                <h3>
+                <?php
+              $ref_table = 'plants';
+              $total_harvested = 0;
+
+              $plants_ref = $database->getReference($ref_table);
+
+              // Loop through each plant
+              foreach ($plants_ref->getValue() as $key => $plant) {
+                  // Check if the plant_status is Harvested
+                  if (isset($plant['plant_status']) && $plant['plant_status'] === 'Harvested') {
+                      $total_harvested++;
+                  }
+              }
+              ?>
+
+                <?php echo $total_harvested;?>
+                <sup style="font-size: 20px"></sup>
+              </h3>
 
                 <p>Harvested Plants</p>
               </div>
@@ -202,7 +224,6 @@ include('includes/footer.php');
 <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
 <script src="plugins/flot/plugins/jquery.flot.pie.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>

@@ -10,27 +10,35 @@ include('includes/navbar.php');
         <div class="col-md-12">
             <div class="card  mt-5">
             <?php
-						if(isset($_SESSION['error'])){
-						echo "
-							<div class='alert alert-danger alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+                if(isset($_SESSION['error'])){
+                    echo "
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: '" . $_SESSION['error'] . "',
+                                confirmButtonText: 'Okay'
+                            });
+                        </script>
+                    ";
+                    unset($_SESSION['error']);
+                }
 
-							</div>
-						";
-						unset($_SESSION['error']);
-						}
-						if(isset($_SESSION['success'])){
-						echo "
-							<div class='alert alert-success alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+                if(isset($_SESSION['success'])){
+                    echo "
+                        <script>
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: '" . $_SESSION['success'] . "',
+                                confirmButtonText: 'Okay'
+                            });
+                        </script>
+                    ";
+                    unset($_SESSION['success']);
+                }
+                ?>
 
-							</div>
-						";
-						unset($_SESSION['success']);
-						}
-					?>
                 <div class="card-header">
                     My Profile
                 </div>
@@ -72,7 +80,7 @@ include('includes/navbar.php');
                             </div>
                              <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                <label for="">Your Role</label>
+                                <label for="">Role</label>
                                 <div class="form-control">
                                 <?php
                                             $claims = $auth->getUser($user -> uid)->customClaims;
@@ -103,23 +111,11 @@ include('includes/navbar.php');
                                                 echo "Disabled";
                                             }
                                             else{
-                                                echo "Enabled";
+                                                echo "Active";
                                             }
                                             ?>
                                 </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                <label for="">Password</label>
-                                <input type="password" name="password" value="<?=$user->passwordHash;?>" required class="form-control" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                            </div>
-                            <div class="col-md-4 mx-auto">
-                                <a href="change-password.php?id=<?=$user -> uid;?>" class="form-control btn btn-primary">Change Password</a>
                             </div>
                             </div>
                             </div>
@@ -149,7 +145,7 @@ include('includes/navbar.php');
                         <div class="col-md-12">
                             <hr>
                             <div class="form-group float-right">
-                                <button type="submit" name="update_user_profile" class="btn btn-success">Update Profile</button>
+                                <button type="submit" name="update_user_profile" class="btn btn-primary">Update Profile</button>
                             </div>
                         </div>
                     </div>

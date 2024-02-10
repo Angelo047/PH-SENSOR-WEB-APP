@@ -4,28 +4,38 @@ include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
+
 <?php
-						if(isset($_SESSION['error'])){
-						echo "
-							<div class='alert alert-danger alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
+if(isset($_SESSION['error'])){
+    echo "
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: '" . $_SESSION['error'] . "',
+                confirmButtonText: 'Okay'
+            });
+        </script>
+    ";
+    unset($_SESSION['error']);
+}
 
-							</div>
-						";
-						unset($_SESSION['error']);
-						}
-						if(isset($_SESSION['success'])){
-						echo "
-							<div class='alert alert-success alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-check'></i> Success! ".$_SESSION['success']."</h4>
+if(isset($_SESSION['success'])){
+    echo "
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: '" . $_SESSION['success'] . "',
+                confirmButtonText: 'Okay'
+            });
+        </script>
+    ";
+    unset($_SESSION['success']);
+}
+?>
 
-							</div>
-						";
-						unset($_SESSION['success']);
-						}
-					?>
+
 
 <?php
 // Fetch data for BAY
@@ -36,23 +46,34 @@ $bayData = $bayRef->getValue();
 $nftRef = $database->getReference('NFT');
 $nftData = $nftRef->getValue();
 ?>
-
-<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-	<!-- Content Header (Page header) -->
-	<div class="content-header">
-		<div class="container-fluid">
-			<div class="row mb-2">
-				<div class="col-sm-12">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-12">
                     <!-- DataTales Example -->
                     <div class="card shadow">
                         <div class="card-header">
-                        <h4 class="font-weight-bold text-success">Plants&nbsp;<a href="#addplants" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-success btn-sm btn-flat"><i class="fa fa-plus"></i> New</a></h4>
-
-                        </div>
+                        <h4 class="font-weight-bold text-primary"> &nbsp;<a href="#addplants" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-primary"> <i class="fas fa-circle-plus fa-lg"></i>&nbsp; Add Plants</a></h4>
+                    </div>
+                    <!-- Dropdown Filter -->
+                    <div class="form-group"> <!-- Add 'float-right' class to align to the right -->
+                    </div>
                         <div class="card-body">
+                        <div class="row">
+                            <div class="col-2"> <!-- Adjust column width -->
+                                <label for="statusFilter">Filter by Status:</label>
+                                <select class="form-control" id="statusFilter">
+                                    <option value="all">All</option>
+                                    <option value="Planted">Planted</option>
+                                    <option value="Harvested">Harvested</option>
+                                    <option value="Withered">Withered</option>
+                                </select>
+                            </div>
+                        </div>
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="myTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                         <th class="text-center">No#</th>
@@ -68,41 +89,57 @@ $nftData = $nftRef->getValue();
                                     </thead>
                                     <tbody>
 
-                                            <?php
-                                            $ref_table = 'plants';
-                                            $fetchdata = $database->getReference($ref_table)->getValue();
+                                    <?php
+                                        $ref_table = 'plants';
+                                        $fetchdata = $database->getReference($ref_table)->getValue();
 
-                                            if ($fetchdata > 0) {
-                                                $i = 1;
-                                                foreach ($fetchdata as $key => $row) {
-                                                    ?>
-                                                    <tr class="text-center">
-                                                        <td><?= $i++; ?></td>
-                                                        <td><?= $row['plant_name']; ?></td>
-                                                        <td><?= $row['date_planted']; ?></td>
-                                                        <td><?= $row['date_harvest']; ?></td>
-                                                        <td>
-                                                          <?= $row['ph_lvl_low']; ?>
-                                                          <?= $row['ph_lvl_high']; ?>
-                                                        </td>
-                                                        <td><span class="badge bg-success"><?= $row['plant_status']; ?></span></td>
-                                                        <td><?= $row['bay']; ?></td>
-                                                        <td><?= $row['nft']; ?></td>
-                                                        <td>
-                                                            <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-success"><i class="fas fa-eye"></i> View</a>
-                                                            <a href="report.php?id=<?= $key; ?>" class="btn btn-primary"><i class="fa-solid fa-file-pen"></i> Report</a>
-                                                        </td>
-                                                    </tr>
+                                        if (!empty($fetchdata)) {
+                                            $i = 1;
+                                            foreach ($fetchdata as $key => $row) {
+                                        ?>
+                                                <tr class="text-center"  data-id="<?= $key ?>">
+                                                    <td><?= $i++; ?></td>
+                                                    <td><?= $row['plant_name']; ?></td>
+                                                    <td><?= $row['date_planted']; ?></td>
+                                                    <td><?= $row['date_harvest']; ?></td>
+                                                    <td>
+                                                        <?= $row['ph_lvl_low']; ?>
+                                                        <?= $row['ph_lvl_high']; ?>
+                                                    </td>
                                                     <?php
-                                                }
-                                            } else {
-                                                ?>
-                                                <tr>
-                                                    <td colspan="9">No Record Found</td>
+                                                            $status = $row['plant_status'];
+                                                            $badgeClass = '';
+
+                                                            // Set badge color based on plant status
+                                                            switch ($status) {
+                                                                case 'Withered':
+                                                                    $badgeClass = 'bg-danger'; // Red background
+                                                                    break;
+                                                                case 'Harvested':
+                                                                    $badgeClass = 'bg-primary'; // Yellow background
+                                                                    break;
+                                                                default:
+                                                                    $badgeClass = 'bg-success'; // Green background
+                                                                    break;
+                                                            } ?>
+                                                    <td>    <span class="badge <?= $badgeClass ?>"><?= $status ?></span></td>
+                                                    <td><?= $row['bay']; ?></td>
+                                                    <td><?= $row['nft']; ?></td>
+                                                    <td>
+                                                    <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
+                                                        <a href="report.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
+                                                    </td>
                                                 </tr>
-                                                <?php
+                                        <?php
                                             }
-                                            ?>
+                                        } else {
+                                        ?>
+                                            <tr>
+                                                <td colspan="9">No Record Found</td>
+                                            </tr>
+                                        <?php
+                                        }
+                                        ?>
                                         </tbody>
 
                                 </table>
@@ -116,6 +153,7 @@ $nftData = $nftRef->getValue();
                                 </div>
 
 
+                                </div>
 
 
 <?php
@@ -123,16 +161,11 @@ include('Modal/plant_modal.php');
 include('includes/footer.php');
 ?>
 
-<script>
-$(document).ready( function () {
-    $('#myTable').DataTable();
-} );
-</script>
 
 
 <script>
   function displayImagePreview() {
-    var input = document.getElementById('input-file');
+    var input = document.getElementById('plant_photo');
     var img = document.getElementById('profile-pic');
     if (input.files && input.files[0]) {
       var reader = new FileReader();
@@ -153,7 +186,6 @@ $(document).ready( function () {
 
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
 
 
 <script>
@@ -246,5 +278,31 @@ $(document).ready( function () {
     document.getElementById("date_planted").addEventListener("change", function () {
         var selectedPlantName = document.getElementById("plant_name").value;
         fetchPlantDetails(selectedPlantName);
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#statusFilter').on('change', function() {
+            var status = $(this).val();
+            if (status === 'all') {
+                $('#myTable tbody tr').show();
+            } else {
+                $('#myTable tbody tr').hide();
+                $('#myTable tbody tr').each(function() {
+                    var rowStatus = $(this).find('td:nth-child(6)').text().trim();
+                    if (rowStatus === status) {
+                        $(this).show();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#myTable').DataTable();
     });
 </script>

@@ -36,7 +36,7 @@
 // Dropdown Sizes
 .dropdown-menu-lg {
   max-width: 300px;
-  min-width: 280px;
+  min-width: 300px;
   padding: 0;
 
   .dropdown-divider {
@@ -45,6 +45,7 @@
 
   .dropdown-item {
     padding: $dropdown-padding-y $dropdown-item-padding-x;
+    min-width: 300px;
   }
 
   p {
@@ -97,6 +98,7 @@
 
   .dropdown-item {
     padding: $dropdown-padding-y $dropdown-item-padding-x;
+    min-width: 300px;
   }
 
   p {
@@ -251,6 +253,7 @@
   }
   .dropdown-item {
     color: $white;
+    min-width: 300px;
 
     &:focus,
     &:hover {
