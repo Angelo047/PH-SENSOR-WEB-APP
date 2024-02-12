@@ -145,24 +145,18 @@ include('includes/navbar.php');
         </div>
         <!-- /.row -->
 
-
-<!-- Main content -->
-<section class="content">
+        <section class="content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-6">
+            <div class="col-md-6">
                 <!-- interactive chart -->
                 <div class="card card-primary card-outline">
                     <div class="card-header">
                         <h3 class="card-title">
                             <i class="far fa-chart-bar"></i>
-                          Realtime PH Level Result
+                            Realtime PH Level Result
                         </h3>
                         <div class="card-tools">
-                            <div class="btn-group" id="realtime" data-toggle="btn-toggle">
-                                <button type="button" class="btn btn-default btn-sm active" data-toggle="on">On</button>
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="off">Off</button>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -174,7 +168,7 @@ include('includes/navbar.php');
             </div>
             <!-- /.col -->
 
-            <div class="col-6">
+            <div class="col-md-6">
                 <!-- Weekly Update chart -->
                 <div class="card"> <!-- Remove 'float-right' class here -->
                     <div class="card-header">
@@ -182,30 +176,21 @@ include('includes/navbar.php');
                     </div>
                     <div class="card-body">
                         <div class="chart">
-                            <canvas id="barChart" style="min-height: 350px; height: 350px; max-height: 350px; max-width: 100%;"></canvas>
+                            <canvas id="barChart" style="min-height: 450px; height: 450px; max-height: 450px; max-width: 100%;"></canvas>
                         </div>
                     </div>
                 </div>
+            </div>
 
-            <div class="col-12">
-
+            <div class="col-md-12">
                 <!-- Clock chart -->
-                <!-- <div class="charts"> -->
-
-
-                    <div class="item3">
-                        <div id="clock"></div>
-                    </div>
+                <div class="item3">
+                    <div id="clock"></div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-
-    </div>
-    <!-- /.container-fluid -->
 </section>
-<!-- /.content -->
 
 
 </div>

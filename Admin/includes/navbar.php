@@ -26,7 +26,7 @@
   <li class="nav-item dropdown">
     <a id="notification-bell" class="nav-link mr-3" data-toggle="dropdown" href="#">
     <i class="fas fa-bell fa-2 mr-3 mt-2"></i>
-      <span id="notification-count" class="badge badge-danger navbar-badge">0</span>
+      <span id="notification-count" class="badge badge-danger navbar-badge"></span>
     </a>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notifications-container">
       <div class="dropdown-header bg-primary">
@@ -126,7 +126,7 @@
         <li class="nav-item">
           <a href="history.php" class="nav-link">
             <i class="fa-solid fa-clock-rotate-left"></i>
-            <p>History</p>
+            <p>Activities</p>
           </a>
         </li>
 

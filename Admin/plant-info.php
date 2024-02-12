@@ -227,16 +227,26 @@ include('includes/navbar.php');
                                                 </div>
                                             </div>
 
-                                            <!-- Date Harvested -->
-                                            <div class="col-md-6">
-                                                <label>Estimated Date Harvested</label>
-                                                <div class="input-group date">
-                                                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= $getData['date_harvest']; ?>" />
-                                                    <div class="input-group-append" data-target="#reservationdate">
-                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                          <!-- Estimated Date Harvested -->
+                                                <div class="col-md-6">
+                                                <label>
+                                                            <?php
+                                                            if ($getData['plant_status'] == 'Withered') {
+                                                                echo 'Withered Date';
+                                                            } elseif ($getData['plant_status'] == 'Harvested') {
+                                                                echo 'Harvested Date';
+                                                            } else {
+                                                                echo 'Estimated Date Harvested';
+                                                            }
+                                                            ?>
+                                                        </label>
+                                                        <div class="input-group date">
+                                                        <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?>" />
+                                                        <div class="input-group-append" data-target="#reservationdate">
+                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
                                             <div class="col-md-3">
                                                 <label>BAY</label>
@@ -524,7 +534,7 @@ function checkNotifications() {
 }
 
 // Set an interval to periodically check for notifications
-setInterval(checkNotifications, 10000); // 3000 milliseconds = 3 seconds, adjust as needed
+setInterval(checkNotifications, 60000); // 3000 milliseconds = 3 seconds, adjust as needed
 </script>
 
 

@@ -62,15 +62,16 @@ $nftData = $nftRef->getValue();
                     </div>
                         <div class="card-body">
                         <div class="row">
-                            <div class="col-2"> <!-- Adjust column width -->
-                                <label for="statusFilter">Filter by Status:</label>
-                                <select class="form-control" id="statusFilter">
-                                    <option value="all">All</option>
-                                    <option value="Planted">Planted</option>
-                                    <option value="Harvested">Harvested</option>
-                                    <option value="Withered">Withered</option>
-                                </select>
-                            </div>
+                        <div class="col-2"> <!-- Adjust column width -->
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select class="form-control" id="statusFilter">
+                                <option value="Planted" selected>Planted</option>
+                                <option value="Harvested">Harvested</option>
+                                <option value="Withered">Withered</option>
+                            </select>
+                        </div>
+
+
                         </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
@@ -79,7 +80,7 @@ $nftData = $nftRef->getValue();
                                         <th class="text-center">No#</th>
                                         <th class="text-center">Plants Name</th>
                                         <th class="text-center">Date Planted</th>
-                                        <th class="text-center">Estimated Date Harvested</th>
+                                        <th class="text-center estimatedDateHeader" id="estimatedDateHeader">Estimated Date Harvested</th>
                                         <th class="text-center">Required pH Level</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Bay</th>
@@ -90,56 +91,65 @@ $nftData = $nftRef->getValue();
                                     <tbody>
 
                                     <?php
-                                        $ref_table = 'plants';
-                                        $fetchdata = $database->getReference($ref_table)->getValue();
+                                            $ref_table = 'plants';
+                                            $fetchdata = $database->getReference($ref_table)->getValue();
 
-                                        if (!empty($fetchdata)) {
-                                            $i = 1;
-                                            foreach ($fetchdata as $key => $row) {
-                                        ?>
-                                                <tr class="text-center"  data-id="<?= $key ?>">
-                                                    <td><?= $i++; ?></td>
-                                                    <td><?= $row['plant_name']; ?></td>
-                                                    <td><?= $row['date_planted']; ?></td>
-                                                    <td><?= $row['date_harvest']; ?></td>
-                                                    <td>
-                                                        <?= $row['ph_lvl_low']; ?>
-                                                        <?= $row['ph_lvl_high']; ?>
-                                                    </td>
-                                                    <?php
-                                                            $status = $row['plant_status'];
-                                                            $badgeClass = '';
+                                            if (!empty($fetchdata)) {
+                                                $i = 1;
+                                                foreach ($fetchdata as $key => $row) {
+                                                    ?>
+                                                    <tr class="text-center" data-id="<?= $key ?>">
+                                                        <td><?= $i++; ?></td>
+                                                        <td><?= $row['plant_name']; ?></td>
+                                                        <td><?= date('M d, Y', strtotime($row['date_planted'])); ?></td>
+                                                        <td>
+                                                        <?php
+                                                            // Check if the plant status is "Withered" or "Harvested"
+                                                            if ($row['plant_status'] == 'Withered' || $row['plant_status'] == 'Harvested') {
+                                                                // Format the claim_date
+                                                                echo date('M d, Y', strtotime($row['claim_date'])); // Display claim_date if status is "Withered" or "Harvested"
+                                                            } else {
+                                                                // Format the date_harvest
+                                                                echo date('M d, Y', strtotime($row['date_harvest'])); // Otherwise, display date_harvest
+                                                            }
+                                                            ?>
+                                                        </td>
+                                                        <td><?= $row['ph_lvl_low']; ?> - <?= $row['ph_lvl_high']; ?></td>
+                                                        <?php
+                                                        $status = $row['plant_status'];
+                                                        $badgeClass = '';
 
-                                                            // Set badge color based on plant status
-                                                            switch ($status) {
-                                                                case 'Withered':
-                                                                    $badgeClass = 'bg-danger'; // Red background
-                                                                    break;
-                                                                case 'Harvested':
-                                                                    $badgeClass = 'bg-primary'; // Yellow background
-                                                                    break;
-                                                                default:
-                                                                    $badgeClass = 'bg-success'; // Green background
-                                                                    break;
-                                                            } ?>
-                                                    <td>    <span class="badge <?= $badgeClass ?>"><?= $status ?></span></td>
-                                                    <td><?= $row['bay']; ?></td>
-                                                    <td><?= $row['nft']; ?></td>
-                                                    <td>
-                                                    <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
-                                                        <a href="report.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
-                                                    </td>
+                                                        // Set badge color based on plant status
+                                                        switch ($status) {
+                                                            case 'Withered':
+                                                                $badgeClass = 'bg-danger'; // Red background
+                                                                break;
+                                                            case 'Harvested':
+                                                                $badgeClass = 'bg-primary'; // Yellow background
+                                                                break;
+                                                            default:
+                                                                $badgeClass = 'bg-success'; // Green background
+                                                                break;
+                                                        }
+                                                        ?>
+                                                        <td><span class="badge <?= $badgeClass ?>"><?= $status ?></span></td>
+                                                        <td><?= $row['bay']; ?></td>
+                                                        <td><?= $row['nft']; ?></td>
+                                                        <td>
+                                                            <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
+                                                            <a href="report.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                            } else {
+                                                ?>
+                                                <tr>
+                                                    <td colspan="9">No Record Found</td>
                                                 </tr>
-                                        <?php
+                                            <?php
                                             }
-                                        } else {
-                                        ?>
-                                            <tr>
-                                                <td colspan="9">No Record Found</td>
-                                            </tr>
-                                        <?php
-                                        }
-                                        ?>
+                                            ?>
                                         </tbody>
 
                                 </table>
@@ -283,26 +293,50 @@ include('includes/footer.php');
 
 <script>
     $(document).ready(function() {
-        $('#statusFilter').on('change', function() {
-            var status = $(this).val();
-            if (status === 'all') {
-                $('#myTable tbody tr').show();
-            } else {
-                $('#myTable tbody tr').hide();
-                $('#myTable tbody tr').each(function() {
-                    var rowStatus = $(this).find('td:nth-child(6)').text().trim();
-                    if (rowStatus === status) {
-                        $(this).show();
-                    }
-                });
-            }
-        });
+        $('#myTable').DataTable();
     });
 </script>
 
 
 <script>
     $(document).ready(function() {
-        $('#myTable').DataTable();
+        // Initial setup to hide "Estimated Date Harvested" column
+        // Default value for the filter
+        var defaultStatus = 'Planted';
+        $('#statusFilter').val(defaultStatus);
+
+        // Function to filter rows based on status
+        function filterRowsByStatus(status) {
+            $('#myTable tbody tr').hide(); // Hide all rows initially
+            $('#myTable tbody tr').each(function() {
+                var rowStatus = $(this).find('td:nth-child(6)').text().trim();
+                if (rowStatus === status) {
+                    $(this).show();
+                }
+            });
+        }
+
+        // Trigger filtering based on default status
+        filterRowsByStatus(defaultStatus);
+
+        // Event handler for filter change
+        $('#statusFilter').on('change', function() {
+            var status = $(this).val();
+            if (status === 'all') {
+                $('#myTable tbody tr').show(); // Show all rows if 'all' is selected
+                $('#estimatedDateHeader').show(); // Show "Estimated Date Harvested" column
+                $('#estimatedDateHeader').text('Estimated Date Harvested'); // Reset header text
+            } else {
+                filterRowsByStatus(status);
+                // Update header text based on status
+                if (status === 'Withered') {
+                    $('#estimatedDateHeader').text('Withered Date');
+                } else if (status === 'Harvested') {
+                    $('#estimatedDateHeader').text('Harvested Date');
+                } else {
+                    $('#estimatedDateHeader').text('Estimated Date Harvested');
+                }
+            }
+        });
     });
 </script>
