@@ -1,11 +1,12 @@
 <?php
-session_start();
+include('admin_auth.php'); // Include the file that contains authorization logic
 include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
 
 <style>
+
     .switch {
         position: relative;
         display: block;
@@ -110,6 +111,11 @@ include('includes/navbar.php');
         -moz-transition: All 0.3s ease;
         -o-transition: All 0.3s ease;
     }
+
+    .card {
+        height: 410px; /* Adjust the height as needed */
+    }
+
 </style>
 
 
@@ -145,7 +151,7 @@ include('includes/navbar.php');
     }
 ?>
 
-   <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
@@ -169,14 +175,14 @@ include('includes/navbar.php');
         if ($getData > 0) {
             ?>
 
-    <div id="layoutSidenav_content">
-        <main>
-            <div class="container-fluid px-3">
-                <!-- Main content -->
-                <div class="row">
-                    <div class="col-xl-3">
-                        <div class="card">
-                            <div class="card-header">
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-3">
+                        <!-- Main content -->
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div class="card">
+                                    <div class="card-header">
                                         <?= $getData['plant_name']; ?>
                                     </div>
                                     <div class="card-body text-center">
@@ -227,26 +233,26 @@ include('includes/navbar.php');
                                                 </div>
                                             </div>
 
-                                          <!-- Estimated Date Harvested -->
-                                                <div class="col-md-6">
+                                            <!-- Estimated Date Harvested -->
+                                            <div class="col-md-6">
                                                 <label>
-                                                            <?php
-                                                            if ($getData['plant_status'] == 'Withered') {
-                                                                echo 'Withered Date';
-                                                            } elseif ($getData['plant_status'] == 'Harvested') {
-                                                                echo 'Harvested Date';
-                                                            } else {
-                                                                echo 'Estimated Date Harvested';
-                                                            }
-                                                            ?>
-                                                        </label>
-                                                        <div class="input-group date">
-                                                        <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?>" />
-                                                        <div class="input-group-append" data-target="#reservationdate">
-                                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                        </div>
+                                                    <?php
+                                                    if ($getData['plant_status'] == 'Withered') {
+                                                        echo 'Withered Date';
+                                                    } elseif ($getData['plant_status'] == 'Harvested') {
+                                                        echo 'Harvested Date';
+                                                    } else {
+                                                        echo 'Estimated Date Harvested';
+                                                    }
+                                                    ?>
+                                                </label>
+                                                <div class="input-group date">
+                                                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?>" />
+                                                    <div class="input-group-append" data-target="#reservationdate">
+                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                     </div>
                                                 </div>
+                                            </div>
 
                                             <div class="col-md-3">
                                                 <label>BAY</label>
@@ -281,58 +287,60 @@ include('includes/navbar.php');
                             </div>
 
 
-                            <div class="col-lg-3 mt-6">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            PUMP CONTROL
-                                        </div>
-                                        <div class="card-body" style="min-height: 330px;">
-                                            <!-- Switch for low -->
-                                            <div class="row mb-3 justify-content-center mt-3">
-                                                <div class="col-md-6 text-center">
-                                                    <label for="relay1Checkbox">Higher pH Level</label>
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <label class="switch">
-                                                            <input class="switch-input" type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)" />
-                                                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                                                            <span class="switch-handle"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Switch for high -->
-                                            <div class="row justify-content-center">
-                                                <div class="col-md-6 text-center">
-                                                    <label for="relay2Checkbox">Lower pH Level</label>
-                                                    <div class="d-flex justify-content-center align-items-center">
-                                                        <label class="switch">
-                                                            <input class="switch-input" type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)" />
-                                                            <span class="switch-label" data-on="On" data-off="Off"></span>
-                                                            <span class="switch-handle"></span>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                            <div class="col-lg-2 mt-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        PUMP CONTROL
                                     </div>
-                                </div>
-
-
-
-
-                            <div class="col-xl-2">
-                                <div class="card mb-4">
-                                <div class="card-header">
-                                                ESTIMATED HARVEST DATE
+                                    <div class="card-body" style="min-height: 330px;">
+                                        <!-- Switch for low -->
+                                        <div class="row mb-4 justify-content-center mt-3">
+                                            <div class="col-md-10 text-center">
+                                                <label for="relay1Checkbox">Higher pH Level</label>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <label class="switch">
+                                                        <input class="switch-input" type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)" />
+                                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
+                                                </div>
                                             </div>
-                                    <div class="card-body">
-                                        <div class="text-center">
-                                            <input type="text" class="knob" value="39" data-skin="tron" data-thickness="0.2" data-width="250" data-height="250" data-fgColor="#2C3090">
-                                            <div class="knob-label"><b>Days before Harvest</b></div>
+                                        </div>
+                                        <!-- Switch for high -->
+                                        <div class="row justify-content-center">
+                                            <div class="col-md-10 text-center">
+                                                <label for="relay2Checkbox">Lower pH Level</label>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <label class="switch">
+                                                        <input class="switch-input" type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)" />
+                                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-3">
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        Estimated Date of Harvest
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="card-body">
+                                                <div class="text-center">
+                                                    <input type="text" class="knob" value="39" data-skin="tron" data-thickness="0.2" data-width="250" data-height="250" data-fgColor="#2C3090">
+                                                    <div class="knob-label"><b>Days before Harvest</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </main>
@@ -342,20 +350,19 @@ include('includes/navbar.php');
 
         <?php
 
-}else{
-    $_SESSION['status'] = "Invalid ID!";
+    } else {
+        $_SESSION['status'] = "Invalid ID!";
+        header('Location: index.php');
+        exit();
+    }
+
+} else {
+    $_SESSION['status'] = "No Record Found!";
     header('Location: index.php');
     exit();
 }
 
-}else{
-$_SESSION['status'] = "No Record Found!";
-header('Location: index.php');
-exit();
-}
-
 ?>
-
 
 <?php
 
@@ -394,7 +401,7 @@ exit();
     }
 ?>
 
-  <!-- Main content -->
+<!-- Main content -->
 <section class="content">
     <div class="container-fluid">
         <div class="row">
@@ -430,6 +437,7 @@ exit();
 </div>
 </div>
 </div>
+
 
 
 
@@ -534,7 +542,7 @@ function checkNotifications() {
 }
 
 // Set an interval to periodically check for notifications
-setInterval(checkNotifications, 60000); // 3000 milliseconds = 3 seconds, adjust as needed
+setInterval(checkNotifications, 100000); // 3000 milliseconds = 3 seconds, adjust as needed
 </script>
 
 

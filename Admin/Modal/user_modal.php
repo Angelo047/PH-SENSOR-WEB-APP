@@ -35,13 +35,19 @@
                     </select>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="">Password</label>
-                        <input type="password" name="password" placeholder="********" class="form-control" id="password" required>
+                    <label for="password">Password</label>
+                    <input type="password" name="password" placeholder="********" class="form-control" id="password" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" placeholder="********" class="form-control" id="confirm_password" required>
+                    <div id="password_match" class="text-muted">
+                        <span id="retypePasswordError" class="text-danger" style="display: none;">Passwords do not match.</span>
+                        <span id="retypePasswordSuccess" class="text-success" style="display: none;">Passwords match.</span>
                     </div>
-                    <div class="form-group mb-3">
-                        <label for="">Confirm Password</label>
-                        <input type="password" name="confirm_password" placeholder="********" class="form-control" id="confirm_password" required>
-                    </div>
+                </div>
+                <div id="password_error" class="text-danger"></div>
+
 
             </div>
             <div class="modal-footer  justify-content-between mt-3">
@@ -56,3 +62,4 @@
         </div>
     </div>
 </div>
+

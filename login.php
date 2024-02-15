@@ -1,17 +1,10 @@
 <?php
 session_start();
-
-// If the user is already logged in, redirect to the home page
-if (isset($_SESSION['verified_user_id'])) {
-    $_SESSION['status'] = "You are already logged in!";
-    header('Location: index.php');
-    exit();
-}
-
 include('includes/header.php');
 ?>
 
 
+<div class="container">
 
 <?php
 if(isset($_SESSION['error'])){
@@ -28,9 +21,6 @@ if(isset($_SESSION['error'])){
     unset($_SESSION['error']);
 }
 ?>
-
-
-<div class="container">
     <div class="left">
         <div class="overlay">
             <!-- <img src="bg/Ellipse 1.jpg" class="elipse"> -->

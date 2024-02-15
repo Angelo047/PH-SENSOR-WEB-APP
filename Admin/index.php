@@ -1,23 +1,28 @@
 <?php
-session_start();
+include('admin_auth.php'); // Include the file that contains authorization logic
 include('includes/header.php');
 include('includes/navbar.php');
 ?>
-<?php
-						if(isset($_SESSION['error'])){
-						echo "
-							<div class='alert alert-danger alert-dismissible text-center'>
-							<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
-							<h4><i class='icon fa fa-warning'></i> Error! ".$_SESSION['error']."</h4>
-
-							</div>
-						";
-						unset($_SESSION['error']);
-						}
-					?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+
+  <?php
+                if(isset($_SESSION['error'])){
+                    echo "
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: '" . $_SESSION['error'] . "',
+                                confirmButtonText: 'Okay'
+                            });
+                        </script>
+                    ";
+                    unset($_SESSION['error']);
+                }
+            ?>
+
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -126,14 +131,24 @@ include('includes/navbar.php');
             <!-- small box -->
             <div class="small-box bg-danger">
               <div class="inner">
-                <h3>  <?php
-                        $ref_table = 'notifications';
-                        $total_count = $database->getReference($ref_table)->getSnapshot()->numChildren();
-                        echo $total_count;
-                        ?>
-                </h3></h3>
+                <h3>
+                <?php
+              $ref_table = 'plants';
+              $total_withered = 0;
 
-                <p>Total Alerts</p>
+              $plants_ref = $database->getReference($ref_table);
+
+              // Loop through each plant
+              foreach ($plants_ref->getValue() as $key => $plant) {
+                  // Check if the plant_status is Harvested
+                  if (isset($plant['plant_status']) && $plant['plant_status'] === 'Withered') {
+                      $total_withered++;
+                  }
+              }
+              ?>
+                  <?php echo $total_withered;?>
+
+                <p>Withered Plants</p>
               </div>
               <div class="icon">
                 <i class="fa-solid fa-bell"></i>
@@ -169,8 +184,7 @@ include('includes/navbar.php');
             <!-- /.col -->
 
             <div class="col-md-6">
-                <!-- Weekly Update chart -->
-                <div class="card"> <!-- Remove 'float-right' class here -->
+                <div class="card">
                     <div class="card-header">
                         <h3 class="card-title">Weekly Update</h3>
                     </div>

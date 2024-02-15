@@ -1,5 +1,5 @@
 <?php
-session_start();
+include('admin_auth.php'); // Include the file that contains authorization logic
 include('includes/header.php');
 include('includes/navbar.php');
 ?>

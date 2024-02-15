@@ -1,5 +1,5 @@
 <?php
-session_start();
+include('admin_auth.php');
 include('includes/header.php');
 include('includes/navbar.php');
 ?>
@@ -11,6 +11,7 @@ include('includes/navbar.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
+            <h1 class="m-0"></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
           </div><!-- /.col -->
@@ -30,9 +31,9 @@ include('includes/navbar.php');
         <div class="col-md-12">
           <div class="card card-outline">
             <div class="card-header">
-              <h3 class="card-title">
-                Compose Narrative Report
-              </h3>
+              <h2 class="card-title">
+              Narrative Report
+            </h2>
             </div>
 
             <?php
@@ -62,7 +63,7 @@ include('includes/navbar.php');
               }
 
               h3 {
-                color: #4CAF50;
+                color: #3b71ca;
               }
 
               p {
@@ -117,7 +118,18 @@ include('includes/navbar.php');
                 <div class="column">
                   <h3>Cultivation Timeline</h3>
                   <p><strong>Date Planted:</strong> <?= $getData['date_planted']; ?></p>
-                  <p><strong>Estimated Date Harvested:</strong> <?= $getData['date_harvest']; ?></p>
+                  <p><strong>
+                  <?php
+                    if ($getData['plant_status'] == 'Withered') {
+                        echo 'Withered Date: ';
+                        } elseif ($getData['plant_status'] == 'Harvested') {
+                        echo 'Harvested Date: ';
+                         } else {
+                          echo 'Estimated Date Harvested: ';
+                        }
+                    ?>
+
+                  </strong><?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?></p>
                 </div>
               </div>
 
@@ -183,10 +195,9 @@ include('includes/navbar.php');
             <!-- /.card-body -->
             <div class="card-footer">
               <div class="float-right">
-              <button type="button" class="btn btn-success" id="pdf-button" onclick="GeneratePdf()">
-              <i class="fas fa-download"></i> GENERATE
+              <button type="button" class="btn btn-primary" id="pdf-button" onclick="GeneratePdf()">
+              <i class="fas fa-save"></i> GENERATE
               </button>
-
             </div>
             <!-- /.card-footer -->
           </div>
@@ -223,6 +234,7 @@ include('includes/footer.php');
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.js"></script>
 
+
 <script>
 
 		// Function to GeneratePdf
@@ -235,7 +247,11 @@ include('includes/footer.php');
   });
 }
 
+//etong code sa ibaba man yung nahanap namin na code na nagpiprint ng actual na input sa box.
+//kaso problema naman is hindi naman sumasama yung ibang info sa form XD.
+//baka makatulong din to man <3
 
+/*
 function printSummernoteContent() {
   // Get the form element
   var form = document.getElementById('compose-textarea');
@@ -243,17 +259,22 @@ function printSummernoteContent() {
   // Create a new window
   var newWindow = window.open('', '_blank');
   newWindow.document.open();
-  newWindow.document.write('<html><head><title>Print</title></head><body style="font-family: Arial, sans-serif;">');
+  newWindow.document.write('<html><head><title>Print</title></head><body style="white-space: pre-wrap; font-family: Arial, sans-serif;">');
 
-  // Add the entire form content to the new window
-  newWindow.document.write(form.outerHTML);
+  // Iterate through form elements
+  for (var i = 0; i < form.elements.length; i++) {
+    var element = form.elements[i];
 
-  // Close the HTML body and document
+    // Check if the element is a textbox (input type text)
+    if (element.type === 'text') {
+      newWindow.document.write('<p><strong>' + element.name + ':</strong> ' + element.value + '</p>');
+    }
+  }
+
   newWindow.document.write('</body></html>');
   newWindow.document.close();
-
-  // Print the new window
   newWindow.print();
 }
+*/
 
 </script>

@@ -1,8 +1,20 @@
 <?php
-session_start();
+include('admin_auth.php');
+
+// Redirect unauthorized users to another page
+$uid = $verifiedIdToken->claims()->get('sub');
+$claims = $auth->getUser($uid)->customClaims;
+if(isset($claims['admin']) == false)  {
+    header('Location: index.php');
+    exit();
+}
+
 include('includes/header.php');
 include('includes/navbar.php');
 ?>
+
+
+<div class="content-wrapper">
 
 <?php
   if(isset($_SESSION['error'])){
@@ -33,9 +45,6 @@ include('includes/navbar.php');
       unset($_SESSION['success']);
   }
 ?>
-
-
-<div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">

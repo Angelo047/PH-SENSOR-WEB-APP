@@ -40,8 +40,6 @@
 
 
       <?php
-        include('../dbcon.php');
-
         $uid = $_SESSION['verified_user_id'];
         $user = $auth->getUser($uid);
 
@@ -94,87 +92,87 @@
   </ul>
   </nav>
 
-
- <!-- Main Sidebar Container -->
-<aside class="main-sidebar">
-  <!-- Brand Logo -->
-  <a href="#" class="brand-link text-center">
-    <br>
-    <img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
-    <h3 style="color: #2C3090; padding-top: 20px;">RLS-NES</h3>
-  </a>
-  <br>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <!-- Sidebar Menu -->
-    <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-        <li class="nav-item">
-          <a href="index.php" class="nav-link">
-            <i class="fa-solid fa-gauge"></i>
-            <p>Dashboard</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="plants.php" class="nav-link">
-            <i class="fa-solid fa-seedling"></i>
-            <p>Plants</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="history.php" class="nav-link">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            <p>Activities</p>
-          </a>
-        </li>
-
-        <li class="nav-header">USER</li>
-        <li class="nav-item">
-          <a href="user.php" class="nav-link">
-            <i class="fa-solid fa-user-plus"></i>
-            <p>
-              Manage Users
-            </p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="my-profile.php" class="nav-link">
-            <i class="fa-solid fa-user-gear"></i>
-            <p>
-              Account Settings
-            </p>
-          </a>
-        </li>
+  <aside class="main-sidebar">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-link text-center">
         <br>
+        <img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
+        <h3 style="color: #2C3090; padding-top: 20px;">RLS-NES</h3>
+    </a>
+    <br>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="index.php" class="nav-link">
+                        <i class="fa-solid fa-gauge"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="plants.php" class="nav-link">
+                        <i class="fa-solid fa-seedling"></i>
+                        <p>Plants</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="history.php" class="nav-link">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <p>Activities</p>
+                    </a>
+                </li>
+                <?php
+                // Redirect unauthorized users to another page
+                $uid = $verifiedIdToken->claims()->get('sub');
+                $claims = $auth->getUser($uid)->customClaims;
+                if(isset($claims['admin']) == true){ ?>
 
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-warning"></i>
-            <p>
-              MAINTENANCE
-              <i class="fas fa-angle-left right"></i>
-            </p>
-          </a>
-          <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a href="plants_details.php" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>PLANTS DETAILS</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="bay_nft.php" class="nav-link">
-                <i class="far fa-circle nav-icon"></i>
-                <p>BAY AND NFT</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </nav>
-    <!-- /.sidebar-menu -->
-  </div>
-  <!-- /.sidebar -->
+                  <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-warning"></i>
+                            <p> Maintenance</p>
+                        </a>
+
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="plants_details.php" class="nav-link">
+                                    <i class="far fa-circle"></i>
+                                    <p>PLANTS DETAILS</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a href="bay_nft.php" class="nav-link">
+                                    <i class="far fa-circle"></i>
+                                    <p>BAY AND NFT</p>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="user.php" class="nav-link">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <p>Manage Users</p>
+                        </a>
+                    </li>
+                    <?php }?>
+
+                    <li class="nav-item">
+                    <a href="my-profile.php" class="nav-link">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <p>
+                            Account Settings
+                        </p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
 </aside>

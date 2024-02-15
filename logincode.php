@@ -2,73 +2,43 @@
 session_start();
 include('dbcon.php');
 
-if(isset($_POST['login-btn']))
-{
-
+if(isset($_POST['login-btn'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
     try {
         $user = $auth->getUserByEmail("$email");
 
-        try{
         $signInResult = $auth->signInWithEmailAndPassword($email, $password);
-        $idTokenString =  $signInResult -> idToken();
+        $idTokenString = $signInResult->idToken();
 
-        try {
-            $verifiedIdToken = $auth->verifyIdToken($idTokenString);
-            $uid = $verifiedIdToken->claims()->get('sub');
+        $verifiedIdToken = $auth->verifyIdToken($idTokenString);
+        $uid = $verifiedIdToken->claims()->get('sub');
 
-            $claims = $auth->getUser($uid)->customClaims;
+        $claims = $auth->getUser($uid)->customClaims;
 
-            if(isset($claims['admin']) == true)
-            {
-                $_SESSION['verified_admin'] = true;
-                $_SESSION['verified_user_id'] = $uid;
-                $_SESSION['idTokenString'] = $idTokenString;
-            }
-            elseif(isset($claims['gardener']) == true)
-            {
-                $_SESSION['verified_gardener'] = true;
-                $_SESSION['verified_user_id'] = $uid;
-                $_SESSION['idTokenString'] = $idTokenString;
-            }
-            elseif($claims == null)
-            {
-                $_SESSION['verified_user_id'] = $uid;
-                $_SESSION['idTokenString'] = $idTokenString;
-            }
-            // $_SESSION['success'] = "Welcome To Homepage";
-            header('Location: Admin\index.php');
-            exit();
-
-        } catch (FailedToVerifyToken $e) {
-            echo 'The token is invalid: '.$e->getMessage();
+        if(isset($claims['admin']) == true || isset($claims['gardener']) == true)  {
+            $_SESSION['verified_admin'] = true;
+            $_SESSION['verified_user_id'] = $uid;
+            $_SESSION['idTokenString'] = $idTokenString;
         }
-
-
-        }catch(Exception $e){
-            $_SESSION['error'] = "Wrong Password or Email";
-            header('Location: login.php');
-            exit();;
-        }
+        header('Location: Admin/index.php');
+        exit();
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
         $_SESSION['error'] = "Wrong Password or Email";
         header('Location: login.php');
-        exit();;
+        exit();
+    } catch (FailedToVerifyToken $e) {
+        echo 'The token is invalid: '.$e->getMessage();
+    } catch(Exception $e) {
+        $_SESSION['error'] = "Wrong Password or Email";
+        header('Location: login.php');
+        exit();
     }
-}else{
+} else {
     $_SESSION['error'] = "Not Allowed";
     header('Location: login.php');
     exit();
 }
-
-
-
-
-
-
-
-
 ?>
