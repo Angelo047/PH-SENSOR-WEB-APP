@@ -24,18 +24,30 @@ function checkAndUpdateSwitches($database) {
         $requiredLowPhLevel = $plantInfo['ph_lvl_low'];
         $requiredHighPhLevel = $plantInfo['ph_lvl_high'];
 
+        // Get the previous pH level from Firebase or any other source
+        $previousPhLevel = $database->getReference("/plants/$plantId/previousPhLevel")->getValue();
+
         // Determine if pH level is within the acceptable range
         if ($latestPhValue >= $requiredLowPhLevel && $latestPhValue <= $requiredHighPhLevel) {
-            // pH level is within the acceptable range, turn off the switches and set the disabled flag
-            $database->getReference('/relay/1')->set('off');
-            $database->getReference('/relay/2')->set('off');
-            $database->getReference('/relay/1/disabled')->set(true);
-            $database->getReference('/relay/2/disabled')->set(true);
+            // pH level is within the acceptable range
+            if ($previousPhLevel < $requiredLowPhLevel || $previousPhLevel > $requiredHighPhLevel) {
+                // The previous pH level was outside the acceptable range, update the switches
+                $database->getReference('/relay/1')->set('off');
+                $database->getReference('/relay/2')->set('off');
+                $database->getReference('/relay/1/disabled')->set(true);
+                $database->getReference('/relay/2/disabled')->set(true);
+            }
         } else {
-            // pH level is outside the acceptable range, enable the switches
-            $database->getReference('/relay/1/disabled')->set(false);
-            $database->getReference('/relay/2/disabled')->set(false);
+            // pH level is outside the acceptable range
+            if ($previousPhLevel >= $requiredLowPhLevel && $previousPhLevel <= $requiredHighPhLevel) {
+                // The previous pH level was within the acceptable range, update the switches
+                $database->getReference('/relay/1/disabled')->set(false);
+                $database->getReference('/relay/2/disabled')->set(false);
+            }
         }
+
+        // Update the previous pH level
+        $database->getReference("/plants/$plantId/previousPhLevel")->set($latestPhValue);
     } else {
         // Plant information not found or keys are not defined
         echo 'Plant information not found or incomplete.' . PHP_EOL;

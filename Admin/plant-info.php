@@ -306,63 +306,52 @@ include('includes/navbar.php');
                                 </div>
                             </div>
 
-
-                            <div class="col-lg-2 mt-6">
+                            <div class="col-lg-2 col-md-6 mt-6">
                                 <div class="card">
                                     <div class="card-header">
                                         PUMP CONTROL
                                     </div>
                                     <div class="card-body" style="min-height: 330px;">
                                         <!-- Switch for low -->
-                                        <div class="row mb-4 justify-content-center mt-3">
-                                            <div class="col-md-10 text-center">
-                                                <label for="relay1Checkbox">Higher pH Level</label>
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    <label class="switch">
-                                                        <input class="switch-input" type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)" />
-                                                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                                                        <span class="switch-handle"></span>
-                                                    </label>
-                                                </div>
+                                        <div class="mb-4 text-center">
+                                            <label for="relay1Checkbox">Higher pH Level</label>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <label class="switch">
+                                                    <input class="switch-input" type="checkbox" id="relay1Checkbox" checked onchange="toggleRelay(1)" />
+                                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                    <span class="switch-handle"></span>
+                                                </label>
                                             </div>
                                         </div>
                                         <!-- Switch for high -->
-                                        <div class="row justify-content-center">
-                                            <div class="col-md-10 text-center">
-                                                <label for="relay2Checkbox">Lower pH Level</label>
-                                                <div class="d-flex justify-content-center align-items-center">
-                                                    <label class="switch">
-                                                        <input class="switch-input" type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)" />
-                                                        <span class="switch-label" data-on="On" data-off="Off"></span>
-                                                        <span class="switch-handle"></span>
-                                                    </label>
-                                                </div>
+                                        <div class="text-center">
+                                            <label for="relay2Checkbox">Lower pH Level</label>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <label class="switch">
+                                                    <input class="switch-input" type="checkbox" id="relay2Checkbox" checked onchange="toggleRelay(2)" />
+                                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                    <span class="switch-handle"></span>
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-3">
-                                <div class="card mb-3">
-                                    <div class="card-header">
-                                        Estimated Date of Harvest
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="card-body">
-                                                <div class="text-center">
-                                                    <input type="text" class="knob" value="39" data-skin="tron" data-thickness="0.2" data-width="250" data-height="250" data-fgColor="#2C3090">
-                                                    <div class="knob-label"><b>Days before Harvest</b></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                        <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-header">
+                                Estimated Date of Harvest
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <input id="knob" type="text" class="knob" value="39" data-skin="tron" data-thickness="0.2" data-width="250" data-height="250" data-fgColor="#2C3090">
+                                    <div class="knob-label"><b>Days before Harvest</b></div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
                 </main>
             </div>
 
@@ -426,7 +415,7 @@ include('includes/navbar.php');
     <div class="container-fluid">
         <div class="row">
 
-            <div class="col-3">
+            <div class="col-lg-3 col-md-6">
                 <!-- Interactive2 data -->
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -447,10 +436,7 @@ include('includes/navbar.php');
                 <!-- /.card -->
             </div>
 
-
-
-
-            <div class="col-9">
+            <div class="col-lg-9 col-md-6">
                 <!-- Interactive chart -->
                 <div class="card card-primary card-outline">
                     <div class="card-header">
@@ -477,6 +463,7 @@ include('includes/navbar.php');
         <!-- /.row -->
     </div>
 </section>
+
 
 </div>
 </div>
@@ -523,7 +510,7 @@ function updateUI(relayNumber, relayStatus, disabled) {
 
 // Function to toggle Relay
 function toggleRelay(relayNumber) {
-    // Get the current state of the relay from Firebase
+    // Get the current status of the relay from Firebase
     database.ref(`/relay/${relayNumber}`).once('value').then(snapshot => {
         const relayStatus = snapshot.val();
 
@@ -531,9 +518,16 @@ function toggleRelay(relayNumber) {
         const newCommand = relayStatus === 'on' ? 'off' : 'on';
 
         // Update the relay status in the Firebase database
-        database.ref(`/relay/${relayNumber}`).set(newCommand);
+        database.ref(`/relay/${relayNumber}`).set(newCommand)
+            .then(() => {
+                console.log(`Switch ${relayNumber} toggled successfully.`);
+            })
+            .catch(error => {
+                console.error(`Error toggling switch ${relayNumber}: ${error.message}`);
+            });
     });
 }
+
 
 // Monitor changes in the relay status and update the UI
 function monitorRelayStatus(relayNumber) {
@@ -601,27 +595,28 @@ function checkAndUpdateSwitches() {
 checkAndUpdateSwitches();
 </script>
 
-<script>
-    // Function to check if switches should be disabled
-    function checkSwitch() {
-        // Make an AJAX request to your PHP script with a plant ID
-        var plantId = <?php echo json_encode($plantId); ?>;
-        $.ajax({
-            url: 'switch_row.php',
-            method: 'GET',
-            data: { id: plantId },
-            success: function(response) {
-                console.log(response);
 
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    }
+    <script>
+        // Function to check if switches should be disabled
+        function checkSwitch() {
+            // Make an AJAX request to your PHP script with a plant ID
+            var plantId = <?php echo json_encode($plantId); ?>;
+            $.ajax({
+                url: 'switch_row.php',
+                method: 'GET',
+                data: { id: plantId },
+                success: function(response) {
+                    console.log(response);
 
-    // Set an interval to periodically check for switch status
-    setInterval(checkSwitch, 1000); // 1000 milliseconds = 1 second, adjust as needed
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+        // Set an interval to periodically check for switch status
+        setInterval(checkSwitch, 10000); // 1000 milliseconds = 1 second, adjust as needed
 </script>
 
 
@@ -731,66 +726,56 @@ $(function () {
 </script>
 
 
-<!-- Harvest Chart -->
+<!-- jQuery Knob -->
+<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- Sparkline -->
+<script src="plugins/sparklines/sparkline.js"></script>
 
-</script>
-
-    <!-- jQuery Knob -->
-    <script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- Sparkline -->
-    <script src="plugins/sparklines/sparkline.js"></script>
-
-    <script>
-
-  $(function () {
+<script>
+$(function () {
     /* jQueryKnob */
-    $('.knob').knob({
+    $('#knob').knob({
         draw: function () {
-          // "tron" case
-          if (this.$.data('skin') == 'tron') {
+            // "tron" case
+            if (this.$.data('skin') == 'tron') {
+                var a = this.angle(this.cv) // Angle
+                ,
+                    sa = this.startAngle // Previous start angle
+                ,
+                    sat = this.startAngle // Start angle
+                ,
+                    ea // Previous end angle
+                ,
+                    eat = sat + a // End angle
+                ,
+                    r = true
 
-        var a   = this.angle(this.cv)  // Angle
-        ,
-            sa  = this.startAngle          // Previous start angle
-            ,
-            sat = this.startAngle         // Start angle
-            ,
-            ea                            // Previous end angle
-            ,
-            eat = sat + a                 // End angle
-            ,
-            r   = true
+                this.g.lineWidth = this.lineWidth
 
-            this.g.lineWidth = this.lineWidth
+                this.o.cursor && (sat = eat - 0.3) && (eat = eat + 0.3)
 
-            this.o.cursor
-            && (sat = eat - 0.3)
-            && (eat = eat + 0.3)
+                if (this.o.displayPrevious) {
+                    ea = this.startAngle + this.angle(this.value)
+                    this.o.cursor && (sa = ea - 0.3) && (ea = ea + 0.3)
+                    this.g.beginPath()
+                    this.g.strokeStyle = this.previousColor
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
+                    this.g.stroke()
+                }
 
-            if (this.o.displayPrevious) {
-              ea = this.startAngle + this.angle(this.value)
-              this.o.cursor
-              && (sa = ea - 0.3)
-              && (ea = ea + 0.3)
-              this.g.beginPath()
-              this.g.strokeStyle = this.previousColor
-              this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
-              this.g.stroke()
+                this.g.beginPath()
+                this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
+                this.g.stroke()
+
+                this.g.lineWidth = 2
+                this.g.beginPath()
+                this.g.strokeStyle = this.o.fgColor
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
+                this.g.stroke()
+
+                return false
             }
-
-            this.g.beginPath()
-            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
-            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
-            this.g.stroke()
-
-            this.g.lineWidth = 2
-            this.g.beginPath()
-            this.g.strokeStyle = this.o.fgColor
-            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
-            this.g.stroke()
-
-            return false
-          }
         }
     });
 
@@ -803,7 +788,7 @@ $(function () {
         var daysBeforeHarvest = Math.ceil((dateHarvest - currentDate) / (1000 * 60 * 60 * 24));
 
         // Update the Knob chart with the calculated value
-        $('.knob').val(daysBeforeHarvest).trigger('change');
+        $('#knob').val(daysBeforeHarvest).trigger('change');
         $('.knob-label').html('<b>Days before Harvest</b>');
     }
 
@@ -813,6 +798,7 @@ $(function () {
     setInterval(updateDaysBeforeHarvest, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
 });
 </script>
+
 
 <script>
     // Get the select element
