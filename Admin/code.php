@@ -26,6 +26,32 @@ if(isset($_POST['edit-user-details-btn'])) {
             $userProperties['disabled'] = $status;
         }
 
+if(isset($_POST['id']) && isset($_POST['plant_status'])) {
+    $id = $_POST['id'];
+    $plant_status = $_POST['plant_status'];
+
+    // Get the current date
+    $claim_date = date('Y-m-d');
+
+    // Assuming $database is your Firebase instance
+    $plantRef = $database->getReference('plants/' . $id);
+
+    // Update the plant status and claim_date
+    $plantRef->update([
+        'plant_status' => $plant_status,
+        'claim_date' => $claim_date,
+    ]);
+
+    // Redirect with success message
+    $_SESSION['success'] = "Plant status updated successfully!";
+    header('Location: plants.php'); // Replace with the correct page URL
+    exit();
+}
+
+
+
+
+
 
         // Update the user
         $updatedUser = $auth->updateUser($userId, $userProperties);

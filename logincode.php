@@ -22,23 +22,40 @@ if(isset($_POST['login-btn'])) {
             $_SESSION['verified_user_id'] = $uid;
             $_SESSION['idTokenString'] = $idTokenString;
         }
+<<<<<<< HEAD
         header('Location: Admin/');
+=======
+        header('Location: Admin/index.php');
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
         exit();
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
         $_SESSION['error'] = "Wrong Password or Email";
+<<<<<<< HEAD
         header('Location: index');
+=======
+        header('Location: login.php');
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
         exit();
     } catch (FailedToVerifyToken $e) {
         echo 'The token is invalid: '.$e->getMessage();
     } catch(Exception $e) {
         $_SESSION['error'] = "Wrong Password or Email";
+<<<<<<< HEAD
         header('Location: index');
         exit();
     }
 } else {
     $_SESSION['error'] = "Wrong Password or Email";
     header('Location: index');
+=======
+        header('Location: login.php');
+        exit();
+    }
+} else {
+    $_SESSION['error'] = "Not Allowed";
+    header('Location: login.php');
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
     exit();
 }
 ?>

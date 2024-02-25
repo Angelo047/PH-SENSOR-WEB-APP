@@ -57,6 +57,7 @@ $nftData = $nftRef->getValue();
                         <div class="card-header">
                         <h4 class="font-weight-bold text-primary"> &nbsp;<a href="#addplants" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#exampleModal1" class="btn btn-primary"> <i class="fas fa-circle-plus fa-lg"></i>&nbsp; Add Plants</a></h4>
                     </div>
+<<<<<<< HEAD
                                 <!-- Dropdown Filter -->
                 <div class="form-group float-right"> <!-- Add 'float-right' class to align to the right -->
                     <div class="card-body">
@@ -71,6 +72,25 @@ $nftData = $nftRef->getValue();
                             </div>
                         </div>
                             <div class="table-responsive mt-2">
+=======
+                    <!-- Dropdown Filter -->
+                    <div class="form-group"> <!-- Add 'float-right' class to align to the right -->
+                    </div>
+                        <div class="card-body">
+                        <div class="row">
+                        <div class="col-2"> <!-- Adjust column width -->
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select class="form-control" id="statusFilter">
+                                <option value="Planted" selected>Planted</option>
+                                <option value="Harvested">Harvested</option>
+                                <option value="Withered">Withered</option>
+                            </select>
+                        </div>
+
+
+                        </div>
+                            <div class="table-responsive">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                                 <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -133,8 +153,13 @@ $nftData = $nftRef->getValue();
                                                         <td><?= $row['bay']; ?></td>
                                                         <td><?= $row['nft']; ?></td>
                                                         <td>
+<<<<<<< HEAD
                                                         <a href="plant-info?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
                                                             <a href="report?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
+=======
+                                                            <a href="plant-info.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
+                                                            <a href="report.php?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                                                         </td>
                                                     </tr>
                                                 <?php

@@ -7,6 +7,7 @@ include('includes/navbar.php');
 
 <style>
 
+<<<<<<< HEAD
     .ph-value {
         display: flex;
         flex-direction: column;
@@ -27,6 +28,8 @@ include('includes/navbar.php');
         text-align: center;
     }
 
+=======
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
     .switch {
         position: relative;
         display: block;
@@ -503,6 +506,7 @@ include('includes/navbar.php');
         measurementId: "G-5JN9Y96ZM9"
   };
 
+<<<<<<< HEAD
 
   firebase.initializeApp(firebaseConfig);
 
@@ -625,6 +629,67 @@ checkAndUpdateSwitches();
 </script>
 
 
+=======
+  firebase.initializeApp(firebaseConfig);
+
+    // Get a reference to the Firebase database
+    var database = firebase.database();
+
+    // Function to update UI based on relay status
+    function updateUI(relayNumber, relayStatus) {
+        const checkboxId = `relay${relayNumber}Checkbox`;
+        const checkbox = document.getElementById(checkboxId);
+
+        // Update checkbox state based on relay status
+        checkbox.checked = relayStatus === 'on';
+
+        // Update other UI elements as needed
+    }
+
+    // Function to toggle Relay
+    function toggleRelay(relayNumber) {
+        // Get the current state of both relays from Firebase
+        Promise.all([
+            database.ref(`/relay/1`).once('value'),
+            database.ref(`/relay/2`).once('value')
+        ]).then(snapshots => {
+            const relay1Status = snapshots[0].val();
+            const relay2Status = snapshots[1].val();
+
+            // Determine the new command based on the current state
+            const newCommand = relay1Status === 'on' || relay2Status === 'on' ? 'off' : 'on';
+
+            // Update the relay status in the Firebase database
+            database.ref(`/relay/${relayNumber}`).set(newCommand);
+        });
+    }
+
+    // Monitor changes in the relay status and update the UI
+    function monitorRelayStatus(relayNumber) {
+        const relayRef = database.ref(`/relay/${relayNumber}`);
+
+        relayRef.on('value', snapshot => {
+            const relayStatus = snapshot.val();
+            updateUI(relayNumber, relayStatus);
+        });
+    }
+
+    // Call monitorRelayStatus for each relay you want to monitor
+    monitorRelayStatus(1);
+    monitorRelayStatus(2);
+
+    // Disable the other checkbox if one is checked
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            const otherCheckbox = this.id === 'relay1Checkbox' ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
+            otherCheckbox.disabled = this.checked;
+        });
+    });
+</script>
+
+
+
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
 <?php
 include('includes/footer.php');
 ?>
@@ -864,6 +929,20 @@ $(function () {
         }
     });
 });
+</script>
+
+
+<script>
+    // Get the select element
+    var plantStatusSelect = document.getElementById('plantStatusSelect');
+    // Get the update status button
+    var updateStatusButton = document.getElementById('updateStatusButton');
+
+    // Add change event listener to select element
+    plantStatusSelect.addEventListener('change', function() {
+        // Enable/disable the update status button based on the selected value
+        updateStatusButton.disabled = this.value === '';
+    });
 </script>
 
 

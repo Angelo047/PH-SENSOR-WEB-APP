@@ -25,7 +25,11 @@
   <!-- Notif Dropdown Menu -->
   <li class="nav-item dropdown">
     <a id="notification-bell" class="nav-link mr-3" data-toggle="dropdown" href="#">
+<<<<<<< HEAD
     <i class="fas fa-bell mr-3 mt-2"></i>
+=======
+    <i class="fas fa-bell fa-2 mr-3 mt-2"></i>
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
       <span id="notification-count" class="badge badge-danger navbar-badge"></span>
     </a>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notifications-container">
@@ -53,6 +57,10 @@
 
         ?>
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
 <li class="nav-item dropdown user user-menu mr-5">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         <?php if ($user->photoUrl !== null) : ?>
@@ -63,6 +71,7 @@
         <span class="hidden-xs"><?= $user->displayName; ?></span>
     </a>
 
+<<<<<<< HEAD
     <ul class="dropdown-menu dropdown-menu-right">
         <!-- User image and header -->
         <li class="user-header bg-primary">
@@ -89,6 +98,32 @@
             </div>
         </li>
     </ul>
+=======
+  <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+    <!-- User image -->
+    <li class="user-header bg-primary">
+    <?php if ($user->photoUrl !== null) : ?>
+      <img src="<?=$user->photoUrl?>" class="img-circle elevation-2" alt="User Image">
+      <?php else : ?>
+      <img src="dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+      <?php endif; ?>
+      <p>
+        <?=$user->displayName;?>
+        <small>Member since  <?=$creationDate;?></small>
+      </p>
+    </li>
+
+
+    <li class="user-footer">
+  <div class="text-center">
+    <a href="my-profile.php" class="btn btn-default btn-flat">Profile</a><br>
+    <a href="change-password.php?id=<?=$user->uid;?>" class="btn btn-default btn-flat">Change Password</a><br>
+    <a href="../logout.php" class="btn btn-default btn-flat">Sign out</a>
+  </div>
+</li>
+  </ul>
+
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
 </li>
 
 
@@ -112,19 +147,31 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
+<<<<<<< HEAD
                     <a href="./" class="nav-link">
+=======
+                    <a href="index.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                         <i class="fa-solid fa-gauge"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item">
+<<<<<<< HEAD
                     <a href="plants" class="nav-link">
+=======
+                    <a href="plants.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                         <i class="fa-solid fa-seedling"></i>
                         <p>Plants</p>
                     </a>
                 </li>
                 <li class="nav-item">
+<<<<<<< HEAD
                     <a href="activities" class="nav-link">
+=======
+                    <a href="history.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         <p>Activities</p>
                     </a>
@@ -143,14 +190,22 @@
 
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
+<<<<<<< HEAD
                                 <a href="plants_details" class="nav-link">
+=======
+                                <a href="plants_details.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                                     <i class="far fa-circle"></i>
                                     <p>PLANTS DETAILS</p>
                                 </a>
                             </li>
 
                             <li class="nav-item">
+<<<<<<< HEAD
                                 <a href="bay_nft" class="nav-link">
+=======
+                                <a href="bay_nft.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                                     <i class="far fa-circle"></i>
                                     <p>BAY AND NFT</p>
                                 </a>
@@ -160,7 +215,11 @@
                     </li>
 
                     <li class="nav-item">
+<<<<<<< HEAD
                         <a href="user" class="nav-link">
+=======
+                        <a href="user.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                             <i class="fa-solid fa-user-plus"></i>
                             <p>Manage Users</p>
                         </a>
@@ -168,7 +227,11 @@
                     <?php }?>
 
                     <li class="nav-item">
+<<<<<<< HEAD
                     <a href="my-profile" class="nav-link">
+=======
+                    <a href="my-profile.php" class="nav-link">
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                         <i class="fa-solid fa-user-gear"></i>
                         <p>
                             Account Settings

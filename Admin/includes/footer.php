@@ -166,8 +166,13 @@ $('#notification-bell').on('click', function() {
       "searching": true,
       "ordering": true,
       "info": true,
+<<<<<<< HEAD
       "autoWidth": true,
       "responsive": false,
+=======
+      "autoWidth": false,
+      "responsive": true,
+>>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
     });
     $('#myTable2').DataTable({
       "paging": true,
