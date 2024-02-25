@@ -22,7 +22,7 @@ if(isset($_POST['login-btn'])) {
             $_SESSION['verified_user_id'] = $uid;
             $_SESSION['idTokenString'] = $idTokenString;
         }
-        header('Location: Plants/');
+        header('Location: Admin/');
         exit();
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
