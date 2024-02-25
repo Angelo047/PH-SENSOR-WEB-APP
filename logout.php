@@ -23,7 +23,7 @@ if(isset($_SESSION['expiry_status']))
 else{
     // $_SESSION['error'] = "Logout Successfully";
 }
-header('Location: login.php');
+header('Location: ./');
 exit();
 
 ?>
