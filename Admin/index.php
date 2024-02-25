@@ -125,7 +125,6 @@ include('includes/navbar.php');
               <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
-<<<<<<< HEAD
 
 <!-- ./col -->
 <div class="col-lg-3 col-6">
@@ -137,18 +136,6 @@ include('includes/navbar.php');
               $ref_table = 'plants';
               $total_withered = 0;
 
-=======
-          <!-- ./col -->
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-danger">
-              <div class="inner">
-                <h3>
-                <?php
-              $ref_table = 'plants';
-              $total_withered = 0;
-
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
               $plants_ref = $database->getReference($ref_table);
 
               // Loop through each plant
@@ -158,26 +145,11 @@ include('includes/navbar.php');
                       $total_withered++;
                   }
               }
-<<<<<<< HEAD
               echo $total_withered;
               ?>
 
                   </h3>
             <p>Withered Plants</p>
-=======
-              ?>
-                  <?php echo $total_withered;?>
-
-                <p>Withered Plants</p>
-              </div>
-              <div class="icon">
-                <i class="fa-solid fa-bell"></i>
-              </div>
-              <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          <!-- ./col -->
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
         </div>
         <div class="icon">
             <i class="fa-solid fa-plant-wilt"></i>
@@ -210,7 +182,6 @@ include('includes/navbar.php');
             </div>
             <!-- /.col -->
 
-<<<<<<< HEAD
 
             <?php
               $ref_table = 'plants';
@@ -287,21 +258,6 @@ include('includes/navbar.php');
                         </div>
                     </div>
                 </div>
-=======
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Weekly Update</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <canvas id="barChart" style="min-height: 450px; height: 450px; max-height: 450px; max-width: 100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
             <div class="col-md-12">
                 <!-- Clock chart -->
                 <div class="item3">

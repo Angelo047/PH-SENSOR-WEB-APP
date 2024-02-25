@@ -59,7 +59,6 @@ include('includes/navbar.php');
                         <h4 class="font-weight-bold text-primary"> &nbsp;<a href="#addnew" data-toggle="modal" class="btn btn-primary"> <i class="fas fa-circle-plus fa-lg"></i>&nbsp; Add Users</a></h4>
                         </div>
                         <div class="card-body">
-<<<<<<< HEAD
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
                         <thead>
@@ -122,101 +121,6 @@ include('includes/navbar.php');
 </div>
 </div>
 </div>
-=======
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped" id="myTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                        <th class="text-center">User ID</th>
-                                        <th class="text-center">Full Name</th>
-                                        <th class="text-center">Phone</th>
-                                        <th class="text-center">Email</th>
-                                        <th class="text-center">Roles</th>
-                                        <th class="text-center">Disable / Enable</th>
-                                        <th class="text-center">Edit</th>
-                                        <th class="text-center">Delete</th>
-
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                    <?php
-                                $users = $auth->listUsers();
-                                $i = 1;
-                                foreach ($users as $user)
-                                {
-                                    ?>
-                                    <tr class="text-center">
-                                        <td><?=$user->uid;?></td>
-                                        <td><?=$user->displayName;?></td>
-                                        <td><?=$user->phoneNumber;?></td>
-                                        <td><?=$user->email;?></td>
-                                        <td>
-                                            <?php
-                                            $claims = $auth->getUser($user -> uid)->customClaims;
-
-                                            if(isset($claims['admin']) == true)
-                                            {
-                                                echo '<span class="badge bg-warning">Admin</span>';
-                                            }
-                                            elseif(isset($claims['gardener']) == true)
-                                            {
-                                                echo '<span class="badge bg-success">Gardener</span>';
-                                            }
-                                            elseif($claims == null)
-                                            {
-                                                echo "No Role";
-                                            }
-                                            ?>
-                                        </span>
-                                        </td>
-                                        <td>
-                                            <?php
-                                            if($user -> disabled)
-                                            {
-                                                echo "Disabled";
-                                            }
-                                            else{
-                                                echo "Enabled";
-                                            }
-                                            ?>
-                                        </td>
-
-                                        <td>
-
-                                        <a href="user_edit.php?id=<?=$user -> uid;?>" class="btn btn-primary"><i class="fas fa-edit"></i> Edit </a>
-                                        </td>
-
-                                        </td>
-                                            <td>
-                                            <form id="deleteForm" action="code.php" method="POST">
-                                                    <input type="hidden" name="reg-user-delete-btn" id="userIdToDelete">
-                                                    <button type="button" class="btn btn-danger" onclick="confirmDelete('<?=$user->uid;?>')">
-                                                        <i class="fas fa-trash"></i> Delete
-                                                    </button>
-                                                </form>
-
-                                        </td>
-
-
-                                    </tr>
-
-                                    <?php
-
-                                }
-                        ?>
-                                    </tbody>
-                                </table>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                      </div>
-                                </div>
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
 
 
 
@@ -325,7 +229,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-<<<<<<< HEAD
 <script>
 $(document).ready(function() {
     // Handle Delete button click
@@ -504,7 +407,3 @@ $(document).ready(function() {
         });
     });
 </script>
-=======
-
-
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7

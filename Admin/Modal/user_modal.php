@@ -17,14 +17,7 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="phone">Phone Number</label>
-<<<<<<< HEAD
                         <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" class="form-control" required>
-=======
-                        <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" pattern="^\+?[0-9]{10}$" title="Phone number must be exactly 10 digits and may start with a '+'" class="form-control" required>
-                        <div class="invalid-feedback">
-                            Please enter a valid 10-digit phone number. It may start with a '+'.
-                        </div>
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
                     </div>
 
                     <div class="form-group mb-3">
@@ -68,7 +61,6 @@
     </div>
 </div>
 
-<<<<<<< HEAD
 
 
 <!-- Edit Modal -->
@@ -164,5 +156,3 @@
       </div>
     </div>
   </div>
-=======
->>>>>>> 2a45103d43e6ae2149c68e6bf8df71ad1eca07f7
