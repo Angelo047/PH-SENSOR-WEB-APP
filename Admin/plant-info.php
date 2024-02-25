@@ -645,7 +645,7 @@ function checkNotifications() {
 }
 
 // Set an interval to periodically check for notifications
-setInterval(checkNotifications, 100000); // 3000 milliseconds = 3 seconds, adjust as needed
+setInterval(checkNotifications, 10000); // 3000 milliseconds = 3 seconds, adjust as needed
 </script>
 
 

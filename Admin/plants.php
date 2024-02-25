@@ -156,18 +156,20 @@ $nftData = $nftRef->getValue();
                                 </div>
                                 </div>
                                 </div>
-                                      </div>
                                 </div>
-
-
+                                </div>
+                                </div>
+                                </div>
                                 </div>
 
 
 <?php
 include('Modal/plant_modal.php');
-include('includes/footer.php');
 ?>
 
+<?php
+include('includes/footer.php');
+?>
 
 
 <script>
@@ -337,3 +339,4 @@ include('includes/footer.php');
         });
     });
 </script>
+

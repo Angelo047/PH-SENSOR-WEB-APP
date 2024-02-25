@@ -13,24 +13,24 @@
                 <form id="plantForm" class="row g-6s" method="POST" action="code.php" enctype="multipart/form-data">
 
                     <div class="col-md-12 mt-1">
-                        <label for="plant_name">Plant Name<span style="color: red;"> *</span></label>
+                        <label for="plant_name">Plant Name</label>
                         <input type="text" name="plant_name" id="plant_name" class="form-control"  placeholder="lettuce" required>
                     </div>
 
                     <div class="col-md-12 mt-3"> <!-- Adjusted margin -->
-                        <label for="pHLevel">pH Level High<span style="color: red;"> *</span></label>
+                        <label for="pHLevel">pH Level High</label>
                         <input type="number" step="0.1" name="ph_lvl_high" class="form-control" id="ph_lvl_high"
                             placeholder="high pH lvl" required>
                     </div>
 
                     <div class="col-md-12 mt-3">
-                        <label for="pHLevel">pH Level low<span style="color: red;"> *</span></label>
+                        <label for="pHLevel">pH Level low</label>
                         <input type="number" step="0.1" name="ph_lvl_low" class="form-control" id="ph_lvl_low"
                             placeholder="low pH lvl" required>
                     </div>
 
                     <div class="col-md-12 mt-3">
-                        <label for="days_harvest">Days of Harvest<span style="color: red;"> *</span></label>
+                        <label for="days_harvest">Days of Harvest</label>
                         <input type="number" name="days_harvest" id="days_harvest" class="form-control"  placeholder="20" required>
                     </div>
 

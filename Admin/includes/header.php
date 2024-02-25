@@ -73,5 +73,5 @@
 
 
 </head>
-<body class="control-sidebar-slide-open sidebar-collapse" style="height: auto;">
+<body>
   <div class="wrapper">
