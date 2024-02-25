@@ -261,19 +261,15 @@ include('includes/navbar.php');
             <div class="col-md-12">
                 <!-- Clock chart -->
                 <div class="item3">
-                    <div id="clock"></div>
+                    <div id="clock">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-
-
-</div>
-</div>
-
-
-
+    </div>
+    </div>
+    </div>
 <?php
 include('includes/footer.php');
 ?>
