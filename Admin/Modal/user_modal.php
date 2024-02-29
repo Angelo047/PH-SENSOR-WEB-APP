@@ -17,9 +17,8 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="phone">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" class="form-control" required>
+                        <input type="text" name="phone" placeholder="+91" class="form-control" id="phone" pattern="^\d{10}$" title="Please enter a 10-digit phone number" required>
                     </div>
-
                     <div class="form-group mb-3">
                         <label for="">Email Address</label>
                         <input type="email" name="email" placeholder="@gmail.com" class="form-control" required>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('dbcon.php');
+include('dbcon');
 
 // Check if the form is submitted for updating user details
 if(isset($_POST['edit-user-details-btn'])) {
@@ -44,14 +44,9 @@ if(isset($_POST['id']) && isset($_POST['plant_status'])) {
 
     // Redirect with success message
     $_SESSION['success'] = "Plant status updated successfully!";
-    header('Location: plants.php'); // Replace with the correct page URL
+    header('Location: plants'); // Replace with the correct page URL
     exit();
 }
-
-
-
-
-
 
         // Update the user
         $updatedUser = $auth->updateUser($userId, $userProperties);
@@ -112,7 +107,7 @@ if(isset($_POST['id']) && isset($_POST['plant_status'])) {
 
     // Redirect with success message
     $_SESSION['success'] = "Plant status updated successfully!";
-    header('Location: plants.php'); // Replace with the correct page URL
+    header('Location: plants'); // Replace with the correct page URL
     exit();
 }
 
@@ -134,7 +129,7 @@ if (isset($_POST['edit-plant-details-btn'])) {
     ]);
 
     $_SESSION['success'] = "Plant Details Updated successfully";
-    header('Location: plants_details.php');
+    header('Location: plants_details');
     exit;
 }
 
@@ -148,7 +143,7 @@ if (isset($_POST['delete-plant-btn'])) {
     $plantRef->remove();
 
     $_SESSION['success'] = "Plant Details Deleted successfully";
-    header('Location: plants_details.php');
+    header('Location: plants_details');
       exit;
 }
 
@@ -164,7 +159,7 @@ if (isset($_POST['delete-bay-btn'])) {
     $bayRef->remove();
 
     $_SESSION['success'] = "BAY Deleted successfully";
-    header('Location: bay_nft.php');
+    header('Location: bay_nft');
       exit;
 }
 
@@ -181,7 +176,7 @@ if (isset($_POST['edit-bay-btn'])) {
     ]);
 
     $_SESSION['success'] = "BAY Updated successfully";
-        header('Location: bay_nft.php');
+        header('Location: bay_nft');
     exit;
 }
 
@@ -194,7 +189,7 @@ if (isset($_POST['edit-bay-btn'])) {
         $nftRef->remove();
 
         $_SESSION['success'] = "NFT Deleted successfully";
-        header('Location: bay_nft.php');
+        header('Location: bay_nft');
           exit;
     }
 
@@ -214,7 +209,7 @@ if (isset($_POST['edit-nft-btn'])) {
 
     // Redirect or perform any other actions after the update
     $_SESSION['success'] = "NFT Updated successfully";
-        header('Location: bay_nft.php');
+        header('Location: bay_nft');
     exit;
 }
 
@@ -229,7 +224,7 @@ if (isset($_POST['add-nft-btn'])) {
 
     if ($postRef_result->getKey()) {
         $_SESSION['success'] = "NFT added successfully";
-        header('Location: bay_nft.php');
+        header('Location: bay_nft');
     } else {
         $_SESSION['error'] = "Failed to add plant";
     }
@@ -245,7 +240,7 @@ if (isset($_POST['add-bay-btn'])) {
 
     if ($postRef_result->getKey()) {
         $_SESSION['success'] = "BAY added successfully";
-        header('Location: bay_nft.php');
+        header('Location: bay_nft');
     } else {
         $_SESSION['error'] = "Failed to add plant";
     }
@@ -266,7 +261,7 @@ if (isset($_POST['add-plant-details-btn'])) {
 
     if ($postRef_result->getKey()) {
         $_SESSION['success'] = "Plant Details added successfully";
-        header('Location: plants_details.php');
+        header('Location: plants_details');
     } else {
         $_SESSION['error'] = "Failed to add plant";
     }
@@ -299,7 +294,7 @@ if (isset($_POST['add-plant-btn'])) {
 
         if ($postRef_result->getKey() !== null) {
             $_SESSION['success'] = "Plant added successfully";
-            header('Location: plants.php');
+            header('Location: plants');
             exit(); // Make sure to exit after redirect
         } else {
             $_SESSION['error'] = "Failed to add plant";
@@ -309,12 +304,11 @@ if (isset($_POST['add-plant-btn'])) {
         $_SESSION['error'] = "Failed to upload plant photo";
     }
 
-    header('Location: plants.php');
+    header('Location: plants');
     exit(); // Make sure to exit after redirect
 }
 
 
-//REGISTER FUNCTION FOR USER
 
 if (isset($_POST['register-btn'])) {
     $full_name = $_POST['full-name'];
@@ -327,14 +321,38 @@ if (isset($_POST['register-btn'])) {
     // Check if the password and confirm password match
     if ($password !== $confirm_password) {
         $_SESSION['error'] = "Password and Confirm Password do not match";
-        header('Location: user.php');
+        header('Location: user');
         exit;
+    }
+
+    try {
+        // Validate existing email
+        $existingUser = $auth->getUserByEmail($email);
+        if ($existingUser) {
+            $_SESSION['error'] = "Email already exists";
+            header('Location: user');
+            exit;
+        }
+    } catch (Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+        // User not found, continue with registration
+    }
+
+    try {
+        // Validate existing phone number
+        $existingUserByPhone = $auth->getUserByPhoneNumber('+91' . $phone);
+        if ($existingUserByPhone) {
+            $_SESSION['error'] = "Phone number already exists";
+            header('Location: user');
+            exit;
+        }
+    } catch (Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+        // User not found, continue with registration
     }
 
     $userProperties = [
         'email' => $email,
         'emailVerified' => false,
-        'phoneNumber' => $phone,
+        'phoneNumber' => '+91' . $phone,
         'password' => $password,
         'displayName' => $full_name,
     ];
@@ -355,13 +373,12 @@ if (isset($_POST['register-btn'])) {
         $auth->setCustomUserClaims($createdUser->uid, $claims);
 
         $_SESSION['success'] = "User Created Successfully";
-        header('Location: user.php');
+        header('Location: user');
     } else {
         $_SESSION['error'] = "User Failed to Create";
-        header('Location: user.php');
+        header('Location: user');
     }
 }
-
 
 //UPDATE FUNCTION FOR USER
 
@@ -396,11 +413,11 @@ if (isset($_POST['update-user-btn'])) {
         $auth->setCustomUserClaims($uid, $claims);
 
         $_SESSION['success'] = "User Updated Successfully";
-        header("Location: user.php");
+        header("Location: user");
         exit();
     } else {
         $_SESSION['error'] = "User Failed to Update";
-        header("Location: user.php");
+        header("Location: user");
         exit();
     }
 }
@@ -425,11 +442,11 @@ if(isset($_POST['enable_disable_acc_btn']))
     if($updatedUser)
     {
         $_SESSION['success'] = $msg;
-        header('Location: user-list.php');
+        header('Location: user-list');
         exit();
     }else{
         $_SESSION['error'] = "Something Went Wrong.";
-        header('Location: user-list.php');
+        header('Location: user-list');
         exit();
     }
 }
@@ -481,14 +498,14 @@ if(isset($_POST['update_user_profile']))
             }
         }
         $_SESSION['success'] = "User Profile Updated Successfully";
-        header('Location: my-profile.php');
+        header('Location: my-profile');
         exit(0);
 
     }
     else
     {
         $_SESSION['error'] = "User Profile Failed to Updated";
-        header('Location: my-profile.php');
+        header('Location: my-profile');
         exit(0);
 
     }
@@ -516,22 +533,22 @@ if(isset($_POST['change_password_btn']))
             if($updatedUser)
             {
                 $_SESSION['success'] = "Password Updated Successfully";
-                header('Location: change-password.php');
+                header('Location: change-password');
                 exit();
             } else {
                 $_SESSION['error'] = "Password Failed to Update";
-                header('Location: change-password.php');
+                header('Location: change-password');
                 exit();
             }
         } else {
             $_SESSION['error'] = "New Password and Re-Type Password do not match";
-            header("Location: change-password.php");
+            header("Location: change-password");
             exit();
         }
     } catch (Exception $e) {
         // Old password is incorrect
         $_SESSION['error'] = "Old Password is incorrect";
-        header("Location: change-password.php");
+        header("Location: change-password");
         exit();
     }
 }

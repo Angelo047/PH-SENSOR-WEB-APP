@@ -312,7 +312,7 @@ include('includes/navbar.php');
                                         PUMP CONTROL
                                     </div>
                                     <div class="card-body" style="min-height: 330px;">
-                                        <!-- Switch for low -->
+                                        <!-- Switch for Relay 1 -->
                                         <div class="mb-4 text-center">
                                             <label for="relay1Checkbox">Higher pH Level</label>
                                             <div class="d-flex justify-content-center align-items-center">
@@ -323,7 +323,7 @@ include('includes/navbar.php');
                                                 </label>
                                             </div>
                                         </div>
-                                        <!-- Switch for high -->
+                                        <!-- Switch for Relay 2 -->
                                         <div class="text-center">
                                             <label for="relay2Checkbox">Lower pH Level</label>
                                             <div class="d-flex justify-content-center align-items-center">
@@ -337,6 +337,7 @@ include('includes/navbar.php');
                                     </div>
                                 </div>
                             </div>
+
 
                         <div class="col-md-3">
                         <div class="card">
@@ -504,58 +505,97 @@ function updateUI(relayNumber, relayStatus, disabled) {
     // Update checkbox state based on relay status
     checkbox.checked = relayStatus === 'on';
 
-    // Disable checkbox if relay is already off or disabled
-    checkbox.disabled = relayStatus === 'off' || disabled;
+    // Disable the checkbox if disabled is true
+    checkbox.disabled = disabled;
+
+    // Disable the other checkbox if the current one is checked or disabled
+    const otherCheckbox = relayNumber === 1 ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
+    otherCheckbox.disabled = checkbox.checked || disabled;
+
+    // Update the switch label for correct display
+    const switchLabel = checkbox.nextElementSibling;
+    switchLabel.dataset.on = relayStatus === 'on' ? 'On' : 'Off';
+    switchLabel.dataset.off = relayStatus === 'on' ? 'Off' : 'On';
 }
 
-// Function to toggle Relay
-function toggleRelay(relayNumber) {
-    // Get the current status of the relay from Firebase
-    database.ref(`/relay/${relayNumber}`).once('value').then(snapshot => {
-        const relayStatus = snapshot.val();
 
-        // Determine the new command based on the current state
-        const newCommand = relayStatus === 'on' ? 'off' : 'on';
+    // Function to get the status of the other relay
+    function getOtherRelayStatus(currentRelayNumber) {
+        const otherRelayNumber = currentRelayNumber === 1 ? 2 : 1;
+        const otherRelayStatusRef = database.ref(`/relay/${otherRelayNumber}/switch`);
 
-        // Update the relay status in the Firebase database
-        database.ref(`/relay/${relayNumber}`).set(newCommand)
-            .then(() => {
-                console.log(`Switch ${relayNumber} toggled successfully.`);
-            })
-            .catch(error => {
-                console.error(`Error toggling switch ${relayNumber}: ${error.message}`);
+        return otherRelayStatusRef.once('value').then(snapshot => {
+            return snapshot.val();
+        });
+    }
+
+    // Function to toggle Relay
+    function toggleRelay(relayNumber) {
+        const relayRef = database.ref(`/relay/${relayNumber}`);
+        relayRef.once('value').then(snapshot => {
+            const currentStatus = snapshot.child('switch').val();
+            const disabled = snapshot.child('disabled').val();
+
+            // If the current relay is disabled, exit
+            if (disabled) return;
+
+            const newStatus = currentStatus === 'on' ? 'off' : 'on';
+
+            relayRef.child('switch').set(newStatus)
+                .then(() => {
+                    updateUI(relayNumber, newStatus, disabled);
+                    console.log(`Switch ${relayNumber} toggled successfully.`);
+                })
+                .catch(error => {
+                    console.error(`Error toggling switch ${relayNumber}: ${error.message}`);
+                });
+        });
+    }
+
+    // Monitor changes in the relay status and update the UI
+    function monitorRelayStatus(relayNumber) {
+        const relayRef = database.ref(`/relay/${relayNumber}`);
+        const disabledRef = database.ref(`/relay/${relayNumber}/disabled`);
+
+        relayRef.on('value', snapshot => {
+            const relayStatus = snapshot.val();
+
+            // Get the disabled status of the relay
+            disabledRef.once('value').then(disabledSnapshot => {
+                const disabled = disabledSnapshot.val();
+                updateUI(relayNumber, relayStatus, disabled);
             });
-    });
-}
+        });
+    }
 
+    // Call monitorRelayStatus for each relay you want to monitor
+    monitorRelayStatus(1);
+    monitorRelayStatus(2);
 
-// Monitor changes in the relay status and update the UI
-function monitorRelayStatus(relayNumber) {
-    const relayRef = database.ref(`/relay/${relayNumber}`);
-    const disabledRef = database.ref(`/relay/${relayNumber}/disabled`);
-
-    relayRef.on('value', snapshot => {
-        const relayStatus = snapshot.val();
-
-        // Get the disabled status of the relay
-        disabledRef.once('value').then(disabledSnapshot => {
-            const disabled = disabledSnapshot.val();
-            updateUI(relayNumber, relayStatus, disabled);
+    // Disable the other checkbox if one is checked
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const otherCheckbox = this.id === 'relay1Checkbox' ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
+            otherCheckbox.disabled = this.checked;
         });
     });
-}
 
-// Call monitorRelayStatus for each relay you want to monitor
-monitorRelayStatus(1);
-monitorRelayStatus(2);
-
-// Disable the other checkbox if one is checked
-document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        const otherCheckbox = this.id === 'relay1Checkbox' ? document.getElementById('relay2Checkbox') : document.getElementById('relay1Checkbox');
-        otherCheckbox.disabled = this.checked;
+    // Disable the other switch if one is turned on
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            const relayNumber = this.id === 'relay1Checkbox' ? 1 : 2;
+            const otherRelayNumber = relayNumber === 1 ? 2 : 1;
+            const otherSwitch = document.getElementById(`relay${otherRelayNumber}Checkbox`);
+            if (this.checked) {
+                otherSwitch.disabled = true;
+            } else {
+                const otherSwitchStatus = getOtherRelayStatus(otherRelayNumber);
+                if (otherSwitchStatus === 'off') {
+                    otherSwitch.disabled = false;
+                }
+            }
+        });
     });
-});
 
 // Function to check pH level and control switches
 function checkAndUpdateSwitches() {
@@ -577,15 +617,18 @@ function checkAndUpdateSwitches() {
 
             // Determine if pH level is within the acceptable range
             if (latestPhValue >= requiredLowPhLevel && latestPhValue <= requiredHighPhLevel) {
-                // pH level is within the acceptable range, turn off the switches and disable them
-                database.ref('/relay/1').set('off');
-                database.ref('/relay/2').set('off');
+                // pH level is within the acceptable range, turn off relay 1 and relay 2
                 database.ref('/relay/1/disabled').set(true);
                 database.ref('/relay/2/disabled').set(true);
+                // Also turn off the switch under relay
+                database.ref('/relay/1/switch').set('off');
+                database.ref('/relay/2/switch').set('off');
             } else {
                 // pH level is outside the acceptable range, enable the switches
                 database.ref('/relay/1/disabled').set(false);
                 database.ref('/relay/2/disabled').set(false);
+                database.ref('/relay/1/switch').set('off');
+                database.ref('/relay/2/switch').set('off');
             }
         });
     });
@@ -645,7 +688,7 @@ function checkNotifications() {
 }
 
 // Set an interval to periodically check for notifications
-setInterval(checkNotifications, 10000); // 3000 milliseconds = 3 seconds, adjust as needed
+setInterval(checkNotifications, 10000000); // 3000 milliseconds = 3 seconds, adjust as needed
 </script>
 
 
@@ -816,41 +859,43 @@ $(function () {
 
 <!-- Realtime Ph Lvl DATA-->
 <script>
-$(function () {
-    function updateData() {
-        $.ajax({
-            url: 'ph-sensor-result.php', // Update with the correct endpoint
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                if (data) {
-                    var phValues = Object.values(data);
-                    var latestPhValue = phValues[phValues.length - 1];
+    $(function () {
+        function updateData() {
+            $.ajax({
+                url: 'ph-sensor-result.php', // Update with the correct endpoint
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data) {
+                        var phValues = Object.values(data);
+                        var latestPhValue = phValues[phValues.length - 1];
 
-                    // Update the text element with the latest pH value and pH level text
-                    $('.ph-value').html('<div class="ph-value-text">pH level</div><div class="ph-value-number">' + latestPhValue + '</div>');
+                        // Format pH value to one whole number and one decimal
+                        latestPhValue = parseFloat(latestPhValue).toFixed(1);
+
+                        // Update the text element with the latest pH value and pH level text
+                        $('.ph-value').html('<div class="ph-value-text">pH level</div><div class="ph-value-number">' + latestPhValue + '</div>');
+                    }
+                },
+                complete: function () {
+                    setTimeout(updateData, 1500);
                 }
-            },
-            complete: function () {
-                setTimeout(updateData, 1500);
+            });
+        }
+
+        // Start updating data
+        updateData();
+
+        // Toggle chart updating
+        $('#realtime2 .btn').click(function () {
+            if ($(this).data('toggle') === 'on') {
+                updateData();
+            } else {
+                // Clear the update interval
+                clearTimeout(updateData);
             }
         });
-    }
-
-    // Start updating data
-    updateData();
-
-    // Toggle chart updating
-    $('#realtime2 .btn').click(function () {
-        if ($(this).data('toggle') === 'on') {
-            updateData();
-        } else {
-            // Clear the update interval
-            clearTimeout(updateData);
-        }
     });
-});
 </script>
-
 
 

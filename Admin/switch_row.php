@@ -32,8 +32,8 @@ function checkAndUpdateSwitches($database) {
             // pH level is within the acceptable range
             if ($previousPhLevel < $requiredLowPhLevel || $previousPhLevel > $requiredHighPhLevel) {
                 // The previous pH level was outside the acceptable range, update the switches
-                $database->getReference('/relay/1')->set('off');
-                $database->getReference('/relay/2')->set('off');
+                $database->getReference('/relay/1/switch')->set('off');
+                $database->getReference('/relay/2/switch')->set('off');
                 $database->getReference('/relay/1/disabled')->set(true);
                 $database->getReference('/relay/2/disabled')->set(true);
             }
@@ -41,6 +41,8 @@ function checkAndUpdateSwitches($database) {
             // pH level is outside the acceptable range
             if ($previousPhLevel >= $requiredLowPhLevel && $previousPhLevel <= $requiredHighPhLevel) {
                 // The previous pH level was within the acceptable range, update the switches
+                $database->getReference('/relay/1/switch')->set('off');
+                $database->getReference('/relay/2/switch')->set('off');
                 $database->getReference('/relay/1/disabled')->set(false);
                 $database->getReference('/relay/2/disabled')->set(false);
             }
