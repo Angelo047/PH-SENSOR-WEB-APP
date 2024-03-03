@@ -46,7 +46,6 @@ if(isset($_SESSION['error'])){
                 <i class="fas icon fa-eye-slash password-toggle" onclick="togglePassword(this)"></i>
             </div>
 
-            <a href="#"><span>Forgot Password?</span></a>
             <button type="submit" name="login-btn" id="submit" class="btn btn-primary text-bold">LOG IN</button>
         </form>
     </div>
