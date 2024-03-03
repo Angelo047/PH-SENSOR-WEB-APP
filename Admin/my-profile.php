@@ -1,5 +1,6 @@
 <?php
-include('admin_auth.php');
+include('dbcon.php'); // Include your database connection file
+include('admin_auth.php'); // Include the file that contains authorization logic
 include('includes/header.php');
 include('includes/navbar.php');
 ?>

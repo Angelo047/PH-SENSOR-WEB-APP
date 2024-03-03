@@ -16,6 +16,7 @@ RewriteRule ^$ activities.php [L]
 
 
 
+
 # Rewrite other URLs to their corresponding .php files
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

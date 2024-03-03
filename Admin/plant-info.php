@@ -176,8 +176,8 @@ include('includes/navbar.php');
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            <div class="row mb-3">
-                <div class="col-md-3">
+            <div class="row">
+                <div class="col">
                     <ol class="breadcrumb float-sm-left">
                     </ol>
                 </div>
@@ -223,88 +223,89 @@ include('includes/navbar.php');
                                 </div>
                             </div>
 
-                            <!-- INFO -->
-                            <div class="col-xl-4">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        PLANT INFORMATION
-                                    </div>
-                                    <div class="card-body">
-                                        <form class="row g-3" method="post" action="code.php">
-                                            <!-- Plant Name -->
-                                            <div class="col-md-6">
-                                                <label for="plantName">Plant Name:</label>
-                                                <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled selected value="<?= $getData['plant_name']; ?>">
-                                            </div>
-                                            <!-- Required pH Level -->
-                                            <div class="col-md-6">
-                                                <label for="requiredPh">Required pH Level:</label>
-                                                <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled selected value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
-                                            </div>
+                        <!-- INFO -->
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card mb-2">
+                                <div class="card-header">
+                                    PLANT INFORMATION
+                                </div>
+                                <div class="card-body">
+                                    <form class="row g-3" method="post" action="code.php">
+                                        <!-- Plant Name -->
+                                        <div class="col-md-6">
+                                            <label for="plantName">Plant Name:</label>
+                                            <input type="text" class="form-control" id="plantName" placeholder="Lettuce" disabled value="<?= $getData['plant_name']; ?>">
+                                        </div>
+                                        <!-- Required pH Level -->
+                                        <div class="col-md-6">
+                                            <label for="requiredPh">Required pH Level:</label>
+                                            <input type="text" class="form-control" id="requiredPh" placeholder="5.5 to an upper limit of pH 7.0" disabled value="<?= $getData['ph_lvl_low']; ?>-<?= $getData['ph_lvl_high']; ?>">
+                                        </div>
 
-                                            <!-- Date Planted -->
-                                            <div class="col-md-6">
-                                                <label>Date Planted</label>
-                                                <div class="input-group date">
-                                                    <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled selected value="<?= $getData['date_planted']; ?>" />
-                                                    <div class="input-group-append" data-target="#reservationdate">
-                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                    </div>
+                                        <!-- Date Planted -->
+                                        <div class="col-md-6">
+                                            <label>Date Planted</label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control datetimepicker-input" id="datePlanted" disabled value="<?= $getData['date_planted']; ?>" />
+                                                <div class="input-group-append" data-target="#reservationdate">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <!-- Estimated Date Harvested -->
-                                            <div class="col-md-6">
-                                                <label>
-                                                    <?php
-                                                    if ($getData['plant_status'] == 'Withered') {
-                                                        echo 'Withered Date';
-                                                    } elseif ($getData['plant_status'] == 'Harvested') {
-                                                        echo 'Harvested Date';
-                                                    } else {
-                                                        echo 'Estimated Date Harvested';
-                                                    }
-                                                    ?>
-                                                </label>
-                                                <div class="input-group date">
-                                                    <input type="text" class="form-control datetimepicker-input" id="dateHarvested" disabled selected value="<?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?>" />
-                                                    <div class="input-group-append" data-target="#reservationdate">
-                                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                                    </div>
+                                        <!-- Estimated Date Harvested -->
+                                        <div class="col-md-6">
+                                            <label>
+                                                <?php
+                                                if ($getData['plant_status'] == 'Withered') {
+                                                    echo 'Withered Date';
+                                                } elseif ($getData['plant_status'] == 'Harvested') {
+                                                    echo 'Harvested Date';
+                                                } else {
+                                                    echo 'Estimated Date Harvested';
+                                                }
+                                                ?>
+                                            </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="dateHarvested" disabled value="<?= ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested') ? date('M d, Y', strtotime($getData['claim_date'])) : date('M d, Y', strtotime($getData['date_harvest'])) ?>" />
+                                                <div class="input-group-append" data-target="#reservationdate">
+                                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-3">
-                                                <label>BAY</label>
-                                                <div class="input-group date" id="reservationdate">
-                                                    <input type="text" class="form-control" id="dateHarvested" placeholder="November 17, 2023" disabled selected value="<?= $getData['bay']; ?>" />
-                                                </div>
+                                        <div class="col-md-3">
+                                            <label>BAY</label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="bay" placeholder="November 17, 2023" disabled value="<?= $getData['bay']; ?>" />
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-3">
-                                                <label>NFT</label>
-                                                <div class="input-group date" id="reservationdate">
-                                                    <input type="text" class="form-control" disabled selected value="<?= $getData['nft']; ?>" />
-                                                </div>
+                                        <div class="col-md-3">
+                                            <label>NFT</label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" disabled value="<?= $getData['nft']; ?>" />
                                             </div>
+                                        </div>
 
-                                            <div class="col-md-6">
-                                                <label>Plant Status</label>
-                                                <select class="form-control" name="plant_status" id="plantStatusSelect">
-                                                    <option value="" disabled selected>Select Plant Status</option>
-                                                    <option value="Planted" <?= ($getData['plant_status'] == 'Planted') ? 'selected' : '' ?>>Planted</option>
-                                                    <option value="Harvested" <?= ($getData['plant_status'] == 'Harvested') ? 'selected' : '' ?>>Harvested</option>
-                                                    <option value="Withered" <?= ($getData['plant_status'] == 'Withered') ? 'selected' : '' ?>>Withered</option>
-                                                </select>
-                                            </div>
-                                            <input type="hidden" name="id" value="<?= $key_child ?>">
-                                            <div class="col-md-6 mt-6">
-                                                <button type="submit" class="btn btn-primary" id="updateStatusButton" disabled>Update Status</button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                        <div class="col-md-6">
+                                            <label>Plant Status</label>
+                                            <select class="form-control" name="plant_status" id="plantStatusSelect">
+                                                <option value="" disabled>Select Plant Status</option>
+                                                <option value="Planted" <?= ($getData['plant_status'] == 'Planted') ? 'selected' : '' ?>>Planted</option>
+                                                <option value="Harvested" <?= ($getData['plant_status'] == 'Harvested') ? 'selected' : '' ?>>Harvested</option>
+                                                <option value="Withered" <?= ($getData['plant_status'] == 'Withered') ? 'selected' : '' ?>>Withered</option>
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="id" value="<?= $key_child ?>">
+                                        <div class="col-md-6 mt-6">
+                                            <button type="submit" class="btn btn-primary" id="updateStatusButton" disabled>Update Status</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
+
 
                             <div class="col-lg-2 col-md-6 mt-6">
                                 <div class="card">

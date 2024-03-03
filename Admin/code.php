@@ -1,6 +1,6 @@
 <?php
+include('dbcon.php');
 session_start();
-include('dbcon');
 
 // Check if the form is submitted for updating user details
 if(isset($_POST['edit-user-details-btn'])) {
