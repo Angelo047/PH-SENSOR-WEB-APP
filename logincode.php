@@ -26,19 +26,19 @@ if(isset($_POST['login-btn'])) {
         exit();
 
     } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
-        $_SESSION['error'] = "Wrong Password or Email";
-        header('Location: index');
+        $_SESSION['error'] = "Invalid username or password. Please try again.";
+        header('Location: ./');
         exit();
     } catch (FailedToVerifyToken $e) {
         echo 'The token is invalid: '.$e->getMessage();
     } catch(Exception $e) {
-        $_SESSION['error'] = "Wrong Password or Email";
-        header('Location: index');
+        $_SESSION['error'] = "Invalid username or password. Please try again.";
+        header('Location: ./');
         exit();
     }
 } else {
-    $_SESSION['error'] = "Wrong Password or Email";
-    header('Location: index');
+    $_SESSION['error'] = "Invalid username or password. Please try again.";
+    header('Location: ./');
     exit();
 }
 ?>

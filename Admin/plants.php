@@ -132,9 +132,11 @@ $nftData = $nftRef->getValue();
                                                         <td><span class="badge <?= $badgeClass ?>"><?= $status ?></span></td>
                                                         <td><?= $row['bay']; ?></td>
                                                         <td><?= $row['nft']; ?></td>
-                                                        <td>
+                                                        <td data-id="<?= $key ?>">
                                                         <a href="plant-info?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
                                                             <a href="report?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
+                                                            <button type="button" class="btn btn-danger delete-plant"><i class="fas fa-trash"></i></button>
+
                                                         </td>
                                                     </tr>
                                                 <?php
@@ -340,3 +342,39 @@ include('includes/footer.php');
     });
 </script>
 
+<script>
+$(document).ready(function() {
+  // Initialize the modal
+  $('#deleteplant').modal();
+
+  // Handle Delete button click
+  $('.delete-plant').click(function() {
+        // Get the plant ID from the data attribute of the parent <td> element
+        var plantId = $(this).closest('td').data('id');
+        var plantName = $(this).closest('tr').find('td:eq(1)').text(); // Assuming plant name is in the second column
+
+
+    // Use AJAX to fetch the data from Firebase using the NFT ID
+    $.ajax({
+      url: 'plants_row.php',
+      type: 'POST',
+      data: { id: plantId},
+      success: function(data) {
+        // Parse the data (assuming it's in JSON format)
+        var plantData = JSON.parse(data);
+
+      // Populate the modal with the plant ID and name
+      $('#deleteplant').find('.plantid').val(plantId);
+      $('#delete_plant_name').text(plantName);
+
+        // Show the modal
+        $('#deleteplant').modal('show');
+      },
+      error: function(error) {
+        console.log('Error fetching data: ', error);
+      }
+    });
+  });
+});
+
+</script>

@@ -75,7 +75,7 @@
         <form class="form-horizontal" method="POST" action="code.php">
           <input type="hidden" class="bayid" name="id">
           <div class="text-center">
-            <p>DELETE BAY</p>
+          <p>Are you sure you want to delete this bay?</p>
             <h2 class="bold delete_bay" id="delete_bay_name" name="bay"></h2>
           </div>
       </div>

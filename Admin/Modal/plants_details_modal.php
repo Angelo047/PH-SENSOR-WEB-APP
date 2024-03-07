@@ -20,13 +20,13 @@
                     <div class="col-md-12 mt-3"> <!-- Adjusted margin -->
                         <label for="pHLevel">pH Level High</label>
                         <input type="number" step="0.1" name="ph_lvl_high" class="form-control" id="ph_lvl_high"
-                            placeholder="high pH lvl" required>
+                        placeholder="7.0" required>
                     </div>
 
                     <div class="col-md-12 mt-3">
                         <label for="pHLevel">pH Level low</label>
                         <input type="number" step="0.1" name="ph_lvl_low" class="form-control" id="ph_lvl_low"
-                            placeholder="low pH lvl" required>
+                        placeholder="5.0" required>
                     </div>
 
                     <div class="col-md-12 mt-3">
@@ -77,13 +77,13 @@
             <div class="form-group">
               <label for="ph_lvl_high" class="col-sm-6s control-label">pH Level High</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="ph_lvl_high" name="ph_lvl_high">
+                <input type="text" class="form-control" id="ph_lvl_high" name="ph_lvl_high" placeholder="7.0">
               </div>
             </div>
             <div class="form-group">
               <label for="ph_lvl_low" class="col-sm-6s control-label">pH Level Low</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="ph_lvl_low" name="ph_lvl_low">
+                <input type="text" class="form-control" id="ph_lvl_low" name="ph_lvl_low" placeholder="5.0">
               </div>
             </div>
             <div class="form-group">
@@ -123,7 +123,7 @@
         <form class="form-horizontal" method="POST" action="code.php">
           <input type="hidden" class="plantid" name="id">
           <div class="text-center">
-            <p>DELETE PLANT</p>
+            <p>Are you sure you want to delete this plant details?</p>
             <h2 class="bold delete_plant" id="delete_plant_name" name="plant_name"></h2>
           </div>
       </div>

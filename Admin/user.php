@@ -5,7 +5,7 @@ include('admin_auth.php');
 $uid = $verifiedIdToken->claims()->get('sub');
 $claims = $auth->getUser($uid)->customClaims;
 if(isset($claims['admin']) == false)  {
-    header('Location: index.php');
+    header('Location: ./');
     exit();
 }
 

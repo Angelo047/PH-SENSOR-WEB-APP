@@ -281,26 +281,26 @@ include('includes/navbar.php');
                                             </div>
                                         </div>
 
-                                        <div class="col-md-3">
-                                            <label>NFT</label>
-                                            <div class="input-group date">
-                                                <input type="text" class="form-control" disabled value="<?= $getData['nft']; ?>" />
-                                            </div>
-                                        </div>
-
+                                        <?php
+                                        $isWitheredOrHarvested = ($getData['plant_status'] == 'Withered' || $getData['plant_status'] == 'Harvested');
+                                        $isPlanted = ($getData['plant_status'] == 'Planted');
+                                        ?>
                                         <div class="col-md-6">
                                             <label>Plant Status</label>
-                                            <select class="form-control" name="plant_status" id="plantStatusSelect">
+                                            <select class="form-control" name="plant_status" id="plantStatusSelect" <?= $isWitheredOrHarvested ? 'disabled' : '' ?>>
                                                 <option value="" disabled>Select Plant Status</option>
-                                                <option value="Planted" <?= ($getData['plant_status'] == 'Planted') ? 'selected' : '' ?>>Planted</option>
+                                                <option value="Planted" <?= $isPlanted ? 'selected' : '' ?>>Planted</option>
                                                 <option value="Harvested" <?= ($getData['plant_status'] == 'Harvested') ? 'selected' : '' ?>>Harvested</option>
                                                 <option value="Withered" <?= ($getData['plant_status'] == 'Withered') ? 'selected' : '' ?>>Withered</option>
                                             </select>
                                         </div>
                                         <input type="hidden" name="id" value="<?= $key_child ?>">
                                         <div class="col-md-6 mt-6">
-                                            <button type="submit" class="btn btn-primary" id="updateStatusButton" disabled>Update Status</button>
+                                            <button type="submit" class="btn btn-primary" id="updateStatusButton" <?= ($isWitheredOrHarvested || $isPlanted) ? 'disabled' : '' ?>>Update Status</button>
                                         </div>
+
+
+
                                     </form>
                                 </div>
                             </div>
@@ -640,7 +640,7 @@ checkAndUpdateSwitches();
 </script>
 
 
-    <script>
+<script>
         // Function to check if switches should be disabled
         function checkSwitch() {
             // Make an AJAX request to your PHP script with a plant ID
@@ -660,7 +660,7 @@ checkAndUpdateSwitches();
         }
 
         // Set an interval to periodically check for switch status
-        setInterval(checkSwitch, 10000); // 1000 milliseconds = 1 second, adjust as needed
+        setInterval(checkSwitch, 30000); // 1000 milliseconds = 1 second, adjust as needed
 </script>
 
 
@@ -844,20 +844,6 @@ $(function () {
 </script>
 
 
-<script>
-    // Get the select element
-    var plantStatusSelect = document.getElementById('plantStatusSelect');
-    // Get the update status button
-    var updateStatusButton = document.getElementById('updateStatusButton');
-
-    // Add change event listener to select element
-    plantStatusSelect.addEventListener('change', function() {
-        // Enable/disable the update status button based on the selected value
-        updateStatusButton.disabled = this.value === '';
-    });
-</script>
-
-
 <!-- Realtime Ph Lvl DATA-->
 <script>
     $(function () {
@@ -900,3 +886,15 @@ $(function () {
 </script>
 
 
+<script>
+    // Get the select element
+    var plantStatusSelect = document.getElementById('plantStatusSelect');
+    // Get the update status button
+    var updateStatusButton = document.getElementById('updateStatusButton');
+
+    // Add change event listener to select element
+    plantStatusSelect.addEventListener('change', function() {
+        // Enable/disable the update status button based on the selected value
+        updateStatusButton.disabled = this.value === '';
+    });
+</script>

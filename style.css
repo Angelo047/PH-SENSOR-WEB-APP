@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 
+
 body {
   background-size: cover;
   background-attachment: fixed;
@@ -69,7 +70,7 @@ body {
   flex-direction: column;
   align-items: center;
   flex: 1;
-  background-color: #ffffff;
+  background-color: white;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
 }
@@ -86,10 +87,9 @@ body {
 }
 
 .box {
-  display: flex;
-  padding: 10px 20px;
+  padding: 10px 15px; /* Adjusted padding for smaller screens */
   padding-left: 40px;
-  width: 100%;
+  width: 100%; /* Make input box full width */
   margin: 10px;
   margin-top: 10px;
   background-color: rgba(255, 255, 255, 0.26);
@@ -97,6 +97,16 @@ body {
   border-radius: 8px;
   justify-content: center;
   font-size: 12px;
+}
+
+.form label {
+  width: 90%; /* Adjusted width for smaller screens */
+  max-width: 90%; /* Added max-width for smaller screens */
+  color: #595959;
+  font-family: "Gill Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 20px;
 }
 
 ::placeholder {
@@ -128,16 +138,7 @@ h2 {
   color: #3b71ca;
 }
 
-.form label {
-  display: flex;
-  width: 400px;
-  color: #595959;
-  font-family: "Gill Sans", sans-serif;
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1px;
-  margin-top: 20px;
-}
+
 
 .password-toggle {
   position: absolute;

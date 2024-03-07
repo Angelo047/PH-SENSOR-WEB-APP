@@ -53,7 +53,7 @@ if (isset($_SESSION['verified_user_id'])) {
     }
 
     // Function to check pH level
-    function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $users, $Facilitator) {
+    function checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $users, $Facilitator, $plantId) {
         $phSensorDataRef = $database->getReference('/phSensorData');
         $latestPhSensorData = $phSensorDataRef->orderByKey()->limitToLast(1)->getSnapshot()->getValue();
 
@@ -66,6 +66,8 @@ if (isset($_SESSION['verified_user_id'])) {
         $latestPhValue = reset($latestPhSensorData);
 
         $status = ''; // Variable to hold the status
+
+        $latestPhValue = number_format($latestPhValue, 1); // Format to one decimal point
 
         if ($latestPhValue > $requiredHighPhLevel) {
             $status = 'High';
@@ -84,7 +86,9 @@ if (isset($_SESSION['verified_user_id'])) {
                 'isRead' => 0,
                 'Facilitator' => $Facilitator,
                 'ph_lvl' => "$latestPhValue",
-                'status' => $status, // Add the status field
+                'status' => $status,
+                'plant_id' => $plantId,
+
             ]);
             // Send email notification using PHPMailer for each user
             foreach ($users as $userRecord) {
@@ -122,7 +126,7 @@ if (isset($_SESSION['verified_user_id'])) {
             echo 'Email sent successfully';
         }
     }
-    checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $users, $Facilitator);
+    checkPhLevel($requiredLowPhLevel, $requiredHighPhLevel, $plantName, $database, $plantInfo, $users, $Facilitator, $plantId);
 
 } else {
     echo 'User not authenticated.' . PHP_EOL;

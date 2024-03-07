@@ -35,7 +35,7 @@ include('includes/navbar.php');
                             <h1 class="card-title">Water pH</h1>
                         </div>
                         <div class="card-body table-responsive">
-                            <table class="table table-bordered table-striped" id="myTable">
+                            <table class="table table-bordered table-striped" id="myTable2">
                                 <!-- Table headers -->
                                 <thead>
                                     <tr>
@@ -96,7 +96,7 @@ include('includes/navbar.php');
                             <h1 class="card-title">Plants</h1>
                         </div>
                         <div class="card-body table-responsive">
-                            <table class="table table-bordered table-striped" id="myTable2">
+                            <table class="table table-bordered table-striped" id="myTable3">
                                 <!-- Table headers -->
                                 <thead>
                                     <tr>
@@ -169,9 +169,9 @@ include('includes/footer.php');
 <script>
     $(document).ready(function() {
     // Check if DataTables is already initialized on the table
-    if (!$.fn.DataTable.isDataTable('#myTable')) {
+    if (!$.fn.DataTable.isDataTable('#myTable2')) {
         // DataTables is not initialized, so initialize it
-        $('#myTable').DataTable({
+        $('#myTable2').DataTable({
           pageLength = 5,
         });
     }
@@ -183,9 +183,9 @@ include('includes/footer.php');
 <script>
    $(document).ready(function() {
     // Check if DataTables is already initialized on the table
-    if (!$.fn.DataTable.isDataTable('#myTable2')) {
+    if (!$.fn.DataTable.isDataTable('#myTable3')) {
         // DataTables is not initialized, so initialize it
-        $('#myTable2').DataTable({
+        $('#myTable3').DataTable({
           pageLength = 5,
         });
     }

@@ -73,7 +73,7 @@
         measurementId: "G-5JN9Y96ZM9"
   };
 
-  firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
 
 var notificationsRef = firebase.database().ref('notifications');
 
@@ -91,7 +91,7 @@ notificationsRef.on('child_added', function(snapshot) {
   // Only add unread notifications to the latestNotifications array
   if (!notification.isRead) {
     latestNotifications.unshift({ id: snapshot.key, ...notification });
-    latestNotifications = latestNotifications.slice(0, 5);
+    latestNotifications = latestNotifications.slice(0, 10);
   }
 
   $('#notifications-list').empty();
@@ -99,7 +99,7 @@ notificationsRef.on('child_added', function(snapshot) {
   for (var i = 0; i < latestNotifications.length; i++) {
     var notificationItem = latestNotifications[i];
     $('#notifications-list').append(
-      '<a href="#" class="dropdown-item" data-notification-id="' + notificationItem.id + '">' +
+      '<a href="plant-info?id=' + notificationItem.plant_id + '" class="dropdown-item" data-notification-id="' + notificationItem.id + '">' +
       '<div class="callout callout-success">' +
       '<div class="media">' +
       '<img src="' + notificationItem.plant_photo + '" alt="User Avatar" class="img-size-50 mr-3 img-circle">' +
@@ -170,6 +170,15 @@ $('#notification-bell').on('click', function() {
       "responsive": false,
     });
     $('#myTable2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+    $('#myTable3').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": true,

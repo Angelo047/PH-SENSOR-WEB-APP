@@ -128,7 +128,7 @@ if (isset($_POST['edit-plant-details-btn'])) {
         'days_harvest' => $days_harvest,
     ]);
 
-    $_SESSION['success'] = "Plant Details Updated successfully";
+    $_SESSION['success'] = "You have successfully deleted this plant";
     header('Location: plants_details');
     exit;
 }
@@ -142,12 +142,24 @@ if (isset($_POST['delete-plant-btn'])) {
 
     $plantRef->remove();
 
-    $_SESSION['success'] = "Plant Details Deleted successfully";
+    $_SESSION['success'] = "You have successfully deleted Plant Details successfully";
     header('Location: plants_details');
       exit;
 }
 
 
+
+if (isset($_POST['delete-plants-btn'])) {
+    $plantId = $_POST['id'];
+
+    $plantRef = $database->getReference('plants/' . $plantId);
+
+    $plantRef->remove();
+
+    $_SESSION['success'] = "You have successfully deleted Plant successfully";
+    header('Location: plants');
+      exit;
+}
 
 
 
@@ -158,7 +170,7 @@ if (isset($_POST['delete-bay-btn'])) {
 
     $bayRef->remove();
 
-    $_SESSION['success'] = "BAY Deleted successfully";
+    $_SESSION['success'] = "You have successfully deleted this registered bay";
     header('Location: bay_nft');
       exit;
 }
@@ -188,7 +200,7 @@ if (isset($_POST['edit-bay-btn'])) {
 
         $nftRef->remove();
 
-        $_SESSION['success'] = "NFT Deleted successfully";
+        $_SESSION['success'] = "You have successfully deleted this registered pipe or NFT.";
         header('Location: bay_nft');
           exit;
     }
@@ -223,7 +235,7 @@ if (isset($_POST['add-nft-btn'])) {
     $postRef_result = $database->getReference($ref_table)->push($postData);
 
     if ($postRef_result->getKey()) {
-        $_SESSION['success'] = "NFT added successfully";
+        $_SESSION['success'] = "You have successfully added a pipe or NFT";
         header('Location: bay_nft');
     } else {
         $_SESSION['error'] = "Failed to add plant";
@@ -239,7 +251,7 @@ if (isset($_POST['add-bay-btn'])) {
     $postRef_result = $database->getReference($ref_table)->push($postData);
 
     if ($postRef_result->getKey()) {
-        $_SESSION['success'] = "BAY added successfully";
+        $_SESSION['success'] = "You have successfully added a bay";
         header('Location: bay_nft');
     } else {
         $_SESSION['error'] = "Failed to add plant";
@@ -260,7 +272,7 @@ if (isset($_POST['add-plant-details-btn'])) {
     $postRef_result = $database->getReference($ref_table)->push($postData);
 
     if ($postRef_result->getKey()) {
-        $_SESSION['success'] = "Plant Details added successfully";
+        $_SESSION['success'] = "You have successfully added a plant";
         header('Location: plants_details');
     } else {
         $_SESSION['error'] = "Failed to add plant";
@@ -293,7 +305,7 @@ if (isset($_POST['add-plant-btn'])) {
         $postRef_result = $database->getReference($ref_table)->push($postData);
 
         if ($postRef_result->getKey() !== null) {
-            $_SESSION['success'] = "Plant added successfully";
+            $_SESSION['success'] = "You have successfully registered a plant";
             header('Location: plants');
             exit(); // Make sure to exit after redirect
         } else {

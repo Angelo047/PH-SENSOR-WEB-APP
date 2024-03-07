@@ -75,7 +75,7 @@
         <form class="form-horizontal" method="POST" action="code.php">
           <input type="hidden" class="nftid" name="id">
           <div class="text-center">
-            <p>DELETE NFT</p>
+            <p>Are you sure you want to delete this pipe or NFT?</p>
             <h2 class="bold delete_nft" id="delete_nft_name" name="nft"></h2>
           </div>
       </div>
