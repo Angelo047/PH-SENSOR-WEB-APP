@@ -660,7 +660,7 @@ checkAndUpdateSwitches();
         }
 
         // Set an interval to periodically check for switch status
-        setInterval(checkSwitch, 30000); // 1000 milliseconds = 1 second, adjust as needed
+        setInterval(checkSwitch, 1000); // 1000 milliseconds = 1 second, adjust as needed
 </script>
 
 
