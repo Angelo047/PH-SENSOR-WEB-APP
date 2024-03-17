@@ -116,7 +116,12 @@ notificationsRef.on('child_added', function(snapshot) {
     );
   }
 
-  $('#notification-count').text('(' + latestNotifications.length + ')');
+  // Show or hide the notification count based on the number of notifications
+  if (latestNotifications.length > 0) {
+    $('#notification-count').text('(' + latestNotifications.length + ')');
+  } else {
+    $('#notification-count').text('');
+  }
 });
 
 // Add click event to mark all notifications as read
@@ -136,8 +141,11 @@ $('#notification-bell').on('click', function() {
   });
 
   // Reset the notification count
-  $('#notification-count').text('0');
+  $('#notification-count').text('');
 });
+
+
+
 </script>
 
 <!-- DataTables  & Plugins -->

@@ -2,6 +2,28 @@
 include('dbcon.php');
 session_start();
 
+if(isset($_POST['id']) && isset($_POST['plant_status'])) {
+    $id = $_POST['id'];
+    $plant_status = $_POST['plant_status'];
+
+    // Get the current date
+    $claim_date = date('Y-m-d');
+
+    // Assuming $database is your Firebase instance
+    $plantRef = $database->getReference('plants/' . $id);
+
+    // Update the plant status and claim_date
+    $plantRef->update([
+        'plant_status' => $plant_status,
+        'claim_date' => $claim_date,
+    ]);
+
+    // Redirect with success message
+    $_SESSION['success'] = "Plant status updated successfully!";
+    header('Location: plants'); // Replace with the correct page URL
+    exit();
+}
+
 // Check if the form is submitted for updating user details
 if(isset($_POST['edit-user-details-btn'])) {
     $userId = $_POST['id'];
@@ -25,28 +47,6 @@ if(isset($_POST['edit-user-details-btn'])) {
         if ($status !== null) {
             $userProperties['disabled'] = $status;
         }
-
-if(isset($_POST['id']) && isset($_POST['plant_status'])) {
-    $id = $_POST['id'];
-    $plant_status = $_POST['plant_status'];
-
-    // Get the current date
-    $claim_date = date('Y-m-d');
-
-    // Assuming $database is your Firebase instance
-    $plantRef = $database->getReference('plants/' . $id);
-
-    // Update the plant status and claim_date
-    $plantRef->update([
-        'plant_status' => $plant_status,
-        'claim_date' => $claim_date,
-    ]);
-
-    // Redirect with success message
-    $_SESSION['success'] = "Plant status updated successfully!";
-    header('Location: plants'); // Replace with the correct page URL
-    exit();
-}
 
         // Update the user
         $updatedUser = $auth->updateUser($userId, $userProperties);
@@ -476,52 +476,51 @@ if(isset($_POST['update_user_profile']))
     $uid = $_SESSION['verified_user_id'];
     $user = $auth->getUser($uid);
 
-    $new_image = $random_no.$profile;
+    $new_image = $random_no . $profile;
     $old_image = $user->photoUrl;
 
+    // Check if a new profile picture is uploaded
     if($profile != NULL)
     {
-        $file_name = 'uploads/'.$new_image;
+        $file_name = 'uploads/' . $new_image;
+
+        // Move uploaded file to uploads directory
+        move_uploaded_file($_FILES['profile']['tmp_name'], "uploads/" . $new_image);
+
+        // Delete old profile picture if exists
+        if($old_image != NULL)
+        {
+            unlink($old_image);
+        }
     }
     else
     {
+        // If no new profile picture uploaded, maintain the old one
         $file_name = $old_image;
     }
 
     $properties = [
         'displayName' => $display_name,
         'phoneNumber' => $phone,
-        'photoUrl' => $file_name,
+        'photoUrl' => $file_name, // Update profile picture only if new one uploaded
 
     ];
 
+    // Update user profile
     $updatedUser = $auth->updateUser($uid, $properties);
 
     if($updatedUser)
     {
-
-    if($profile != NULL)
-        {
-            move_uploaded_file($_FILES['profile']['tmp_name'], "uploads/".$new_image);
-            $file_name = 'uploads/'.$old_image;
-            if($old_image != NULL)
-            {
-                unlink($old_image);
-            }
-        }
         $_SESSION['success'] = "User Profile Updated Successfully";
         header('Location: my-profile');
         exit(0);
-
     }
     else
     {
-        $_SESSION['error'] = "User Profile Failed to Updated";
+        $_SESSION['error'] = "User Profile Failed to Update";
         header('Location: my-profile');
         exit(0);
-
     }
-
 }
 
 //CHANGE PASSWORD OF USER

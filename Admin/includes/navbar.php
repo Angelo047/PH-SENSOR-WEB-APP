@@ -7,10 +7,21 @@
     background-color: #007bff; /* Primary color on hover */
     color: #fff; /* Text color on hover */
   }
+  .content-wrapper {
+      padding-top: 56px; /* Adjust according to your topbar height */
+      padding-bottom: 50px; /* Add padding to the bottom of the content */
+    }
+    .sidebar {
+    width: 250px; /* Adjust sidebar width */
+    position: fixed;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+    overflow-y: auto;
+    }
 </style>
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light fixed-top">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
@@ -25,7 +36,7 @@
   <!-- Notif Dropdown Menu -->
   <li class="nav-item dropdown">
     <a id="notification-bell" class="nav-link mr-3" data-toggle="dropdown" href="#">
-    <i class="fas fa-bell mr-3 mt-2"></i>
+    <i class="fas fa-bell fa-2 mr-3 mt-2"></i>
       <span id="notification-count" class="badge badge-danger navbar-badge"></span>
     </a>
     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="notifications-container">
@@ -34,7 +45,7 @@
         <span class="float-right text-muted text-sm"></span>
       </div>
       <div id="notifications-list"></div>
-      <a href="all_notification" class="dropdown-footer" style="text-align: center;">See All Messages</a>
+      <a href="all_notification" class="dropdown-footer" style="text-align: center;">See All Notifications</a>
     </div>
   </li>
 
@@ -53,6 +64,7 @@
 
         ?>
 
+
 <li class="nav-item dropdown user user-menu mr-5">
     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
         <?php if ($user->photoUrl !== null) : ?>
@@ -63,20 +75,22 @@
         <span class="hidden-xs"><?= $user->displayName; ?></span>
     </a>
 
-    <ul class="dropdown-menu dropdown-menu-right">
-        <!-- User image and header -->
-        <li class="user-header bg-primary">
-            <?php if ($user->photoUrl !== null) : ?>
-                <img src="<?= $user->photoUrl ?>" class="img-circle elevation-2" alt="User Image">
-            <?php else : ?>
-                <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-            <?php endif; ?>
-            <p>
-                <?= $user->displayName; ?>
-                <small>Member since <?= $creationDate; ?></small>
-            </p>
-        </li>
-        <?php
+  <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+    <!-- User image -->
+    <li class="user-header bg-primary">
+    <?php if ($user->photoUrl !== null) : ?>
+      <img src="<?=$user->photoUrl?>" class="img-circle elevation-2" alt="User Image">
+      <?php else : ?>
+      <img src="dist/img/user2-160x160.jpg" class="user-image img-circle elevation-2" alt="User Image">
+      <?php endif; ?>
+      <p>
+        <?=$user->displayName;?>
+        <small>Member since  <?=$creationDate;?></small>
+      </p>
+    </li>
+
+
+    <?php
         // Generate a unique token or hash for each user
         $token = hash('sha256', $user->uid); // You can use any hashing algorithm here
         ?>
@@ -91,40 +105,38 @@
     </ul>
 </li>
 
-
-
-
   </ul>
   </nav>
 
-  <aside class="main-sidebar">
-    <!-- Brand Logo -->
+  <aside class="main-sidebar sidebar">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+       <!-- Brand Logo -->
     <a href="#" class="brand-link text-center">
         <br>
         <img src="pics/logo.png" alt="Logo" class="" style="height: 100px; width: 100px;">
         <h3 style="color: #2C3090; padding-top: 20px;">RLS-NES</h3>
     </a>
     <br>
-    <!-- Sidebar -->
-    <div class="sidebar">
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="./" class="nav-link">
+                <a href="./" class="nav-link">
                         <i class="fa-solid fa-gauge"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="plants" class="nav-link">
+                <a href="plants" class="nav-link">
                         <i class="fa-solid fa-seedling"></i>
                         <p>Plants</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="activities" class="nav-link">
+                <a href="activities" class="nav-link">
                         <i class="fa-solid fa-clock-rotate-left"></i>
                         <p>Activities</p>
                     </a>
@@ -143,14 +155,14 @@
 
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="plants_details" class="nav-link">
+                            <a href="plants_details" class="nav-link">
                                     <i class="far fa-circle"></i>
                                     <p>PLANTS DETAILS</p>
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a href="bay_nft" class="nav-link">
+                            <a href="bay_nft" class="nav-link">
                                     <i class="far fa-circle"></i>
                                     <p>BAY AND NFT</p>
                                 </a>
@@ -182,3 +194,24 @@
     <!-- /.sidebar -->
 </aside>
 
+<script>
+  var scrolling = false;
+  window.addEventListener("scroll", function() {
+    var sidebar = document.querySelector(".sidebar");
+    if (window.innerWidth <= 768 && !scrolling) { // Check for mobile device and no scrolling
+      sidebar.classList.add("hide");
+    }
+  });
+
+  window.addEventListener("touchstart", function() {
+    scrolling = true;
+    var sidebar = document.querySelector(".sidebar");
+    if (window.innerWidth <= 768) { // Check for mobile device
+      sidebar.classList.add("hide");
+    }
+  });
+
+  window.addEventListener("touchend", function() {
+    scrolling = false;
+  });
+</script>

@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="addplants" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-body">
         <form id="plantForm" class="row g-3" method="POST" action="code.php" enctype="multipart/form-data">

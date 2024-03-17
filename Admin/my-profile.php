@@ -139,7 +139,7 @@ include('includes/navbar.php');
                             </div>
                             <div class="form-group border mb-3">
                             <label for="">Upload Profile Image</label>
-                            <input type="file" name="profile" required class="form-control">
+                            <input type="file" name="profile" class="form-control">
 
                             </div>
                         </div>

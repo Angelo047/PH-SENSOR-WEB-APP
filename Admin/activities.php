@@ -5,8 +5,21 @@ include('includes/navbar.php');
 ?>
 
 <style>
+
   .table th {
     text-align: center;
+  }
+
+  .table-responsive {
+    max-height: 400px; /* Set the max height of the container */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+
+  .table-responsive thead th {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* Set the background color of the header */
+    z-index: 1; /* Ensure the header is above the table body */
   }
 </style>
 
