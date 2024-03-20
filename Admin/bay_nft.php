@@ -84,8 +84,8 @@ include('includes/navbar.php');
                                                         <td><?= $i++; ?></td>
                                                         <td><?= $row['bay']; ?></td>
                                                         <td>
-                                                        <button class="btn btn-primary edit-bay text-white" name="edit-bay"><i class="fas fa-edit"></i> Edit</button>
-                                                        <button class="btn btn-danger delete-bay" name="delete-bay"><i class="fas fa-trash"></i> Delete</button>
+                                                        <button class="btn btn-primary edit-bay text-white mb-2" name="edit-bay"><i class="fas fa-edit"></i> Edit</button>
+                                                        <button class="btn btn-danger delete-bay px-3 mb-2" name="delete-bay"><i class="fas fa-trash"></i> Delete</button>
                                                         </td>
                                                     </tr>
                                                     <?php
@@ -137,8 +137,8 @@ include('includes/navbar.php');
                                                 <td><?= $i++; ?></td>
                                                 <td><?= $row['nft']; ?></td>
                                                 <td>
-                                                    <button class="btn btn-primary edit-nft text-white" name="edit-nft"><i class="fas fa-edit"></i> Edit</button>
-                                                    <button class="btn btn-danger delete-nft" name="delete-nft"><i class="fas fa-trash"></i> Delete</button>
+                                                    <button class="btn btn-primary edit-nft text-white mb-2" name="edit-nft"><i class="fas fa-edit"></i> Edit</button>
+                                                    <button class="btn btn-danger delete-nft px-3 mb-2" name="delete-nft"><i class="fas fa-trash"></i> Delete</button>
                                                 </td>
                                                 </tr>
                                             <?php

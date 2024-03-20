@@ -73,12 +73,12 @@ include('includes/navbar.php');
 
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
-                                <label for="">Email Address</label>
-                                <div class="form-control">
-                               <?=$user->email;?>
-                                </div>
+                                    <label for="">Email Address</label>
+                                    <input type="email" name="email" value="<?=$user->email;?>" required class="form-control">
                                 </div>
                             </div>
+
+
                              <div class="col-md-6">
                                 <div class="form-group mb-3">
                                 <label for="">Role</label>

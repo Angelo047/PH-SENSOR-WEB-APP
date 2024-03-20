@@ -2,6 +2,42 @@
 include('dbcon.php');
 session_start();
 
+if(isset($_POST['verify'])) {
+    // Get the entered password
+    $entered_password = $_POST['password'];
+
+    // Get the user's UID from the session
+    $user_id = $_SESSION['verified_user_id'];
+
+    try {
+        // Retrieve the user's data from Firebase
+        $user = $auth->getUser($user_id);
+
+        // Verify the entered password against the user's Firebase credentials
+        $signInResult = $auth->signInWithEmailAndPassword($user->email, $entered_password);
+
+        // Passwords match, allow access to profile settings
+        header('Location: my-profile');
+        exit();
+    } catch (\Kreait\Firebase\Exception\Auth\InvalidPassword $e) {
+        // Passwords don't match, display error message
+        $_SESSION['error'] = "Incorrect password. Please try again.";
+        header('Location: verification.php'); // Redirect to verification page
+        exit();
+    } catch (\Kreait\Firebase\Exception\Auth\UserNotFound $e) {
+        // User not found, handle this case accordingly
+        $_SESSION['error'] = "User not found.";
+        header('Location: verification.php'); // Redirect to verification page
+        exit();
+    } catch (\Kreait\Firebase\Exception\Auth\FailedToSignIn $e) {
+        // Other authentication failures
+        $_SESSION['error'] = "Failed to sign in: " . $e->getMessage();
+        header('Location: verification.php'); // Redirect to verification page
+        exit();
+    }
+}
+
+
 if(isset($_POST['id']) && isset($_POST['plant_status'])) {
     $id = $_POST['id'];
     $plant_status = $_POST['plant_status'];
@@ -467,9 +503,9 @@ if(isset($_POST['enable_disable_acc_btn']))
 
 if(isset($_POST['update_user_profile']))
 {
-
     $display_name = $_POST['display_name'];
     $phone = $_POST['phone'];
+    $email = $_POST['email']; // Added email field
     $profile = $_FILES['profile']['name'];
     $random_no = rand(1111,9999);
 
@@ -502,8 +538,8 @@ if(isset($_POST['update_user_profile']))
     $properties = [
         'displayName' => $display_name,
         'phoneNumber' => $phone,
+        'email' => $email, // Updated email field
         'photoUrl' => $file_name, // Update profile picture only if new one uploaded
-
     ];
 
     // Update user profile

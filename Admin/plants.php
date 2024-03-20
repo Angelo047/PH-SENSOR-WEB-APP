@@ -133,9 +133,9 @@ $nftData = $nftRef->getValue();
                                                         <td><?= $row['bay']; ?></td>
                                                         <td><?= $row['nft']; ?></td>
                                                         <td data-id="<?= $key ?>">
-                                                        <a href="plant-info?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-eye fa-lg"></i></a>
-                                                            <a href="report?id=<?= $key; ?>" class="btn btn-primary "><i class="fas fa-file-pen fa-lg"></i></a>
-                                                            <button type="button" class="btn btn-danger delete-plant"><i class="fas fa-trash"></i></button>
+                                                        <a href="plant-info?id=<?= $key; ?>" class="btn btn-primary mr-2 mb-2"><i class="fas fa-eye fa-lg"></i></a>
+                                                        <a href="report?id=<?= $key; ?>" class="btn btn-primary mr-2 mb-2"><i class="fas fa-file-pen fa-lg"></i></a>
+                                                        <button type="button" class="btn btn-danger delete-plant mr-2 mb-2" ><i class="fas fa-trash"></i></button>
 
                                                         </td>
                                                     </tr>

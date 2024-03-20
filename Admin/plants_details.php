@@ -85,8 +85,8 @@ include('includes/navbar.php');
                                                     </td>
                                                     <td><?= $row['days_harvest']; ?></td>
                                                     <td>
-                                                        <a class="btn btn-primary edit-plant"><i class="fas fa-edit"> </i> Edit</a>
-                                                        <a class="btn btn-danger delete-plant"><i class="fas fa-trash"> </i> Delete</a>
+                                                        <a class="btn btn-primary edit-plant px-3 mb-2"><i class="fas fa-edit"> </i> Edit</a>
+                                                        <a class="btn btn-danger delete-plant px-3 mb-2"><i class="fas fa-trash"> </i> Delete</a>
                                                     </td>
                                                 </tr>
                                         <?php

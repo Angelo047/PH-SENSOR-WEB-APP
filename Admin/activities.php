@@ -11,7 +11,7 @@ include('includes/navbar.php');
   }
 
   .table-responsive {
-    max-height: 400px; /* Set the max height of the container */
+    max-height: 700px; /* Set the max height of the container */
     overflow-y: auto; /* Enable vertical scrolling */
   }
 
@@ -45,7 +45,7 @@ include('includes/navbar.php');
                 <div class="col-12">
                     <div class="card card-outline">
                         <div class="card-header">
-                            <h1 class="card-title">Water pH</h1>
+                            <h1 class="card-title">Stabilizing Water pH</h1>
                         </div>
                         <div class="card-body table-responsive">
                             <table class="table table-bordered table-striped" id="myTable2">
@@ -106,7 +106,7 @@ include('includes/navbar.php');
                 <div class="col-12">
                     <div class="card card-outline">
                         <div class="card-header">
-                            <h1 class="card-title">Plants</h1>
+                            <h1 class="card-title">Plants Details</h1>
                         </div>
                         <div class="card-body table-responsive">
                             <table class="table table-bordered table-striped" id="myTable3">

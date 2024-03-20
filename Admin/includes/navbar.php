@@ -18,6 +18,7 @@
     height: 100%;
     overflow-y: auto;
     }
+
 </style>
 
 <!-- Navbar -->
@@ -170,6 +171,8 @@
 
                         </ul>
                     </li>
+                    <br>
+                    <li class="nav-header">USERS</li>
 
                     <li class="nav-item">
                         <a href="user" class="nav-link">

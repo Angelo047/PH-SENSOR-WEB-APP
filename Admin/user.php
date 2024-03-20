@@ -104,8 +104,8 @@ include('includes/navbar.php');
                                         ?>
                                     </td>
                                     <td>
-                                        <a href="#" class="btn btn-primary edit-user" data-id="<?= $user->uid ?>"><i class="fas fa-edit"></i> Edit</a>
-                                        <a href="#" class="btn btn-danger delete-user" data-id="<?= $user->uid ?>"><i class="fas fa-trash"></i> Delete</a>
+                                        <a href="#" class="btn btn-primary edit-user text-white mb-2" data-id="<?= $user->uid ?>"><i class="fas fa-edit"></i> Edit</a>
+                                        <a href="#" class="btn btn-danger delete-user px-3 mb-2" data-id="<?= $user->uid ?>"><i class="fas fa-trash"></i> Delete</a>
                                     </td>
                                 </tr>
                             <?php

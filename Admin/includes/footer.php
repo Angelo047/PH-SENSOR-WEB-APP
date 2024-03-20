@@ -1,4 +1,4 @@
-<footer class="main-footer">
+<footer class="main-footer text-center">
       <strong>Copyright &copy; 2023-2024</strong>
       All rights reserved.
       <div class="float-right d-none d-sm-inline-block">
@@ -185,6 +185,7 @@ $('#notification-bell').on('click', function() {
       "info": true,
       "autoWidth": false,
       "responsive": true,
+      "lengthChange": true,
     });
     $('#myTable3').DataTable({
       "paging": true,
@@ -194,6 +195,7 @@ $('#notification-bell').on('click', function() {
       "info": true,
       "autoWidth": false,
       "responsive": true,
+      "lengthChange": true,
     });
   });
 </script>

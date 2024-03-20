@@ -34,9 +34,9 @@
           </div>
 
           <div class="col-md-6">
-            <label for="selectBay" class="form-label">Bay</label>
+            <label for="selectBay" class="form-label">Bayy</label>
             <select class="form-select" name="bay" id="selectBay" required>
-              <option selected disabled>Select a Bay</option>
+              <option selected disabled>--Select--</option>
               <?php foreach ($bayData as $key => $row) {
                 echo '<option value="' . $row['bay'] . '">' . $row['bay'] . '</option>';
               } ?>
@@ -44,9 +44,9 @@
           </div>
 
           <div class="col-md-6">
-            <label for="selectPipe" class="form-label">NFT</label>
+            <label for="selectPipe" class="form-label">NFT and Kratk</label>
             <select class="form-select" name="nft" id="selectPipe" required>
-              <option selected disabled>Select an NFT</option>
+              <option selected disabled>--Select--</option>
               <?php foreach ($nftData as $key => $row) {
                 echo '<option value="' . $row['nft'] . '">' . $row['nft'] . '</option>';
               } ?>
