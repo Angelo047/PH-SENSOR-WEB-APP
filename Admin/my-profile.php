@@ -5,6 +5,8 @@ include('includes/header.php');
 include('includes/navbar.php');
 ?>
 
+
+
 <div class="content-wrapper">
 <div class="container">
     <div class="row">
@@ -170,7 +172,60 @@ include('includes/navbar.php');
 
 </div>
 
+<!-- Modal -->
+<div class="modal" id="passwordModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passwordModalLabel">Enter Password</h5>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm" action="code.php" method="post">
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 include('includes/footer.php');
 ?>
+
+<script>
+    $(document).ready(function() {
+        $('#passwordModal').modal('show');
+    });
+
+    // Add event listener to prevent form submission on pressing Enter key
+    $('#passwordForm').submit(function(event) {
+        event.preventDefault();
+
+        // Get the password from the input field
+        var password = $('#password').val();
+
+        // Check the password with the verification script
+        $.ajax({
+            type: 'POST',
+            url: 'code.php',
+            data: { password: password },
+            success: function(response) {
+                if (response === 'success') {
+                    // Close the modal if the password is correct
+                    $('#passwordModal').modal('hide');
+                } else {
+                    // Display an error message if the password is incorrect
+                    alert('Incorrect password. Please try again.');
+                }
+            },
+            error: function() {
+                // Handle errors here
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    });
+</script>
